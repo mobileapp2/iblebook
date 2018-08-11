@@ -68,7 +68,7 @@ public class Edit_Bank_Activity extends Activity {
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
     private int position;
-    private String NETSTAT;
+    private String STATUS;
     private DataBaseHelper dbHelper;
 
     @Override
@@ -126,7 +126,7 @@ public class Edit_Bank_Activity extends Activity {
         user_id = getIntent().getStringExtra("created_by");
         bank_id = getIntent().getStringExtra("bank_id");
         document = getIntent().getStringExtra("document");
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
 
         edt_name.setText(getIntent().getStringExtra("account_holder_name"));
         edt_alias.setText(getIntent().getStringExtra("alias"));
@@ -209,7 +209,7 @@ public class Edit_Bank_Activity extends Activity {
 //            return;
 //        }
 
-        if (NETSTAT.equals("ONLINE")) {
+        if (STATUS.equals("ONLINE")) {
             if (tv_attachfile.getText().toString().trim().equals("")) {
                 if (Utilities.isNetworkAvailable(context)) {
                     new UpdateBankDetails().execute();
@@ -223,7 +223,7 @@ public class Edit_Bank_Activity extends Activity {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                 }
             }
-        } else if (NETSTAT.equals("OFFLINE")) {
+        } else if (STATUS.equals("OFFLINE")) {
             String path = "";
             if (tv_attachfile.getText().toString().trim().equals("")) {
                 path = document;

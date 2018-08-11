@@ -44,13 +44,13 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
     private final UserSessionManager session;
     private Context context;
     private static List<GetBankListPojo> resultArrayList;
-    private String name, NETSTAT;
+    private String name, STATUS;
     private DataBaseHelper dbHelper;
 
-    public GetBankListAdapter(Context context, List<GetBankListPojo> resultArrayList, String NETSTAT) {
+    public GetBankListAdapter(Context context, List<GetBankListPojo> resultArrayList, String STATUS) {
         this.context = context;
         this.resultArrayList = resultArrayList;
-        this.NETSTAT = NETSTAT;
+        this.STATUS = STATUS;
         session = new UserSessionManager(context);
         dbHelper = new DataBaseHelper(context);
         try {
@@ -91,7 +91,7 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
                 intent.putExtra("document", resultArrayList.get(position).getDocument());
                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                intent.putExtra("NETSTAT", NETSTAT);
+                intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
         });
@@ -121,7 +121,7 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
                                 intent.putExtra("document", resultArrayList.get(position).getDocument());
                                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                                intent.putExtra("NETSTAT", NETSTAT);
+                                intent.putExtra("STATUS", STATUS);
                                 context.startActivity(intent);
                                 break;
                             case R.id.menu_delete:
@@ -132,7 +132,7 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (NETSTAT.equals("ONLINE")) {
+                                        if (STATUS.equals("ONLINE")) {
                                             new DeleteBankDetails().execute(String.valueOf(position));
                                         } else {
                                             long result = dbHelper.deleteBankDetailsFromDb(resultArrayList.get(position).getBank_id());

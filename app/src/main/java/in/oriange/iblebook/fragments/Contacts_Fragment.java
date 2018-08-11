@@ -18,15 +18,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.adapters.ContactListRVAapter;
-import in.oriange.iblebook.models.ContactListPojo;
+import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +31,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.adapters.ContactListRVAapter;
+import in.oriange.iblebook.models.ContactListPojo;
+import in.oriange.iblebook.utilities.Utilities;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-
-import static android.content.ContentValues.TAG;
 
 public class Contacts_Fragment extends Fragment {
     private Context context;
@@ -45,6 +43,7 @@ public class Contacts_Fragment extends Fragment {
     private ProgressDialog pd;
     private List<ContactListPojo> contactList;
     private String[] PERMISSIONS = {Manifest.permission.READ_CONTACTS};
+    private SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -63,13 +62,15 @@ public class Contacts_Fragment extends Fragment {
         rv_contacts = rootView.findViewById(R.id.rv_contacts);
         contactList = new ArrayList<ContactListPojo>();
         rv_contacts.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchView = rootView.findViewById(R.id.searchView);
     }
 
     private void setDefault() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
             askPermission();
-        else
+        } else {
             new contactList().execute();
+        }
     }
 
     public void refresh() {
@@ -144,7 +145,49 @@ public class Contacts_Fragment extends Fragment {
         return contactList;
     }
 
-    private void setEventHandlers() {
+    private void setEventHandlers()  {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
+                for (ContactListPojo contacts : contactList) {
+                    if (contacts.getName() != null && contacts.getName().toLowerCase().contains(query.toLowerCase())) {
+                        contactsSearchedList.add(contacts);
+                    }
+                }
+
+                if (contactsSearchedList.size() == 0) {
+                    Utilities.showAlertDialog(context, "Fail", "No Such Contact Found", false);
+                    searchView.setQuery("", false);
+                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
+                    alphaAdapter.setDuration(500);
+                    alphaAdapter.setInterpolator(new OvershootInterpolator());
+                    alphaAdapter.setFirstOnly(false);
+                    rv_contacts.setAdapter(alphaAdapter);
+                } else {
+                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactsSearchedList)));
+                    alphaAdapter.setDuration(500);
+                    alphaAdapter.setInterpolator(new OvershootInterpolator());
+                    alphaAdapter.setFirstOnly(false);
+                    rv_contacts.setAdapter(alphaAdapter);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
+                    alphaAdapter.setDuration(500);
+                    alphaAdapter.setInterpolator(new OvershootInterpolator());
+                    alphaAdapter.setFirstOnly(false);
+                    rv_contacts.setAdapter(alphaAdapter);
+                }
+                return true;
+            }
+        });
+
     }
 
     public void askPermission() {

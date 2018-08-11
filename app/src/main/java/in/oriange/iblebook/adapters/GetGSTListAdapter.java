@@ -44,13 +44,13 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
     private final UserSessionManager session;
     private Context context;
     private static List<GetTaxListPojo> resultArrayList;
-    private String name, NETSTAT;
+    private String name, STATUS;
     private DataBaseHelper dbHelper;
 
-    public GetGSTListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String NETSTAT) {
+    public GetGSTListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String STATUS) {
         this.context = context;
         this.resultArrayList = resultArrayList;
-        this.NETSTAT = NETSTAT;
+        this.STATUS = STATUS;
         session = new UserSessionManager(context);
         dbHelper = new DataBaseHelper(context);
         try {
@@ -88,7 +88,7 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                 intent.putExtra("gst_document", resultArrayList.get(position).getGst_document());
                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                intent.putExtra("NETSTAT", NETSTAT);
+                intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
         });
@@ -115,7 +115,7 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                                 intent.putExtra("gst_document", resultArrayList.get(position).getGst_document());
                                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                                intent.putExtra("NETSTAT", NETSTAT);
+                                intent.putExtra("STATUS", STATUS);
                                 context.startActivity(intent);
                                 break;
                             case R.id.menu_delete:
@@ -126,7 +126,7 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (NETSTAT.equals("ONLINE")) {
+                                        if (STATUS.equals("ONLINE")) {
                                             new DeleteGSTDetails().execute(String.valueOf(position));
                                         } else {
                                             long result = dbHelper.deleteTaxDetailsFromDb(resultArrayList.get(position).getTax_id());

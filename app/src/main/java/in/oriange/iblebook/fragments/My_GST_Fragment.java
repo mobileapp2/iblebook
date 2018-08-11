@@ -87,7 +87,7 @@ public class My_GST_Fragment extends Fragment {
         fab_add_gst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {Intent intent = new Intent(context, Add_GST_Activity.class);
-                intent.putExtra("NETSTAT", "ONLINE");
+                intent.putExtra("STATUS", "ONLINE");
                 startActivity(intent);
             }
         });

@@ -14,6 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_Bank_Activity;
 import in.oriange.iblebook.adapters.GetBankListAdapter;
@@ -22,13 +30,6 @@ import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
-import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class My_Bank_Fragment extends Fragment {
     private static Context context;
@@ -85,7 +86,7 @@ public class My_Bank_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_Bank_Activity.class);
-                intent.putExtra("NETSTAT", "ONLINE");
+                intent.putExtra("STATUS", "ONLINE");
                 startActivity(intent);
             }
         });
@@ -147,16 +148,18 @@ public class My_Bank_Fragment extends Fragment {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetBankListPojo summary = new GetBankListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setBank_id(jsonObj.getString("bank_id"));
-                                summary.setAccount_holder_name(jsonObj.getString("account_holder_name"));
-                                summary.setAlias(jsonObj.getString("alias"));
-                                summary.setBank_name(jsonObj.getString("bank_name"));
-                                summary.setIfsc_code(jsonObj.getString("ifsc_code"));
-                                summary.setAccount_no(jsonObj.getString("account_no"));
-                                summary.setDocument(jsonObj.getString("document"));
-                                summary.setCreated_by(jsonObj.getString("created_by"));
-                                summary.setUpdated_by(jsonObj.getString("updated_by"));
-                                bankList.add(summary);
+                                if (jsonObj.getString("status").equals("online")) {
+                                    summary.setBank_id(jsonObj.getString("bank_id"));
+                                    summary.setAccount_holder_name(jsonObj.getString("account_holder_name"));
+                                    summary.setAlias(jsonObj.getString("alias"));
+                                    summary.setBank_name(jsonObj.getString("bank_name"));
+                                    summary.setIfsc_code(jsonObj.getString("ifsc_code"));
+                                    summary.setAccount_no(jsonObj.getString("account_no"));
+                                    summary.setDocument(jsonObj.getString("document"));
+                                    summary.setCreated_by(jsonObj.getString("created_by"));
+                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    bankList.add(summary);
+                                }
                             }
                             rv_banklist.setAdapter(new GetBankListAdapter(context, bankList, "ONLINE"));
                         }

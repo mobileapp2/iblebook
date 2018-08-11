@@ -45,7 +45,7 @@ import java.net.URL;
 
 public class View_Bank_Activity extends Activity {
     private Context context;
-    private String user_id, document, bank_id, name, NETSTAT;
+    private String user_id, document, bank_id, name, STATUS;
     private EditText edt_name, edt_alias, edt_bank_name, edt_ifsc, edt_account_no;
     private TextView tv_attachfile;
     private LinearLayout ll_parent;
@@ -114,7 +114,7 @@ public class View_Bank_Activity extends Activity {
         user_id = getIntent().getStringExtra("created_by");
         bank_id = getIntent().getStringExtra("bank_id");
         document = getIntent().getStringExtra("document");
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
 
         edt_name.setText(getIntent().getStringExtra("account_holder_name"));
         edt_alias.setText(getIntent().getStringExtra("alias"));
@@ -124,7 +124,7 @@ public class View_Bank_Activity extends Activity {
     }
 
     private void setDefaults() {
-        if (NETSTAT.equals("OFFLINE")) {
+        if (STATUS.equals("OFFLINE")) {
             tv_attachfile.setText("View Document");
         }
     }
@@ -139,7 +139,7 @@ public class View_Bank_Activity extends Activity {
         tv_attachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NETSTAT.equals("OFFLINE")) {
+                if (STATUS.equals("OFFLINE")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     File file = new File(document);
                     Uri uri = Uri.parse("file://" + file);
@@ -210,7 +210,7 @@ public class View_Bank_Activity extends Activity {
                 intent.putExtra("document", document);
                 intent.putExtra("created_by", user_id);
                 intent.putExtra("updated_by", user_id);
-                intent.putExtra("NETSTAT", NETSTAT);
+                intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
         });
@@ -225,7 +225,7 @@ public class View_Bank_Activity extends Activity {
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (NETSTAT.equals("ONLINE")) {
+                        if (STATUS.equals("ONLINE")) {
                             new DeleteBankDetails().execute();
                         } else {
                             long result = dbHelper.deleteBankDetailsFromDb(bank_id);

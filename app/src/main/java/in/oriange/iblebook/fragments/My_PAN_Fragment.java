@@ -86,7 +86,7 @@ public class My_PAN_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_PAN_Activity.class);
-                intent.putExtra("NETSTAT", "ONLINE");
+                intent.putExtra("STATUS", "ONLINE");
                 startActivity(intent);
             }
         });

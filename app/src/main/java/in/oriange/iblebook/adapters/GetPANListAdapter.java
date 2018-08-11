@@ -44,13 +44,13 @@ public class GetPANListAdapter extends RecyclerView.Adapter<GetPANListAdapter.My
     private final UserSessionManager session;
     private Context context;
     private static List<GetTaxListPojo> resultArrayList;
-    private String name, NETSTAT;
+    private String name, STATUS;
     private DataBaseHelper dbHelper;
 
-    public GetPANListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String NETSTAT) {
+    public GetPANListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String STATUS) {
         this.context = context;
         this.resultArrayList = resultArrayList;
-        this.NETSTAT = NETSTAT;
+        this.STATUS = STATUS;
         session = new UserSessionManager(context);
         dbHelper = new DataBaseHelper(context);
         try {
@@ -88,7 +88,7 @@ public class GetPANListAdapter extends RecyclerView.Adapter<GetPANListAdapter.My
                 intent.putExtra("pan_document", resultArrayList.get(position).getPan_document());
                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                intent.putExtra("NETSTAT", NETSTAT);
+                intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
         });
@@ -115,7 +115,7 @@ public class GetPANListAdapter extends RecyclerView.Adapter<GetPANListAdapter.My
                                 intent.putExtra("pan_document", resultArrayList.get(position).getPan_document());
                                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-                                intent.putExtra("NETSTAT", NETSTAT);
+                                intent.putExtra("STATUS", STATUS);
                                 context.startActivity(intent);
                                 break;
                             case R.id.menu_delete:
@@ -126,7 +126,7 @@ public class GetPANListAdapter extends RecyclerView.Adapter<GetPANListAdapter.My
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (NETSTAT.equals("ONLINE")) {
+                                        if (STATUS.equals("ONLINE")) {
                                             new DeletePANDetails().execute(String.valueOf(position));
                                         } else {
                                             long result = dbHelper.deleteTaxDetailsFromDb(resultArrayList.get(position).getTax_id());

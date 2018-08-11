@@ -66,7 +66,7 @@ public class Add_PAN_Activity extends Activity {
     public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    private String NETSTAT;
+    private String STATUS;
     private DataBaseHelper dbHelper;
 
     @Override
@@ -104,7 +104,7 @@ public class Add_PAN_Activity extends Activity {
             builder.detectFileUriExposure();
         }
 
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
     }
 
     private void getSessionData() {
@@ -186,13 +186,13 @@ public class Add_PAN_Activity extends Activity {
         }
 
 
-        if (NETSTAT.equals("ONLINE")) {
+        if (STATUS.equals("ONLINE")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadDocument().execute(fileToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (NETSTAT.equals("OFFLINE")) {
+        } else if (STATUS.equals("OFFLINE")) {
             long result = dbHelper.insertTaxDetailsInDb(
                     user_id,
                     edt_name.getText().toString().trim(),

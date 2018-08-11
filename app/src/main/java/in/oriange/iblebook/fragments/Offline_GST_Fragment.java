@@ -83,7 +83,7 @@ public class Offline_GST_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_GST_Activity.class);
-                intent.putExtra("NETSTAT", "OFFLINE");
+                intent.putExtra("STATUS", "OFFLINE");
                 startActivity(intent);
             }
         });

@@ -82,7 +82,7 @@ public class Offline_PAN_Fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_PAN_Activity.class);
-                intent.putExtra("NETSTAT", "OFFLINE");
+                intent.putExtra("STATUS", "OFFLINE");
                 startActivity(intent);
             }
         });

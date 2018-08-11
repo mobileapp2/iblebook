@@ -45,7 +45,7 @@ import java.net.URL;
 
 public class View_GST_Activity extends Activity {
     private Context context;
-    private String name, user_id, gst_document, tax_id, NETSTAT;
+    private String name, user_id, gst_document, tax_id, STATUS;
     private EditText edt_name, edt_alias, edt_gst_no;
     private TextView tv_attachfile;
     private LinearLayout ll_parent;
@@ -113,7 +113,7 @@ public class View_GST_Activity extends Activity {
         user_id = getIntent().getStringExtra("created_by");
         tax_id = getIntent().getStringExtra("tax_id");
         gst_document = getIntent().getStringExtra("gst_document");
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
 
         edt_name.setText(getIntent().getStringExtra("name"));
         edt_alias.setText(getIntent().getStringExtra("alias"));
@@ -121,7 +121,7 @@ public class View_GST_Activity extends Activity {
     }
 
     private void setDefaults() {
-        if (NETSTAT.equals("OFFLINE")) {
+        if (STATUS.equals("OFFLINE")) {
             tv_attachfile.setText("View Document");
         }
     }
@@ -134,7 +134,7 @@ public class View_GST_Activity extends Activity {
         tv_attachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NETSTAT.equals("OFFLINE")) {
+                if (STATUS.equals("OFFLINE")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     File file = new File(gst_document);
                     Uri uri = Uri.parse("file://" + file);
@@ -202,7 +202,7 @@ public class View_GST_Activity extends Activity {
                 intent.putExtra("gst_document", gst_document);
                 intent.putExtra("created_by", user_id);
                 intent.putExtra("updated_by", user_id);
-                intent.putExtra("NETSTAT", NETSTAT);
+                intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
         });
@@ -217,7 +217,7 @@ public class View_GST_Activity extends Activity {
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (NETSTAT.equals("ONLINE")) {
+                        if (STATUS.equals("ONLINE")) {
                             new DeleteGSTDetails().execute();
                         } else {
                             long result = dbHelper.deleteTaxDetailsFromDb(tax_id);

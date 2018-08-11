@@ -67,7 +67,7 @@ public class Add_Bank_Activity extends Activity {
     public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    private String NETSTAT;
+    private String STATUS;
     private DataBaseHelper dbHelper;
 
     @Override
@@ -106,7 +106,7 @@ public class Add_Bank_Activity extends Activity {
             builder.detectFileUriExposure();
         }
 
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
     }
 
     private void getSessionData() {
@@ -195,13 +195,13 @@ public class Add_Bank_Activity extends Activity {
             return;
         }
 
-        if (NETSTAT.equals("ONLINE")) {
+        if (STATUS.equals("ONLINE")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadDocument().execute(fileToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (NETSTAT.equals("OFFLINE")) {
+        } else if (STATUS.equals("OFFLINE")) {
             long result = dbHelper.insertBankDetailsInDb(user_id,
                     edt_name.getText().toString().trim(),
                     edt_alias.getText().toString().trim(),

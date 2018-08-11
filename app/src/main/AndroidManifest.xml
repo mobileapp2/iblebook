@@ -56,7 +56,7 @@
             android:name=".activities.MainDrawer_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activities.Add_Address_Activity"
             android:screenOrientation="portrait"

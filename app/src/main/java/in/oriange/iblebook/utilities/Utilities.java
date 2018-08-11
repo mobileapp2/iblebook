@@ -706,21 +706,21 @@ public class Utilities {
     static AlertDialog alertDialog;
 
     @SuppressWarnings("deprecation")
-//    public static void showAlertDialog(Context context, String title,
-//                                       String message, Boolean status) {
-//        alertDialog = new AlertDialog.Builder(context).create();
-//        alertDialog.setTitle(title);
-//        alertDialog.setMessage(message);
-//        if (status != null)
-//            alertDialog.setIcon((status) ? R.drawable.icon_success : R.drawable.icon_fail);
-//        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-//
-//            public void onClick(DialogInterface dialog, int which) {
-//                alertDialog.dismiss();
-//            }
-//        });
-//        alertDialog.show();
-//    }
+    public static void showAlertDialog(Context context, String title,
+                                       String message, Boolean status) {
+        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        if (status != null)
+            alertDialog.setIcon((status) ? R.drawable.ic_success_24dp : R.drawable.ic_alert_red_24dp);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
 
 
     public static void showSnackBar (ViewGroup viewGroup, String message){

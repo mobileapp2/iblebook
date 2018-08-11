@@ -75,7 +75,7 @@ public class Add_Address_Activity extends Activity {
     private UserSessionManager session;
     private ImageView imv_add_mobno;
     private LinearLayout ll_mobilelayout;
-    private String NETSTAT;
+    private String STATUS;
     private DataBaseHelper dbHelper;
     List<AddressTypePojo> addressTypeList;
 
@@ -126,7 +126,7 @@ public class Add_Address_Activity extends Activity {
             builder.detectFileUriExposure();
         }
 
-        NETSTAT = getIntent().getStringExtra("NETSTAT");
+        STATUS = getIntent().getStringExtra("STATUS");
     }
 
     private void getSessionData() {

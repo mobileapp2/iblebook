@@ -13,6 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_Bank_Activity;
 import in.oriange.iblebook.adapters.GetBankListAdapter;
@@ -20,12 +27,6 @@ import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
-import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class Offline_Bank_Fragment extends Fragment {
 
@@ -83,7 +84,7 @@ public class Offline_Bank_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Add_Bank_Activity.class);
-                intent.putExtra("NETSTAT", "OFFLINE");
+                intent.putExtra("STATUS", "OFFLINE");
                 startActivity(intent);
             }
         });
