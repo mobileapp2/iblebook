@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "651814132265",
+    "firebase_url": "https://iblebook-913c8.firebaseio.com",
+    "project_id": "iblebook-913c8",
+    "storage_bucket": "iblebook-913c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651814132265:android:9dd2ec515f5b9c43",
+        "android_client_info": {
+          "package_name": "in.oriange.iblebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651814132265-ji1la6qv5e9maqk2s0saod8n8ptdkktn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.oriange.iblebook",
+            "certificate_hash": "e1007c01e79c562b19a282587b0110a8fc774d05"
+          }
+        },
+        {
+          "client_id": "651814132265-0ot5e54ddghqnnri7diorbkkfpevgudl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBouvRR3y9LHJ4zBEgiQN_p9zokEJ1bRtw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651814132265-0ot5e54ddghqnnri7diorbkkfpevgudl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

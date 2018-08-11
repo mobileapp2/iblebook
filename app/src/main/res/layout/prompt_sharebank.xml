@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="Name of Account Holder"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_aliasname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="Alias Name"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_aliasname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_bankname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="Bank Name"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_bankname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_ifsccode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="IFSC Code"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_ifsccode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_accno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="Account Number"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_accno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_file"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:text="Document File"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_file"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.1"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+</LinearLayout>

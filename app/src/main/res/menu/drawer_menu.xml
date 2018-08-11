@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_group_1">
+        <item
+            android:id="@+id/menu_profile"
+            android:icon="@drawable/ic_global_menu_feed"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/menu_address"
+            android:icon="@drawable/ic_global_menu_feed"
+            android:title="Address" />
+
+        <item
+            android:id="@+id/menu_gst"
+            android:icon="@drawable/ic_global_menu_feed"
+            android:title="GST Number" />
+        <item
+            android:id="@+id/menu_bank"
+            android:icon="@drawable/ic_global_menu_feed"
+            android:title="Bank Details" />
+
+        <item
+            android:id="@+id/menu_logout"
+            android:icon="@drawable/ic_global_menu_feed"
+            android:title="Logout" />
+    </group>
+</menu>
