@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_Bank_Activity;
-import in.oriange.iblebook.adapters.GetBankListAdapter;
+import in.oriange.iblebook.adapters.GetMyBankListAdapter;
 import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -141,7 +141,7 @@ public class My_Bank_Fragment extends Fragment {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     bankList = new ArrayList<GetBankListPojo>();
-                    rv_banklist.setAdapter(new GetBankListAdapter(context, bankList, "ONLINE"));
+                    rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
                         if (jsonarr.length() > 0) {
@@ -157,15 +157,16 @@ public class My_Bank_Fragment extends Fragment {
                                     summary.setAccount_no(jsonObj.getString("account_no"));
                                     summary.setDocument(jsonObj.getString("document"));
                                     summary.setCreated_by(jsonObj.getString("created_by"));
-                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setStatus(jsonObj.getString("status"));
                                     bankList.add(summary);
                                 }
                             }
-                            rv_banklist.setAdapter(new GetBankListAdapter(context, bankList, "ONLINE"));
+
+                            rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failed")) {
 //                        bankList = new ArrayList<GetBankListPojo>();
-//                    rv_banklist.setAdapter(new GetBankListAdapter(context, bankList, "ONLINE"));
+//                    rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
                     }
                 }
             } catch (Exception e) {

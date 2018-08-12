@@ -2,6 +2,7 @@ package in.oriange.iblebook.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,17 +17,20 @@ import android.view.ViewGroup;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_Bank_Activity;
-import in.oriange.iblebook.adapters.GetBankListAdapter;
+import in.oriange.iblebook.adapters.GetOfflineBankListAdapter;
 import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Offline_Bank_Fragment extends Fragment {
 
@@ -73,10 +77,17 @@ public class Offline_Bank_Fragment extends Fragment {
         }
     }
 
-    public static void setDefault() {
-        ArrayList<GetBankListPojo> bankList = new ArrayList<GetBankListPojo>();
-        bankList = dbHelper.getBankListFromDb();
-        rv_banklist.setAdapter(new GetBankListAdapter(context, bankList, "OFFLINE"));
+    public void setDefault() {
+//        ArrayList<GetBankListPojo> bankList = new ArrayList<GetBankListPojo>();
+//        bankList = dbHelper.getBankListFromDb();
+//        rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "OFFLINE"));
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetBankList().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
+
     }
 
     private void setEventHandlers() {
@@ -88,5 +99,88 @@ public class Offline_Bank_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (Utilities.isNetworkAvailable(context)) {
+                    new GetBankList().execute();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
+    }
+
+    public static class GetBankList extends AsyncTask<String, Void, String> {
+        private ArrayList<GetBankListPojo> bankList;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pd.setMessage("Please wait...");
+//            pd.setCancelable(false);
+//            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "GetData");
+                obj.put("user_id", user_id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.BANKAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+//                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    bankList = new ArrayList<GetBankListPojo>();
+                    rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, bankList, "OFFLINE"));
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                GetBankListPojo summary = new GetBankListPojo();
+                                JSONObject jsonObj = jsonarr.getJSONObject(i);
+                                if (jsonObj.getString("status").equals("offline")) {
+                                    summary.setBank_id(jsonObj.getString("bank_id"));
+                                    summary.setAccount_holder_name(jsonObj.getString("account_holder_name"));
+                                    summary.setAlias(jsonObj.getString("alias"));
+                                    summary.setBank_name(jsonObj.getString("bank_name"));
+                                    summary.setIfsc_code(jsonObj.getString("ifsc_code"));
+                                    summary.setAccount_no(jsonObj.getString("account_no"));
+                                    summary.setDocument(jsonObj.getString("document"));
+                                    summary.setCreated_by(jsonObj.getString("created_by"));
+                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setStatus(jsonObj.getString("status"));
+                                    bankList.add(summary);
+                                }
+                            }
+                            rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, bankList, "OFFLINE"));
+                        }
+                    } else if (type.equalsIgnoreCase("failed")) {
+//                        bankList = new ArrayList<GetBankListPojo>();
+//                    rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "OFFLINE"));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

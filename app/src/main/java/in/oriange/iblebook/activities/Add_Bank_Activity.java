@@ -22,15 +22,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_Bank_Fragment;
-import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.MultipartUtility;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,6 +40,15 @@ import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_Bank_Fragment;
+import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.MultipartUtility;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Add_Bank_Activity extends Activity {
 
@@ -195,38 +195,38 @@ public class Add_Bank_Activity extends Activity {
             return;
         }
 
-        if (STATUS.equals("ONLINE")) {
+//        if (STATUS.equals("ONLINE")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadDocument().execute(fileToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (STATUS.equals("OFFLINE")) {
-            long result = dbHelper.insertBankDetailsInDb(user_id,
-                    edt_name.getText().toString().trim(),
-                    edt_alias.getText().toString().trim(),
-                    edt_bank_name.getText().toString().trim(),
-                    edt_ifsc.getText().toString().trim(),
-                    edt_account_no.getText().toString().trim(),
-                    fileToBeUploaded.getPath(),
-                    "0");
-
-            if (result != -1) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Bank Details Uploaded Successfully");
-                builder.setTitle("Success");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        Offline_Bank_Fragment.setDefault();
-                    }
-                });
-                builder.show();
-            } else {
-                Utilities.showSnackBar(ll_parent, "Bank Details Did Not Save Properly");
-            }
-        }
+//        } else if (STATUS.equals("OFFLINE")) {
+//            long result = dbHelper.insertBankDetailsInDb(user_id,
+//                    edt_name.getText().toString().trim(),
+//                    edt_alias.getText().toString().trim(),
+//                    edt_bank_name.getText().toString().trim(),
+//                    edt_ifsc.getText().toString().trim(),
+//                    edt_account_no.getText().toString().trim(),
+//                    fileToBeUploaded.getPath(),
+//                    "0");
+//
+//            if (result != -1) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Bank Details Uploaded Successfully");
+//                builder.setTitle("Success");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finish();
+//                        Offline_Bank_Fragment.setDefault();
+//                    }
+//                });
+//                builder.show();
+//            } else {
+//                Utilities.showSnackBar(ll_parent, "Bank Details Did Not Save Properly");
+//            }
+//        }
     }
 
     @Override
@@ -336,7 +336,7 @@ public class Add_Bank_Activity extends Activity {
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         photo_url = Obj1.getString("document_url");
-                        new UploadBankDetails().execute();
+                        new UploadBankDetails().execute(STATUS);
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }
@@ -376,6 +376,7 @@ public class Add_Bank_Activity extends Activity {
                 obj.put("document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
+                obj.put("status", STATUS);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -402,6 +403,7 @@ public class Add_Bank_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_Bank_Fragment.GetBankList().execute();
+                                new Offline_Bank_Fragment.GetBankList().execute();
                             }
                         });
                         builder.show();

@@ -22,16 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.Edit_Bank_Activity;
-import in.oriange.iblebook.activities.View_Bank_Activity;
-import in.oriange.iblebook.fragments.My_Bank_Fragment;
-import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
-import in.oriange.iblebook.models.GetBankListPojo;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -39,7 +29,17 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.MyViewHolder> {
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.Edit_Bank_Activity;
+import in.oriange.iblebook.activities.View_Bank_Activity;
+import in.oriange.iblebook.fragments.My_Bank_Fragment;
+import in.oriange.iblebook.models.GetBankListPojo;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.WebServiceCalls;
+
+public class GetMyBankListAdapter extends RecyclerView.Adapter<GetMyBankListAdapter.MyViewHolder> {
 
     private final UserSessionManager session;
     private Context context;
@@ -47,7 +47,7 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
     private String name, STATUS;
     private DataBaseHelper dbHelper;
 
-    public GetBankListAdapter(Context context, List<GetBankListPojo> resultArrayList, String STATUS) {
+    public GetMyBankListAdapter(Context context, List<GetBankListPojo> resultArrayList, String STATUS) {
         this.context = context;
         this.resultArrayList = resultArrayList;
         this.STATUS = STATUS;
@@ -132,23 +132,24 @@ public class GetBankListAdapter extends RecyclerView.Adapter<GetBankListAdapter.
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (STATUS.equals("ONLINE")) {
-                                            new DeleteBankDetails().execute(String.valueOf(position));
-                                        } else {
-                                            long result = dbHelper.deleteBankDetailsFromDb(resultArrayList.get(position).getBank_id());
-                                            if (result != -1) {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                builder.setMessage("Bank Details Deleted Successfully");
-                                                builder.setTitle("Success");
-                                                builder.setCancelable(false);
-                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        Offline_Bank_Fragment.setDefault();
-                                                    }
-                                                });
-                                                builder.show();
-                                            }
-                                        }
+//                                        if (STATUS.equals("ONLINE")) {
+//                                            new DeleteBankDetails().execute(String.valueOf(position));
+//                                        } else {
+//                                            long result = dbHelper.deleteBankDetailsFromDb(resultArrayList.get(position).getBank_id());
+//                                            if (result != -1) {
+//                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                                                builder.setMessage("Bank Details Deleted Successfully");
+//                                                builder.setTitle("Success");
+//                                                builder.setCancelable(false);
+//                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                                    public void onClick(DialogInterface dialog, int id) {
+//                                                        Offline_Bank_Fragment.setDefault();
+//                                                    }
+//                                                });
+//                                                builder.show();
+//                                            }
+//                                        }
+                                        new DeleteBankDetails().execute(String.valueOf(position));
                                     }
                                 });
                                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

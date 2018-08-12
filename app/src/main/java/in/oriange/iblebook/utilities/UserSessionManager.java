@@ -86,6 +86,23 @@ public class UserSessionManager {
         editor.commit();
     }
 
+    public void createAndroidToken(String tokenID) {
+        pref = _context.getSharedPreferences(ApplicationConstants.PREFER_NAME, Context.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putString(ApplicationConstants.KEY_ANDROIDTOKETID, tokenID);
+        editor.commit();
+    }
+
+    public HashMap<String, String> getAndroidToken() {
+        pref = _context.getSharedPreferences(ApplicationConstants.PREFER_NAME,
+                Context.MODE_PRIVATE);
+        HashMap<String, String> androidTokenID = new HashMap<String, String>();
+        androidTokenID.put(ApplicationConstants.KEY_ANDROIDTOKETID,
+                pref.getString(ApplicationConstants.KEY_ANDROIDTOKETID, ""));
+        return androidTokenID;
+    }
+
+
 
 
 

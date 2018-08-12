@@ -9,11 +9,13 @@ public class ApplicationConstants {
     public static final String KEY_APPOPENEDFORFIRST = "KEY_APPOPENEDFORFIRST";
     public static final String IS_USER_LOGIN = "IS_USER_LOGIN";
     public static final String KEY_LOGIN_INFO = "KEY_LOGIN_INFO";
+    public static final String KEY_ANDROIDTOKETID = "KEY_ANDROIDTOKETID";
 
 
     //API LINK LIST
 
     public static final String USERAPI = "http://mazalatur.com/AddressBook/Apis/user.php";
+    public static final String DEVICEREGAPI = "http://mazalatur.com/AddressBook/Apis/profile.php";
     public static final String ADDRESSAPI = "http://mazalatur.com/AddressBook/Apis/address.php";
     public static final String ADDRESSTYPEAPI = "http://mazalatur.com/AddressBook/Apis/addresstype.php";
     public static final String BANKAPI = "http://mazalatur.com/AddressBook/Apis/bank.php";

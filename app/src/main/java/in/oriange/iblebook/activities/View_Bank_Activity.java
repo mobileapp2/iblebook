@@ -22,13 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_Bank_Fragment;
-import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.JsonObject;
 
@@ -42,6 +35,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_Bank_Fragment;
+import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_Bank_Activity extends Activity {
     private Context context;
@@ -124,9 +125,9 @@ public class View_Bank_Activity extends Activity {
     }
 
     private void setDefaults() {
-        if (STATUS.equals("OFFLINE")) {
-            tv_attachfile.setText("View Document");
-        }
+//        if (STATUS.equals("OFFLINE")) {
+//            tv_attachfile.setText("View Document");
+//        }
     }
 
     private void setEventHandler() {
@@ -139,52 +140,52 @@ public class View_Bank_Activity extends Activity {
         tv_attachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (STATUS.equals("OFFLINE")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    File file = new File(document);
-                    Uri uri = Uri.parse("file://" + file);
-                    if (document.toString().contains(".doc") || document.toString().contains(".docx")) {
-                        // Word document
-                        intent.setDataAndType(uri, "application/msword");
-                    } else if (document.toString().contains(".pdf")) {
-                        // PDF file
-                        intent.setDataAndType(uri, "application/pdf");
-                    } else if (document.toString().contains(".ppt") || document.toString().contains(".pptx")) {
-                        // Powerpoint file
-                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-                    } else if (document.toString().contains(".xls") || document.toString().contains(".xlsx")) {
-                        // Excel file
-                        intent.setDataAndType(uri, "application/vnd.ms-excel");
-                    } else if (document.toString().contains(".zip") || document.toString().contains(".rar")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "application/x-wav");
-                    } else if (document.toString().contains(".rtf")) {
-                        // RTF file
-                        intent.setDataAndType(uri, "application/rtf");
-                    } else if (document.toString().contains(".wav") || document.toString().contains(".mp3")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "audio/x-wav");
-                    } else if (document.toString().contains(".gif")) {
-                        // GIF file
-                        intent.setDataAndType(uri, "image/gif");
-                    } else if (document.toString().contains(".jpg") || document.toString().contains(".jpeg") || document.toString().contains(".png")) {
-                        // JPG file
-                        intent.setDataAndType(uri, "image/jpeg");
-                    } else if (document.toString().contains(".txt")) {
-                        // Text file
-                        intent.setDataAndType(uri, "text/plain");
-                    } else if (document.toString().contains(".3gp") || document.toString().contains(".mpg") || document.toString().contains(".mpeg") || document.toString().contains(".mpe") || document.toString().contains(".mp4") || document.toString().contains(".avi")) {
-                        // Video files
-                        intent.setDataAndType(uri, "video/*");
-                    } else {
-                        intent.setDataAndType(uri, "*/*");
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-
-                } else {
+//                if (STATUS.equals("OFFLINE")) {
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    File file = new File(document);
+//                    Uri uri = Uri.parse("file://" + file);
+//                    if (document.toString().contains(".doc") || document.toString().contains(".docx")) {
+//                        // Word document
+//                        intent.setDataAndType(uri, "application/msword");
+//                    } else if (document.toString().contains(".pdf")) {
+//                        // PDF file
+//                        intent.setDataAndType(uri, "application/pdf");
+//                    } else if (document.toString().contains(".ppt") || document.toString().contains(".pptx")) {
+//                        // Powerpoint file
+//                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+//                    } else if (document.toString().contains(".xls") || document.toString().contains(".xlsx")) {
+//                        // Excel file
+//                        intent.setDataAndType(uri, "application/vnd.ms-excel");
+//                    } else if (document.toString().contains(".zip") || document.toString().contains(".rar")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "application/x-wav");
+//                    } else if (document.toString().contains(".rtf")) {
+//                        // RTF file
+//                        intent.setDataAndType(uri, "application/rtf");
+//                    } else if (document.toString().contains(".wav") || document.toString().contains(".mp3")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "audio/x-wav");
+//                    } else if (document.toString().contains(".gif")) {
+//                        // GIF file
+//                        intent.setDataAndType(uri, "image/gif");
+//                    } else if (document.toString().contains(".jpg") || document.toString().contains(".jpeg") || document.toString().contains(".png")) {
+//                        // JPG file
+//                        intent.setDataAndType(uri, "image/jpeg");
+//                    } else if (document.toString().contains(".txt")) {
+//                        // Text file
+//                        intent.setDataAndType(uri, "text/plain");
+//                    } else if (document.toString().contains(".3gp") || document.toString().contains(".mpg") || document.toString().contains(".mpeg") || document.toString().contains(".mpe") || document.toString().contains(".mp4") || document.toString().contains(".avi")) {
+//                        // Video files
+//                        intent.setDataAndType(uri, "video/*");
+//                    } else {
+//                        intent.setDataAndType(uri, "*/*");
+//                    }
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(intent);
+//
+//                } else {
                     new DownloadDocument().execute(document);
-                }
+//                }
             }
         });
 
@@ -225,24 +226,25 @@ public class View_Bank_Activity extends Activity {
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (STATUS.equals("ONLINE")) {
-                            new DeleteBankDetails().execute();
-                        } else {
-                            long result = dbHelper.deleteBankDetailsFromDb(bank_id);
-                            if (result != -1) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("Bank Details Deleted Successfully");
-                                builder.setTitle("Success");
-                                builder.setCancelable(false);
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        finish();
-                                        Offline_Bank_Fragment.setDefault();
-                                    }
-                                });
-                                builder.show();
-                            }
-                        }
+//                        if (STATUS.equals("ONLINE")) {
+//                            new DeleteBankDetails().execute();
+//                        } else {
+//                            long result = dbHelper.deleteBankDetailsFromDb(bank_id);
+//                            if (result != -1) {
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                                builder.setMessage("Bank Details Deleted Successfully");
+//                                builder.setTitle("Success");
+//                                builder.setCancelable(false);
+//                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        finish();
+//                                        Offline_Bank_Fragment.setDefault();
+//                                    }
+//                                });
+//                                builder.show();
+//                            }
+//                        }
+                        new DeleteBankDetails().execute();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -515,7 +517,7 @@ public class View_Bank_Activity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            position = Integer.parseInt(params[0]);
+//            position = Integer.parseInt(params[0]);
             String res = "[]";
             JsonObject obj = new JsonObject();
             obj.addProperty("type", "DeleteData");
@@ -543,6 +545,7 @@ public class View_Bank_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_Bank_Fragment.GetBankList().execute();
+                                new Offline_Bank_Fragment.GetBankList().execute();
                             }
                         });
                         builder.show();

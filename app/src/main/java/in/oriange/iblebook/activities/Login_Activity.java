@@ -1,31 +1,24 @@
 package in.oriange.iblebook.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
-import in.oriange.iblebook.utilities.PermissionUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +26,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.PermissionUtil;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Login_Activity extends Activity {
 
@@ -98,9 +98,6 @@ public class Login_Activity extends Activity {
 
             }
         });
-
-//        edt_username.addTextChangedListener(new MyTextWatcher(edt_username));
-//        edt_password.addTextChangedListener(new MyTextWatcher(edt_password));
     }
 
     private void submitData() {
@@ -163,8 +160,7 @@ public class Login_Activity extends Activity {
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 session.createUserLoginSession(jsonarr.toString());
-                                finish();
-                                startActivity(new Intent(context, MainDrawer_Activity.class));
+                                saveRegistrationID();
                             }
                         }
                     } else if (type.equalsIgnoreCase("failure")) {
@@ -178,30 +174,91 @@ public class Login_Activity extends Activity {
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
+    private void saveRegistrationID() {
+        String user_id = "", regToken = "";
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
 
-        private View view;
+            for (int j = 0; j < user_info.length(); j++) {
+                JSONObject json = user_info.getJSONObject(j);
+                user_id = json.getString("user_id");
+            }
 
-        private MyTextWatcher(View view) {
-            this.view = view;
+            regToken = session.getAndroidToken().get(ApplicationConstants.KEY_ANDROIDTOKETID);
+
+            if (regToken != null && !regToken.isEmpty() && !regToken.equals("null") && !regToken.equals(""))
+                new SendRegistrationToken().execute(user_id, regToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class SendRegistrationToken extends AsyncTask<String, Integer, String> {
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
         }
 
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            String s = "";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("device_type", "Android");
+                obj.put("device_id", params[1]);
+                obj.put("ram", totalRAMSize());
+                obj.put("processor", Build.CPU_ABI);
+                obj.put("device_os", Build.VERSION.RELEASE);
+                obj.put("location", "0.0, 0.0");
+                obj.put("device_model", Build.MODEL);
+                obj.put("manufacturer", Build.MANUFACTURER);
+                obj.put("user_id", params[0]);
+                obj.put("type", "registerDevice");
+                s = obj.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.DEVICEREGAPI, s);
+            return res;
         }
 
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pd.dismiss();
+            if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
+                try {
+                    int c = 0;
+                    JSONObject obj1 = new JSONObject(result);
+                    String success = obj1.getString("success");
+                    String message = obj1.getString("message");
+                    if (success.equalsIgnoreCase("1")) {
+                        startActivity(new Intent(context, MainDrawer_Activity.class));
+                        finish();
+                    } else {
 
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.edt_username:
-                    input_username.setError(null);
-                    break;
-                case R.id.edt_password:
-                    input_password.setError(null);
-                    break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    private String totalRAMSize(){
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(memoryInfo);
+        double totalRAM = memoryInfo.totalMem / 1048576.0;
+        return String.valueOf(totalRAM);
     }
 
     private void checkPermissions() {
