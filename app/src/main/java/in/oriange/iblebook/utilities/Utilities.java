@@ -676,30 +676,17 @@ public class Utilities {
 
     //******************************* Massages Methods *********************************************
 
-    /* show message int*/
     public static void showMessage(int msg, Context context) {
-
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-
-//        RelativeLayout toastLayout = (RelativeLayout) toast.getView();
-//        TextView toastTV = (TextView) toastLayout.getChildAt(0);
-//        toastTV.setTextSize(12);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
-    /* show message String*/
-    public static void showMessageString(String msg, Context context) {
+    public static void showMessageString(Context context, String msg) {
 
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
-
-//        RelativeLayout toastLayout = (RelativeLayout) toast.getView();
-//        TextView toastTV = (TextView) toastLayout.getChildAt(0);
-//        toastTV.setTextSize(12);
-//        toast.setGravity(Gravity.CENTER, 0, 0);
-//        toast.show();
     }
 
 

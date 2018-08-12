@@ -21,4 +21,5 @@ public class ApplicationConstants {
     public static final String BANKAPI = "http://mazalatur.com/AddressBook/Apis/bank.php";
     public static final String TAXAPI = "http://mazalatur.com/AddressBook/Apis/tax.php";
     public static final String UPLOADFILEAPI = "http://mazalatur.com/AddressBook/Apis/upload.php";
+    public static final String SENDREQUESTAPI = "http://mazalatur.com/AddressBook/Apis/reqdata.php";
 }

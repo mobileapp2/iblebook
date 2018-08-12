@@ -145,7 +145,8 @@ public class Contacts_Fragment extends Fragment {
         return contactList;
     }
 
-    private void setEventHandlers()  {
+    private void setEventHandlers() {
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
