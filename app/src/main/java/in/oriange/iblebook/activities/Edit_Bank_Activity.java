@@ -204,10 +204,6 @@ public class Edit_Bank_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Account Number");
             return;
         }
-//        if (tv_attachfile.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Attach Document");
-//            return;
-//        }
 
 //        if (STATUS.equals("ONLINE")) {
             if (tv_attachfile.getText().toString().trim().equals("")) {

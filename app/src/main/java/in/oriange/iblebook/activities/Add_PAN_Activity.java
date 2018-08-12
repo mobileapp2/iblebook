@@ -22,15 +22,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_PAN_Fragment;
-import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.MultipartUtility;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,6 +40,15 @@ import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_PAN_Fragment;
+import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.MultipartUtility;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Add_PAN_Activity extends Activity {
     private Context context;
@@ -186,40 +186,39 @@ public class Add_PAN_Activity extends Activity {
         }
 
 
-        if (STATUS.equals("ONLINE")) {
+//        if (STATUS.equals("ONLINE")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadDocument().execute(fileToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (STATUS.equals("OFFLINE")) {
-            long result = dbHelper.insertTaxDetailsInDb(
-                    user_id,
-                    edt_name.getText().toString().trim(),
-                    edt_alias.getText().toString().trim(),
-                    edt_pan_no.getText().toString().trim(),
-                    "",
-                    fileToBeUploaded.getPath(),
-                    "",
-                    "0");
-
-            if (result != -1) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("GST Details Uploaded Successfully");
-                builder.setTitle("Success");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        Offline_PAN_Fragment.setDefault();
-                    }
-                });
-                builder.show();
-            } else {
-                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
-            }
-
-        }
+//        } else if (STATUS.equals("OFFLINE")) {
+//            long result = dbHelper.insertTaxDetailsInDb(
+//                    user_id,
+//                    edt_name.getText().toString().trim(),
+//                    edt_alias.getText().toString().trim(),
+//                    edt_pan_no.getText().toString().trim(),
+//                    "",
+//                    fileToBeUploaded.getPath(),
+//                    "",
+//                    "0");
+//
+//            if (result != -1) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("GST Details Uploaded Successfully");
+//                builder.setTitle("Success");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finish();
+//                        Offline_PAN_Fragment.setDefault();
+//                    }
+//                });
+//                builder.show();
+//            } else {
+//                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
+//            }
+//        }
     }
 
     @Override
@@ -329,7 +328,7 @@ public class Add_PAN_Activity extends Activity {
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         photo_url = Obj1.getString("document_url");
-                        new UploadPANDetails().execute();
+                        new UploadPANDetails().execute(STATUS);
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }
@@ -367,6 +366,7 @@ public class Add_PAN_Activity extends Activity {
                 obj.put("pan_document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
+                obj.put("status", STATUS);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -393,6 +393,7 @@ public class Add_PAN_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_PAN_Fragment.GetPANList().execute();
+                                new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
                         builder.show();

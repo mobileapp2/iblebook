@@ -14,15 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.Add_Bank_Activity;
-import in.oriange.iblebook.activities.Add_GST_Activity;
-import in.oriange.iblebook.adapters.GetGSTListAdapter;
-import in.oriange.iblebook.models.GetTaxListPojo;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 import org.json.JSONArray;
@@ -31,16 +22,24 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.Add_GST_Activity;
+import in.oriange.iblebook.adapters.GetMyGSTListAdapter;
+import in.oriange.iblebook.models.GetTaxListPojo;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
+
 public class My_GST_Fragment extends Fragment {
     private static Context context;
     private FloatingActionButton fab_add_gst;
+    public static FlowingDrawer ll_parent;
     private static RecyclerView rv_gstlist;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    public static FlowingDrawer ll_parent;
     private static String user_id;
-    private static ArrayList<GetTaxListPojo> gstList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +85,8 @@ public class My_GST_Fragment extends Fragment {
     private void setEventHandlers() {
         fab_add_gst.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {Intent intent = new Intent(context, Add_GST_Activity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Add_GST_Activity.class);
                 intent.putExtra("STATUS", "ONLINE");
                 startActivity(intent);
             }
@@ -104,23 +104,10 @@ public class My_GST_Fragment extends Fragment {
                 }
             }
         });
-//        rv_gstlist.addOnItemTouchListener(new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(context, View_GST_Activity.class);
-//                intent.putExtra("tax_id", gstList.get(position).getTax_id());
-//                intent.putExtra("name", gstList.get(position).getName());
-//                intent.putExtra("alias", gstList.get(position).getAlias());
-//                intent.putExtra("gst_number", gstList.get(position).getGst_number());
-//                intent.putExtra("gst_document", gstList.get(position).getGst_document());
-//                intent.putExtra("created_by", gstList.get(position).getCreated_by());
-//                intent.putExtra("updated_by", gstList.get(position).getUpdated_by());
-//                startActivity(intent);
-//            }
-//        }));
     }
 
     public static class GetGSTList extends AsyncTask<String, Void, String> {
+        private ArrayList<GetTaxListPojo> gstList;
 
         @Override
         protected void onPreExecute() {
@@ -155,14 +142,14 @@ public class My_GST_Fragment extends Fragment {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     gstList = new ArrayList<GetTaxListPojo>();
-                    rv_gstlist.setAdapter(new GetGSTListAdapter(context, gstList, "ONLINE"));
+                    rv_gstlist.setAdapter(new GetMyGSTListAdapter(context, gstList, "ONLINE"));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetTaxListPojo summary = new GetTaxListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                if (jsonObj.getString("pan_number").equals("")) {
+                                if (jsonObj.getString("pan_number").equals("") && jsonObj.getString("status").equals("online")) {
                                     summary.setTax_id(jsonObj.getString("tax_id"));
                                     summary.setName(jsonObj.getString("name"));
                                     summary.setAlias(jsonObj.getString("alias"));
@@ -173,10 +160,10 @@ public class My_GST_Fragment extends Fragment {
                                     gstList.add(summary);
                                 }
                             }
-                            rv_gstlist.setAdapter(new GetGSTListAdapter(context, gstList, "ONLINE"));
+                            rv_gstlist.setAdapter(new GetMyGSTListAdapter(context, gstList, "ONLINE"));
                         }
-                    } else if (type.equalsIgnoreCase("failure")) {
-//                        Utilities.showSnackBar(ll_parent, message);
+                    } else if (type.equalsIgnoreCase("failed")) {
+
                     }
                 }
             } catch (Exception e) {

@@ -12,12 +12,12 @@ import in.oriange.iblebook.models.GetAddressListPojo;
 
 import java.util.List;
 
-public class GetAddressListAdapter  extends RecyclerView.Adapter<GetAddressListAdapter.MyViewHolder> {
+public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressListAdapter.MyViewHolder> {
 
     Context context;
     List<GetAddressListPojo> resultArrayList;
 
-    public GetAddressListAdapter(Context context, List<GetAddressListPojo> resultArrayList) {
+    public GetMyAddressListAdapter(Context context, List<GetAddressListPojo> resultArrayList) {
         this.context = context;
         this.resultArrayList = resultArrayList;
     }

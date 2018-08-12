@@ -22,13 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_PAN_Fragment;
-import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.JsonObject;
 
@@ -42,6 +35,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_PAN_Fragment;
+import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_PAN_Activity extends Activity {
 
@@ -122,9 +123,9 @@ public class View_PAN_Activity extends Activity {
     }
 
     private void setDefaults() {
-        if (STATUS.equals("OFFLINE")) {
-            tv_attachfile.setText("View Document");
-        }
+//        if (STATUS.equals("OFFLINE")) {
+//            tv_attachfile.setText("View Document");
+//        }
     }
 
     private void setEventHandler() {
@@ -135,52 +136,52 @@ public class View_PAN_Activity extends Activity {
         tv_attachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (STATUS.equals("OFFLINE")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    File file = new File(pan_document);
-                    Uri uri = Uri.parse("file://" + file);
-                    if (pan_document.toString().contains(".doc") || pan_document.toString().contains(".docx")) {
-                        // Word document
-                        intent.setDataAndType(uri, "application/msword");
-                    } else if (pan_document.toString().contains(".pdf")) {
-                        // PDF file
-                        intent.setDataAndType(uri, "application/pdf");
-                    } else if (pan_document.toString().contains(".ppt") || pan_document.toString().contains(".pptx")) {
-                        // Powerpoint file
-                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-                    } else if (pan_document.toString().contains(".xls") || pan_document.toString().contains(".xlsx")) {
-                        // Excel file
-                        intent.setDataAndType(uri, "application/vnd.ms-excel");
-                    } else if (pan_document.toString().contains(".zip") || pan_document.toString().contains(".rar")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "application/x-wav");
-                    } else if (pan_document.toString().contains(".rtf")) {
-                        // RTF file
-                        intent.setDataAndType(uri, "application/rtf");
-                    } else if (pan_document.toString().contains(".wav") || pan_document.toString().contains(".mp3")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "audio/x-wav");
-                    } else if (pan_document.toString().contains(".gif")) {
-                        // GIF file
-                        intent.setDataAndType(uri, "image/gif");
-                    } else if (pan_document.toString().contains(".jpg") || pan_document.toString().contains(".jpeg") || pan_document.toString().contains(".png")) {
-                        // JPG file
-                        intent.setDataAndType(uri, "image/jpeg");
-                    } else if (pan_document.toString().contains(".txt")) {
-                        // Text file
-                        intent.setDataAndType(uri, "text/plain");
-                    } else if (pan_document.toString().contains(".3gp") || pan_document.toString().contains(".mpg") || pan_document.toString().contains(".mpeg") || pan_document.toString().contains(".mpe") || pan_document.toString().contains(".mp4") || pan_document.toString().contains(".avi")) {
-                        // Video files
-                        intent.setDataAndType(uri, "video/*");
-                    } else {
-                        intent.setDataAndType(uri, "*/*");
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-
-                } else {
+//                if (STATUS.equals("OFFLINE")) {
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    File file = new File(pan_document);
+//                    Uri uri = Uri.parse("file://" + file);
+//                    if (pan_document.toString().contains(".doc") || pan_document.toString().contains(".docx")) {
+//                        // Word document
+//                        intent.setDataAndType(uri, "application/msword");
+//                    } else if (pan_document.toString().contains(".pdf")) {
+//                        // PDF file
+//                        intent.setDataAndType(uri, "application/pdf");
+//                    } else if (pan_document.toString().contains(".ppt") || pan_document.toString().contains(".pptx")) {
+//                        // Powerpoint file
+//                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+//                    } else if (pan_document.toString().contains(".xls") || pan_document.toString().contains(".xlsx")) {
+//                        // Excel file
+//                        intent.setDataAndType(uri, "application/vnd.ms-excel");
+//                    } else if (pan_document.toString().contains(".zip") || pan_document.toString().contains(".rar")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "application/x-wav");
+//                    } else if (pan_document.toString().contains(".rtf")) {
+//                        // RTF file
+//                        intent.setDataAndType(uri, "application/rtf");
+//                    } else if (pan_document.toString().contains(".wav") || pan_document.toString().contains(".mp3")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "audio/x-wav");
+//                    } else if (pan_document.toString().contains(".gif")) {
+//                        // GIF file
+//                        intent.setDataAndType(uri, "image/gif");
+//                    } else if (pan_document.toString().contains(".jpg") || pan_document.toString().contains(".jpeg") || pan_document.toString().contains(".png")) {
+//                        // JPG file
+//                        intent.setDataAndType(uri, "image/jpeg");
+//                    } else if (pan_document.toString().contains(".txt")) {
+//                        // Text file
+//                        intent.setDataAndType(uri, "text/plain");
+//                    } else if (pan_document.toString().contains(".3gp") || pan_document.toString().contains(".mpg") || pan_document.toString().contains(".mpeg") || pan_document.toString().contains(".mpe") || pan_document.toString().contains(".mp4") || pan_document.toString().contains(".avi")) {
+//                        // Video files
+//                        intent.setDataAndType(uri, "video/*");
+//                    } else {
+//                        intent.setDataAndType(uri, "*/*");
+//                    }
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(intent);
+//
+//                } else {
                     new DownloadDocument().execute(pan_document);
-                }
+//                }
             }
         });
 
@@ -218,24 +219,25 @@ public class View_PAN_Activity extends Activity {
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (STATUS.equals("ONLINE")) {
-                            new DeletePANDetails().execute();
-                        } else {
-                            long result = dbHelper.deleteTaxDetailsFromDb(tax_id);
-                            if (result != -1) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("PAN Details Deleted Successfully");
-                                builder.setTitle("Success");
-                                builder.setCancelable(false);
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        finish();
-                                        Offline_PAN_Fragment.setDefault();
-                                    }
-                                });
-                                builder.show();
-                            }
-                        }
+//                        if (STATUS.equals("ONLINE")) {
+//                            new DeletePANDetails().execute();
+//                        } else {
+//                            long result = dbHelper.deleteTaxDetailsFromDb(tax_id);
+//                            if (result != -1) {
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                                builder.setMessage("PAN Details Deleted Successfully");
+//                                builder.setTitle("Success");
+//                                builder.setCancelable(false);
+//                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        finish();
+//                                        Offline_PAN_Fragment.setDefault();
+//                                    }
+//                                });
+//                                builder.show();
+//                            }
+//                        }
+                        new DeletePANDetails().execute();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -464,7 +466,6 @@ public class View_PAN_Activity extends Activity {
     }
 
     public class DeletePANDetails extends AsyncTask<String, Void, String> {
-
         ProgressDialog pd;
 
         @Override
@@ -505,6 +506,7 @@ public class View_PAN_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_PAN_Fragment.GetPANList().execute();
+                                new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
                         builder.show();

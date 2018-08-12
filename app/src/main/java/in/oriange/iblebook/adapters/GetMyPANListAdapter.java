@@ -22,16 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.Edit_GST_Activity;
-import in.oriange.iblebook.activities.View_GST_Activity;
-import in.oriange.iblebook.fragments.My_GST_Fragment;
-import in.oriange.iblebook.fragments.Offline_GST_Fragment;
-import in.oriange.iblebook.models.GetTaxListPojo;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -39,7 +29,17 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.MyViewHolder> {
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.Edit_PAN_Activity;
+import in.oriange.iblebook.activities.View_PAN_Activity;
+import in.oriange.iblebook.fragments.My_PAN_Fragment;
+import in.oriange.iblebook.models.GetTaxListPojo;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.WebServiceCalls;
+
+public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapter.MyViewHolder> {
 
     private final UserSessionManager session;
     private Context context;
@@ -47,7 +47,7 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
     private String name, STATUS;
     private DataBaseHelper dbHelper;
 
-    public GetGSTListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String STATUS) {
+    public GetMyPANListAdapter(Context context, List<GetTaxListPojo> resultArrayList, String STATUS) {
         this.context = context;
         this.resultArrayList = resultArrayList;
         this.STATUS = STATUS;
@@ -75,17 +75,17 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getName());
-        holder.tv_gstno.setText(resultArrayList.get(position).getGst_number());
+        holder.tv_gstno.setText(resultArrayList.get(position).getPan_number());
 
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, View_GST_Activity.class);
+                Intent intent = new Intent(context, View_PAN_Activity.class);
                 intent.putExtra("tax_id", resultArrayList.get(position).getTax_id());
                 intent.putExtra("name", resultArrayList.get(position).getName());
                 intent.putExtra("alias", resultArrayList.get(position).getAlias());
-                intent.putExtra("gst_number", resultArrayList.get(position).getGst_number());
-                intent.putExtra("gst_document", resultArrayList.get(position).getGst_document());
+                intent.putExtra("pan_number", resultArrayList.get(position).getPan_number());
+                intent.putExtra("pan_document", resultArrayList.get(position).getPan_document());
                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
                 intent.putExtra("STATUS", STATUS);
@@ -107,12 +107,12 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                                 setSelectionFilter(position);
                                 break;
                             case R.id.menu_edit:
-                                Intent intent = new Intent(context, Edit_GST_Activity.class);
+                                Intent intent = new Intent(context, Edit_PAN_Activity.class);
                                 intent.putExtra("tax_id", resultArrayList.get(position).getTax_id());
                                 intent.putExtra("name", resultArrayList.get(position).getName());
                                 intent.putExtra("alias", resultArrayList.get(position).getAlias());
-                                intent.putExtra("gst_number", resultArrayList.get(position).getGst_number());
-                                intent.putExtra("gst_document", resultArrayList.get(position).getGst_document());
+                                intent.putExtra("pan_number", resultArrayList.get(position).getPan_number());
+                                intent.putExtra("pan_document", resultArrayList.get(position).getPan_document());
                                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
                                 intent.putExtra("STATUS", STATUS);
@@ -126,23 +126,24 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                                 builder.setCancelable(false);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if (STATUS.equals("ONLINE")) {
-                                            new DeleteGSTDetails().execute(String.valueOf(position));
-                                        } else {
-                                            long result = dbHelper.deleteTaxDetailsFromDb(resultArrayList.get(position).getTax_id());
-                                            if (result != -1) {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                                builder.setMessage("GST Details Deleted Successfully");
-                                                builder.setTitle("Success");
-                                                builder.setCancelable(false);
-                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        Offline_GST_Fragment.setDefault();
-                                                    }
-                                                });
-                                                builder.show();
-                                            }
-                                        }
+//                                        if (STATUS.equals("ONLINE")) {
+//                                            new DeletePANDetails().execute(String.valueOf(position));
+//                                        } else {
+//                                            long result = dbHelper.deleteTaxDetailsFromDb(resultArrayList.get(position).getTax_id());
+//                                            if (result != -1) {
+//                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                                                builder.setMessage("PAN Details Deleted Successfully");
+//                                                builder.setTitle("Success");
+//                                                builder.setCancelable(false);
+//                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                                    public void onClick(DialogInterface dialog, int id) {
+//                                                        Offline_PAN_Fragment.setDefault();
+//                                                    }
+//                                                });
+//                                                builder.show();
+//                                            }
+//                                        }
+                                        new DeletePANDetails().execute(String.valueOf(position));
                                     }
                                 });
                                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -190,17 +191,17 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
     private void setSelectionFilter(final int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_sharepgst, null);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharepan, null);
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
         TextView tv_name = promptView.findViewById(R.id.tv_name);
-        TextView tv_gstno = promptView.findViewById(R.id.tv_gstno);
+        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
         TextView tv_file = promptView.findViewById(R.id.tv_file);
 
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
-        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
+        final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
 
         tv_name.setOnClickListener(new View.OnClickListener() {
@@ -212,13 +213,13 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                     cb_name.setChecked(false);
             }
         });
-        tv_gstno.setOnClickListener(new View.OnClickListener() {
+        tv_panno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!cb_gstno.isChecked())
-                    cb_gstno.setChecked(true);
+                if (!cb_panno.isChecked())
+                    cb_panno.setChecked(true);
                 else
-                    cb_gstno.setChecked(false);
+                    cb_panno.setChecked(false);
             }
         });
         tv_file.setOnClickListener(new View.OnClickListener() {
@@ -237,23 +238,23 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                 if (cb_name.isChecked()) {
                     sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
                 }
-                if (cb_gstno.isChecked()) {
-                    sb.append("GST Code - " + resultArrayList.get(position).getGst_number() + "\n");
+                if (cb_panno.isChecked()) {
+                    sb.append("PAN Code - " + resultArrayList.get(position).getPan_number() + "\n");
                 }
                 String url = "";
                 if (cb_file.isChecked()) {
-                    url = resultArrayList.get(position).getGst_document();
+                    url = resultArrayList.get(position).getPan_document();
                     url = url.replaceAll(" ", "%20");
                     sb.append("File Url - " + url + "\n");
                 }
 
-                if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {
+                if (!cb_name.isChecked() && !cb_panno.isChecked() && !cb_file.isChecked()) {
                     Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Log.i("SharedGSTDetails", sb.toString());
-                String finalDataShare = name + " shares GST details with you " + "\n" + sb.toString();
+                Log.i("SharedPANDetails", sb.toString());
+                String finalDataShare = name + " shares PAN details with you " + "\n" + sb.toString();
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
@@ -271,7 +272,7 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
         alertD.show();
     }
 
-    public class DeleteGSTDetails extends AsyncTask<String, Void, String> {
+    public class DeletePANDetails extends AsyncTask<String, Void, String> {
         int position;
         ProgressDialog pd;
 
@@ -307,12 +308,12 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("GST Details Deleted Successfully");
+                        builder.setMessage("PAN Details Deleted Successfully");
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new My_GST_Fragment.GetGSTList().execute();
+                                new My_PAN_Fragment.GetPANList().execute();
                                 removeItem(position);
                             }
                         });
@@ -332,6 +333,5 @@ public class GetGSTListAdapter extends RecyclerView.Adapter<GetGSTListAdapter.My
         resultArrayList.remove(position);
         notifyItemRemoved(position);
     }
-
 
 }

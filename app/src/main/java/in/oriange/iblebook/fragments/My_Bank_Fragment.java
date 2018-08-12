@@ -79,6 +79,7 @@ public class My_Bank_Fragment extends Fragment {
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
+
     }
 
     private void setEventHandlers() {
@@ -161,12 +162,10 @@ public class My_Bank_Fragment extends Fragment {
                                     bankList.add(summary);
                                 }
                             }
-
                             rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failed")) {
-//                        bankList = new ArrayList<GetBankListPojo>();
-//                    rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
+
                     }
                 }
             } catch (Exception e) {
@@ -174,4 +173,5 @@ public class My_Bank_Fragment extends Fragment {
             }
         }
     }
+
 }

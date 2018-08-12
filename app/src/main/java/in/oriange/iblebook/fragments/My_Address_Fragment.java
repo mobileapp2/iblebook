@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_Address_Activity;
 import in.oriange.iblebook.activities.View_Address_Activity;
-import in.oriange.iblebook.adapters.GetAddressListAdapter;
+import in.oriange.iblebook.adapters.GetMyAddressListAdapter;
 import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.RecyclerItemClickListener;
@@ -194,7 +194,7 @@ public class My_Address_Fragment extends Fragment {
                                 summary.setUpdated_by(jsonObj.getString("updated_by"));
                                 addressList.add(summary);
                             }
-                            rv_addresslist.setAdapter(new GetAddressListAdapter(context, addressList));
+                            rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressList));
                         }
                     } else if (type.equalsIgnoreCase("failure")) {
 //                        Utilities.showSnackBar(ll_parent, message);

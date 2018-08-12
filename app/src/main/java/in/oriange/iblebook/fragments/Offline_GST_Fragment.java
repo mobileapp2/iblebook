@@ -2,6 +2,7 @@ package in.oriange.iblebook.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,29 +14,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.Add_GST_Activity;
-import in.oriange.iblebook.adapters.GetGSTListAdapter;
-import in.oriange.iblebook.models.GetTaxListPojo;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Offline_GST_Fragment extends Fragment {
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.Add_GST_Activity;
+import in.oriange.iblebook.adapters.GetOfflineGSTListAdapter;
+import in.oriange.iblebook.models.GetTaxListPojo;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
+public class Offline_GST_Fragment extends Fragment {
     private static Context context;
     private FloatingActionButton fab_add_gst;
+    public static FlowingDrawer ll_parent;
     private static RecyclerView rv_gstlist;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    public static FlowingDrawer ll_parent;
     private static String user_id;
     private static DataBaseHelper dbHelper;
 
@@ -73,9 +77,15 @@ public class Offline_GST_Fragment extends Fragment {
     }
 
     public static void setDefault() {
-        ArrayList<GetTaxListPojo> gstList = new ArrayList<GetTaxListPojo>();
-        gstList = dbHelper.getGSTListFromDb();
-        rv_gstlist.setAdapter(new GetGSTListAdapter(context, gstList,"OFFLINE"));
+//        ArrayList<GetTaxListPojo> gstList = new ArrayList<GetTaxListPojo>();
+//        gstList = dbHelper.getGSTListFromDb();
+//        rv_gstlist.setAdapter(new GetMyGSTListAdapter(context, gstList, "OFFLINE"));
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetGSTList().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
     }
 
     private void setEventHandlers() {
@@ -87,6 +97,85 @@ public class Offline_GST_Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (Utilities.isNetworkAvailable(context)) {
+                    new GetGSTList().execute();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
+    }
+
+    public static class GetGSTList extends AsyncTask<String, Void, String> {
+        private ArrayList<GetTaxListPojo> gstList;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pd.setMessage("Please wait...");
+//            pd.setCancelable(false);
+//            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "GetData");
+                obj.put("user_id", user_id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.TAXAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+//                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    gstList = new ArrayList<GetTaxListPojo>();
+                    rv_gstlist.setAdapter(new GetOfflineGSTListAdapter(context, gstList, "OFFLINE"));
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                GetTaxListPojo summary = new GetTaxListPojo();
+                                JSONObject jsonObj = jsonarr.getJSONObject(i);
+                                if (jsonObj.getString("pan_number").equals("") && jsonObj.getString("status").equals("offline")) {
+                                    summary.setTax_id(jsonObj.getString("tax_id"));
+                                    summary.setName(jsonObj.getString("name"));
+                                    summary.setAlias(jsonObj.getString("alias"));
+                                    summary.setGst_number(jsonObj.getString("gst_number"));
+                                    summary.setGst_document(jsonObj.getString("gst_document"));
+                                    summary.setCreated_by(jsonObj.getString("created_by"));
+                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    gstList.add(summary);
+                                }
+                            }
+                            rv_gstlist.setAdapter(new GetOfflineGSTListAdapter(context, gstList, "OFFLINE"));
+                        }
+                    } else if (type.equalsIgnoreCase("failed")) {
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

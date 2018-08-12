@@ -22,15 +22,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_PAN_Fragment;
-import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.MultipartUtility;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,6 +40,15 @@ import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_PAN_Fragment;
+import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.MultipartUtility;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Edit_PAN_Activity extends Activity {
 
@@ -192,7 +192,7 @@ public class Edit_PAN_Activity extends Activity {
             return;
         }
 
-        if (STATUS.equals("ONLINE")) {
+//        if (STATUS.equals("ONLINE")) {
             if (tv_attachfile.getText().toString().trim().equals("")) {
                 if (Utilities.isNetworkAvailable(context)) {
                     new UpdatePANDetails().execute();
@@ -206,40 +206,40 @@ public class Edit_PAN_Activity extends Activity {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                 }
             }
-        } else if (STATUS.equals("OFFLINE")) {
-            String path = "";
-            if (tv_attachfile.getText().toString().trim().equals("")) {
-                path = pan_document;
-            } else {
-                path = fileToBeUploaded.getPath();
-            }
-            long result = dbHelper.updateTaxDetailsInDb(
-                    tax_id,
-                    user_id,
-                    edt_name.getText().toString().trim(),
-                    edt_alias.getText().toString().trim(),
-                    edt_pan_no.getText().toString().trim(),
-                    "",
-                    path,
-                    "",
-                    "0");
-
-            if (result != -1) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("PAN Details Updated Successfully");
-                builder.setTitle("Success");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        Offline_PAN_Fragment.setDefault();
-                    }
-                });
-                builder.show();
-            } else {
-                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
-            }
-        }
+//        } else if (STATUS.equals("OFFLINE")) {
+//            String path = "";
+//            if (tv_attachfile.getText().toString().trim().equals("")) {
+//                path = pan_document;
+//            } else {
+//                path = fileToBeUploaded.getPath();
+//            }
+//            long result = dbHelper.updateTaxDetailsInDb(
+//                    tax_id,
+//                    user_id,
+//                    edt_name.getText().toString().trim(),
+//                    edt_alias.getText().toString().trim(),
+//                    edt_pan_no.getText().toString().trim(),
+//                    "",
+//                    path,
+//                    "",
+//                    "0");
+//
+//            if (result != -1) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("PAN Details Updated Successfully");
+//                builder.setTitle("Success");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finish();
+//                        Offline_PAN_Fragment.setDefault();
+//                    }
+//                });
+//                builder.show();
+//            } else {
+//                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
+//            }
+//        }
     }
 
     @Override
@@ -388,6 +388,7 @@ public class Edit_PAN_Activity extends Activity {
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("tax_id", tax_id);
+                obj.put("status", STATUS);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -414,16 +415,15 @@ public class Edit_PAN_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_PAN_Fragment.GetPANList().execute();
+                                new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
                         builder.show();
                     } else {
 
                     }
-
                 }
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
         }

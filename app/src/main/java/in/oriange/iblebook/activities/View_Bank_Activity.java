@@ -67,6 +67,7 @@ public class View_Bank_Activity extends Activity {
         setDefaults();
         setEventHandler();
         setupToolbar();
+
     }
 
     private void init() {

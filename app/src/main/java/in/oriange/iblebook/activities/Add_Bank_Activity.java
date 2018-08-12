@@ -196,11 +196,11 @@ public class Add_Bank_Activity extends Activity {
         }
 
 //        if (STATUS.equals("ONLINE")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadDocument().execute(fileToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
+        if (Utilities.isNetworkAvailable(context)) {
+            new UploadDocument().execute(fileToBeUploaded);
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
 //        } else if (STATUS.equals("OFFLINE")) {
 //            long result = dbHelper.insertBankDetailsInDb(user_id,
 //                    edt_name.getText().toString().trim(),

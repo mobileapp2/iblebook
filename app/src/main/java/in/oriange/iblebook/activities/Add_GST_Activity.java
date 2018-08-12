@@ -22,15 +22,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_GST_Fragment;
-import in.oriange.iblebook.fragments.Offline_GST_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.MultipartUtility;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,6 +40,15 @@ import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_GST_Fragment;
+import in.oriange.iblebook.fragments.Offline_GST_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.MultipartUtility;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Add_GST_Activity extends Activity {
 
@@ -167,6 +167,59 @@ public class Add_GST_Activity extends Activity {
         builder.show();
     }
 
+    private void submitData() {
+        if (edt_name.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            return;
+        }
+        if (edt_alias.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            return;
+        }
+        if (!Utilities.isGSTValid(edt_gst_no)) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
+            return;
+        }
+        if (tv_attachfile.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Attach Document");
+            return;
+        }
+
+//        if (STATUS.equals("ONLINE")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadDocument().execute(fileToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+//        } else if (STATUS.equals("OFFLINE")) {
+//            long result = dbHelper.insertTaxDetailsInDb(
+//                    user_id,
+//                    edt_name.getText().toString().trim(),
+//                    edt_alias.getText().toString().trim(),
+//                    "",
+//                    edt_gst_no.getText().toString().trim(),
+//                    "",
+//                    fileToBeUploaded.getPath(),
+//                    "0");
+//
+//            if (result != -1) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("GST Details Uploaded Successfully");
+//                builder.setTitle("Success");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finish();
+//                        Offline_GST_Fragment.setDefault();
+//                    }
+//                });
+//                builder.show();
+//            } else {
+//                Utilities.showSnackBar(ll_parent, "GST Details Did Not Save Properly");
+//            }
+//        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -232,61 +285,6 @@ public class Add_GST_Activity extends Activity {
         fileToBeUploaded = new File(destinationFilename);
     }
 
-    private void submitData() {
-        if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
-            return;
-        }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
-        if (!Utilities.isGSTValid(edt_gst_no)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
-            return;
-        }
-        if (tv_attachfile.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Attach Document");
-            return;
-        }
-
-
-        if (STATUS.equals("ONLINE")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadDocument().execute(fileToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
-        } else if (STATUS.equals("OFFLINE")) {
-            long result = dbHelper.insertTaxDetailsInDb(
-                    user_id,
-                    edt_name.getText().toString().trim(),
-                    edt_alias.getText().toString().trim(),
-                    "",
-                    edt_gst_no.getText().toString().trim(),
-                    "",
-                    fileToBeUploaded.getPath(),
-                    "0");
-
-            if (result != -1) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("GST Details Uploaded Successfully");
-                builder.setTitle("Success");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        Offline_GST_Fragment.setDefault();
-                    }
-                });
-                builder.show();
-            } else {
-                Utilities.showSnackBar(ll_parent, "GST Details Did Not Save Properly");
-            }
-
-        }
-    }
-
     private class UploadDocument extends AsyncTask<File, Integer, String> {
 
         @Override
@@ -329,7 +327,7 @@ public class Add_GST_Activity extends Activity {
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         photo_url = Obj1.getString("document_url");
-                        new UploadGSTDetails().execute();
+                        new UploadGSTDetails().execute(STATUS);
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }
@@ -367,6 +365,7 @@ public class Add_GST_Activity extends Activity {
                 obj.put("gst_document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
+                obj.put("status", STATUS);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -393,6 +392,7 @@ public class Add_GST_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_GST_Fragment.GetGSTList().execute();
+                                new Offline_GST_Fragment.GetGSTList().execute();
                             }
                         });
                         builder.show();

@@ -14,14 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.Add_PAN_Activity;
-import in.oriange.iblebook.adapters.GetPANListAdapter;
-import in.oriange.iblebook.models.GetTaxListPojo;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.Utilities;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 import org.json.JSONArray;
@@ -30,16 +22,24 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.Add_PAN_Activity;
+import in.oriange.iblebook.adapters.GetMyPANListAdapter;
+import in.oriange.iblebook.models.GetTaxListPojo;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
+
 public class My_PAN_Fragment extends Fragment {
     private static Context context;
     private FloatingActionButton fab_add_pan;
+    public static FlowingDrawer ll_parent;
     private static RecyclerView rv_panlist;
     private LinearLayoutManager layoutManager;
-    public static FlowingDrawer ll_parent;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
     private static String user_id;
-    private static ArrayList<GetTaxListPojo> panList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -103,23 +103,10 @@ public class My_PAN_Fragment extends Fragment {
                 }
             }
         });
-//        rv_panlist.addOnItemTouchListener(new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(context, View_PAN_Activity.class);
-//                intent.putExtra("tax_id", panList.get(position).getTax_id());
-//                intent.putExtra("name", panList.get(position).getName());
-//                intent.putExtra("alias", panList.get(position).getAlias());
-//                intent.putExtra("pan_number", panList.get(position).getPan_number());
-//                intent.putExtra("pan_document", panList.get(position).getPan_document());
-//                intent.putExtra("created_by", panList.get(position).getCreated_by());
-//                intent.putExtra("updated_by", panList.get(position).getUpdated_by());
-//                startActivity(intent);
-//            }
-//        }));
     }
 
     public static class GetPANList extends AsyncTask<String, Void, String> {
+        private ArrayList<GetTaxListPojo> panList;
 
         @Override
         protected void onPreExecute() {
@@ -154,14 +141,14 @@ public class My_PAN_Fragment extends Fragment {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     panList = new ArrayList<GetTaxListPojo>();
-                    rv_panlist.setAdapter(new GetPANListAdapter(context, panList, "ONLINE"));
+                    rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "ONLINE"));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetTaxListPojo summary = new GetTaxListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                if (jsonObj.getString("gst_number").equals("")) {
+                                if (jsonObj.getString("gst_number").equals("") && jsonObj.getString("status").equals("online")) {
                                     summary.setTax_id(jsonObj.getString("tax_id"));
                                     summary.setName(jsonObj.getString("name"));
                                     summary.setAlias(jsonObj.getString("alias"));
@@ -172,10 +159,10 @@ public class My_PAN_Fragment extends Fragment {
                                     panList.add(summary);
                                 }
                             }
-                            rv_panlist.setAdapter(new GetPANListAdapter(context, panList, "ONLINE"));
+                            rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "ONLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failed")) {
-//                        Utilities.showSnackBar(ll_parent, message);
+
                     }
                 }
             } catch (Exception e) {

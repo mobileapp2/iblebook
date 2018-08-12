@@ -39,6 +39,7 @@ public class Address_Fragment extends Fragment {
         topNavigation = rootView.findViewById(R.id.top_navigation);
         view_pager = rootView.findViewById(R.id.view_pager);
         adapter = new TopAddressNavViewPagerAdapter(getChildFragmentManager());
+        view_pager.setOffscreenPageLimit(3);
         view_pager.setAdapter(adapter);
     }
 

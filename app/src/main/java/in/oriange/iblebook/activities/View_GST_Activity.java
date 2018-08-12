@@ -22,13 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.My_GST_Fragment;
-import in.oriange.iblebook.fragments.Offline_GST_Fragment;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.DataBaseHelper;
-import in.oriange.iblebook.utilities.UserSessionManager;
-import in.oriange.iblebook.utilities.WebServiceCalls;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.JsonObject;
 
@@ -42,6 +35,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_GST_Fragment;
+import in.oriange.iblebook.fragments.Offline_GST_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.DataBaseHelper;
+import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_GST_Activity extends Activity {
     private Context context;
@@ -121,9 +122,9 @@ public class View_GST_Activity extends Activity {
     }
 
     private void setDefaults() {
-        if (STATUS.equals("OFFLINE")) {
-            tv_attachfile.setText("View Document");
-        }
+//        if (STATUS.equals("OFFLINE")) {
+//            tv_attachfile.setText("View Document");
+//        }
     }
 
     private void setEventHandler() {
@@ -134,52 +135,52 @@ public class View_GST_Activity extends Activity {
         tv_attachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (STATUS.equals("OFFLINE")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    File file = new File(gst_document);
-                    Uri uri = Uri.parse("file://" + file);
-                    if (gst_document.toString().contains(".doc") || gst_document.toString().contains(".docx")) {
-                        // Word document
-                        intent.setDataAndType(uri, "application/msword");
-                    } else if (gst_document.toString().contains(".pdf")) {
-                        // PDF file
-                        intent.setDataAndType(uri, "application/pdf");
-                    } else if (gst_document.toString().contains(".ppt") || gst_document.toString().contains(".pptx")) {
-                        // Powerpoint file
-                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-                    } else if (gst_document.toString().contains(".xls") || gst_document.toString().contains(".xlsx")) {
-                        // Excel file
-                        intent.setDataAndType(uri, "application/vnd.ms-excel");
-                    } else if (gst_document.toString().contains(".zip") || gst_document.toString().contains(".rar")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "application/x-wav");
-                    } else if (gst_document.toString().contains(".rtf")) {
-                        // RTF file
-                        intent.setDataAndType(uri, "application/rtf");
-                    } else if (gst_document.toString().contains(".wav") || gst_document.toString().contains(".mp3")) {
-                        // WAV audio file
-                        intent.setDataAndType(uri, "audio/x-wav");
-                    } else if (gst_document.toString().contains(".gif")) {
-                        // GIF file
-                        intent.setDataAndType(uri, "image/gif");
-                    } else if (gst_document.toString().contains(".jpg") || gst_document.toString().contains(".jpeg") || gst_document.toString().contains(".png")) {
-                        // JPG file
-                        intent.setDataAndType(uri, "image/jpeg");
-                    } else if (gst_document.toString().contains(".txt")) {
-                        // Text file
-                        intent.setDataAndType(uri, "text/plain");
-                    } else if (gst_document.toString().contains(".3gp") || gst_document.toString().contains(".mpg") || gst_document.toString().contains(".mpeg") || gst_document.toString().contains(".mpe") || gst_document.toString().contains(".mp4") || gst_document.toString().contains(".avi")) {
-                        // Video files
-                        intent.setDataAndType(uri, "video/*");
-                    } else {
-                        intent.setDataAndType(uri, "*/*");
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-
-                } else {
+//                if (STATUS.equals("OFFLINE")) {
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    File file = new File(gst_document);
+//                    Uri uri = Uri.parse("file://" + file);
+//                    if (gst_document.toString().contains(".doc") || gst_document.toString().contains(".docx")) {
+//                        // Word document
+//                        intent.setDataAndType(uri, "application/msword");
+//                    } else if (gst_document.toString().contains(".pdf")) {
+//                        // PDF file
+//                        intent.setDataAndType(uri, "application/pdf");
+//                    } else if (gst_document.toString().contains(".ppt") || gst_document.toString().contains(".pptx")) {
+//                        // Powerpoint file
+//                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+//                    } else if (gst_document.toString().contains(".xls") || gst_document.toString().contains(".xlsx")) {
+//                        // Excel file
+//                        intent.setDataAndType(uri, "application/vnd.ms-excel");
+//                    } else if (gst_document.toString().contains(".zip") || gst_document.toString().contains(".rar")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "application/x-wav");
+//                    } else if (gst_document.toString().contains(".rtf")) {
+//                        // RTF file
+//                        intent.setDataAndType(uri, "application/rtf");
+//                    } else if (gst_document.toString().contains(".wav") || gst_document.toString().contains(".mp3")) {
+//                        // WAV audio file
+//                        intent.setDataAndType(uri, "audio/x-wav");
+//                    } else if (gst_document.toString().contains(".gif")) {
+//                        // GIF file
+//                        intent.setDataAndType(uri, "image/gif");
+//                    } else if (gst_document.toString().contains(".jpg") || gst_document.toString().contains(".jpeg") || gst_document.toString().contains(".png")) {
+//                        // JPG file
+//                        intent.setDataAndType(uri, "image/jpeg");
+//                    } else if (gst_document.toString().contains(".txt")) {
+//                        // Text file
+//                        intent.setDataAndType(uri, "text/plain");
+//                    } else if (gst_document.toString().contains(".3gp") || gst_document.toString().contains(".mpg") || gst_document.toString().contains(".mpeg") || gst_document.toString().contains(".mpe") || gst_document.toString().contains(".mp4") || gst_document.toString().contains(".avi")) {
+//                        // Video files
+//                        intent.setDataAndType(uri, "video/*");
+//                    } else {
+//                        intent.setDataAndType(uri, "*/*");
+//                    }
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    context.startActivity(intent);
+//
+//                } else {
                     new DownloadDocument().execute(gst_document);
-                }
+//                }
             }
         });
 
@@ -217,24 +218,25 @@ public class View_GST_Activity extends Activity {
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (STATUS.equals("ONLINE")) {
-                            new DeleteGSTDetails().execute();
-                        } else {
-                            long result = dbHelper.deleteTaxDetailsFromDb(tax_id);
-                            if (result != -1) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("GST Details Deleted Successfully");
-                                builder.setTitle("Success");
-                                builder.setCancelable(false);
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        finish();
-                                        Offline_GST_Fragment.setDefault();
-                                    }
-                                });
-                                builder.show();
-                            }
-                        }
+//                        if (STATUS.equals("ONLINE")) {
+//                            new DeleteGSTDetails().execute();
+//                        } else {
+//                            long result = dbHelper.deleteTaxDetailsFromDb(tax_id);
+//                            if (result != -1) {
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                                builder.setMessage("GST Details Deleted Successfully");
+//                                builder.setTitle("Success");
+//                                builder.setCancelable(false);
+//                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        finish();
+//                                        Offline_GST_Fragment.setDefault();
+//                                    }
+//                                });
+//                                builder.show();
+//                            }
+//                        }
+                        new DeleteGSTDetails().execute();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -457,12 +459,12 @@ public class View_GST_Activity extends Activity {
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
         }
     }
 
     public class DeleteGSTDetails extends AsyncTask<String, Void, String> {
-        int position;
         ProgressDialog pd;
 
         @Override
@@ -476,7 +478,6 @@ public class View_GST_Activity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            position = Integer.parseInt(params[0]);
             String res = "[]";
             JsonObject obj = new JsonObject();
             obj.addProperty("type", "DeleteData");
@@ -504,6 +505,7 @@ public class View_GST_Activity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
                                 new My_GST_Fragment.GetGSTList().execute();
+                                new Offline_GST_Fragment.GetGSTList().execute();
                             }
                         });
                         builder.show();

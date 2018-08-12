@@ -21,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import in.oriange.iblebook.R;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,6 +35,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import in.oriange.iblebook.R;
 
 public class Utilities {
 
@@ -215,7 +215,7 @@ public class Utilities {
         if ((edt.getText().toString().trim().length() == 10)
                 && (isValidMobileno(edt.getText().toString().trim())))
             return true;
-        else{
+        else {
             return false;
         }
     }
@@ -723,7 +723,7 @@ public class Utilities {
     }
 
 
-    public static void showSnackBar (ViewGroup viewGroup, String message){
+    public static void showSnackBar(ViewGroup viewGroup, String message) {
         Snackbar snackbar = Snackbar
                 .make(viewGroup, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
