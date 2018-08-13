@@ -13,4 +13,30 @@ public class ConstantData {
         return _instance;
     }
 
+    private String latitude;
+    private String longitude;
+
+    public static ConstantData get_instance() {
+        return _instance;
+    }
+
+    public static void set_instance(ConstantData _instance) {
+        ConstantData._instance = _instance;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 }

@@ -176,7 +176,7 @@ public class Add_Address_Activity extends Activity {
         tv_pickloc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(context, PickMapLoaction_Activity.class));
+                startActivity(new Intent(context, PickMapLoaction_Activity.class));
             }
         });
 

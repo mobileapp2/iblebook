@@ -11,4 +11,7 @@
     <color name="grey">#808080</color>
     <color name="maroon">#800000</color>
     <color name="darkgrey">#424242</color>
+
+    <color name="default_text">#212121</color>
+    <color name="default_hint_text">#757575</color>
 </resources>
