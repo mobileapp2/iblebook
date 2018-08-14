@@ -89,12 +89,7 @@ public class Contacts_Fragment extends Fragment {
         @Override
         protected void onPostExecute(List list) {
             super.onPostExecute(list);
-            ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, list)));
-            alphaAdapter.setDuration(500);
-            alphaAdapter.setInterpolator(new OvershootInterpolator());
-            alphaAdapter.setFirstOnly(false);
-//            rv_contacts.setAdapter(new SlideInBottomAnimationAdapter(alphaAdapter));
-            rv_contacts.setAdapter(alphaAdapter);
+            bindRecyclerview(list);
         }
     }
 
@@ -161,34 +156,43 @@ public class Contacts_Fragment extends Fragment {
                 if (contactsSearchedList.size() == 0) {
                     Utilities.showAlertDialog(context, "Fail", "No Such Contact Found", false);
                     searchView.setQuery("", false);
-                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
-                    alphaAdapter.setDuration(500);
-                    alphaAdapter.setInterpolator(new OvershootInterpolator());
-                    alphaAdapter.setFirstOnly(false);
-                    rv_contacts.setAdapter(alphaAdapter);
+                    bindRecyclerview(contactList);
                 } else {
-                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactsSearchedList)));
-                    alphaAdapter.setDuration(500);
-                    alphaAdapter.setInterpolator(new OvershootInterpolator());
-                    alphaAdapter.setFirstOnly(false);
-                    rv_contacts.setAdapter(alphaAdapter);
+                    bindRecyclerview(contactsSearchedList);
                 }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.equals("")) {
-                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
-                    alphaAdapter.setDuration(500);
-                    alphaAdapter.setInterpolator(new OvershootInterpolator());
-                    alphaAdapter.setFirstOnly(false);
-                    rv_contacts.setAdapter(alphaAdapter);
+                if (!newText.equals("")) {
+                    ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
+                    for (ContactListPojo contacts : contactList) {
+                        if (contacts.getName() != null && contacts.getName().toLowerCase().contains(newText.toLowerCase())) {
+                            contactsSearchedList.add(contacts);
+                        }
+                    }
+                    if (contactsSearchedList.size() == 0) {
+                        bindRecyclerview(contactList);
+                    } else {
+                        bindRecyclerview(contactsSearchedList);
+                    }
+                    return true;
+                } else if (newText.equals("")) {
+                    bindRecyclerview(contactList);
                 }
                 return true;
             }
         });
 
+    }
+
+    private void bindRecyclerview(List<ContactListPojo> contactList) {
+        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
+        alphaAdapter.setDuration(500);
+        alphaAdapter.setInterpolator(new OvershootInterpolator());
+        alphaAdapter.setFirstOnly(false);
+        rv_contacts.setAdapter(alphaAdapter);
     }
 
     public void askPermission() {

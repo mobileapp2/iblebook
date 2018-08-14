@@ -50,6 +50,7 @@ import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_Address_Fragment;
 import in.oriange.iblebook.models.AddressTypePojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.MultipartUtility;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -75,9 +76,10 @@ public class Add_Address_Activity extends Activity {
     private UserSessionManager session;
     private ImageView imv_add_mobno;
     private LinearLayout ll_mobilelayout;
-    private String STATUS;
+    private String STATUS, latitude = "", longitude = "";
     private DataBaseHelper dbHelper;
     List<AddressTypePojo> addressTypeList;
+    private ConstantData constantData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +92,23 @@ public class Add_Address_Activity extends Activity {
         setupToolbar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (constantData.getLatitude().equals("") || constantData.getLongitude().equals("")) {
+            tv_pickloc.setText("");
+        } else {
+            tv_pickloc.setText(constantData.getLatitude() + " , " + constantData.getLongitude());
+        }
+
+    }
+
     private void init() {
         context = Add_Address_Activity.this;
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
+        constantData = ConstantData.getInstance();
         dbHelper = new DataBaseHelper(context);
         addressTypeList = new ArrayList<AddressTypePojo>();
         ll_parent = findViewById(R.id.ll_parent);
@@ -113,12 +128,16 @@ public class Add_Address_Activity extends Activity {
         edt_website = findViewById(R.id.edt_website);
         btn_save = findViewById(R.id.btn_save);
 
+        constantData.setLatitude("");
+        constantData.setLongitude("");
+
         imv_add_mobno = findViewById(R.id.imv_add_mobno);
         ll_mobilelayout = findViewById(R.id.ll_mobilelayout);
 
         addressDocFolder = new File(Environment.getExternalStorageDirectory() + "/Address Book/" + "Address Documents");
         if (!addressDocFolder.exists())
             addressDocFolder.mkdirs();
+
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());

@@ -253,7 +253,7 @@ public class Login_Activity extends Activity {
         }
     }
 
-    private String totalRAMSize(){
+    private String totalRAMSize() {
         ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
         ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         activityManager.getMemoryInfo(memoryInfo);

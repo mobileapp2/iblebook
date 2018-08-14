@@ -146,7 +146,7 @@ public class AutoCompleteLocation extends AutoCompleteTextView {
             new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    UIUtils.hideKeyboard(AutoCompleteLocation.this.getContext(), AutoCompleteLocation.this);
+                    AutoCompleteUIUtils.hideKeyboard(AutoCompleteLocation.this.getContext(), AutoCompleteLocation.this);
                     final AutocompletePrediction item = mAutoCompleteAdapter.getItem(position);
                     if (item != null) {
                         final String placeId = item.getPlaceId();
