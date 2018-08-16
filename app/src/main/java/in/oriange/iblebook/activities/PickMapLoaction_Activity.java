@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -91,6 +92,9 @@ public class PickMapLoaction_Activity extends FragmentActivity
         latLng1 = latLng;
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latLng)
+                .zoom(10).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

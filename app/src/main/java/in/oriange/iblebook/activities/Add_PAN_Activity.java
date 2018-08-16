@@ -366,7 +366,7 @@ public class Add_PAN_Activity extends Activity {
                 obj.put("pan_document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
-                obj.put("status", STATUS);
+                obj.put("status", STATUS.toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

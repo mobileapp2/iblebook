@@ -128,7 +128,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activities.PickMapLoaction_Activity"
+        <activity
+            android:name=".activities.PickMapLoaction_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.Edit_Address_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />

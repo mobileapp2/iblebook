@@ -376,7 +376,7 @@ public class Add_Bank_Activity extends Activity {
                 obj.put("document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
-                obj.put("status", STATUS);
+                obj.put("status", STATUS.toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

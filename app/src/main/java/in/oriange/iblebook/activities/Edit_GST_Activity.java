@@ -388,7 +388,7 @@ public class Edit_GST_Activity extends Activity {
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("tax_id", tax_id);
-                obj.put("status", STATUS);
+                obj.put("status", STATUS.toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

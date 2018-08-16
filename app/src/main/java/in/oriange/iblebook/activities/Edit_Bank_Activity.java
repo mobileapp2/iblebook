@@ -206,19 +206,19 @@ public class Edit_Bank_Activity extends Activity {
         }
 
 //        if (STATUS.equals("ONLINE")) {
-            if (tv_attachfile.getText().toString().trim().equals("")) {
-                if (Utilities.isNetworkAvailable(context)) {
-                    new UpdateBankDetails().execute();
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
+        if (tv_attachfile.getText().toString().trim().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UpdateBankDetails().execute();
             } else {
-                if (Utilities.isNetworkAvailable(context)) {
-                    new UploadDocument().execute(fileToBeUploaded);
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
+        } else {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadDocument().execute(fileToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        }
 //        } else if (STATUS.equals("OFFLINE")) {
 //            String path = "";
 //            if (tv_attachfile.getText().toString().trim().equals("")) {
@@ -403,7 +403,7 @@ public class Edit_Bank_Activity extends Activity {
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("bank_id", bank_id);
-                obj.put("status", STATUS);
+                obj.put("status", STATUS.toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

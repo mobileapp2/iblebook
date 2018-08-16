@@ -58,7 +58,7 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
-public class Add_Address_Activity extends Activity {
+public class Edit_Address_Activity extends Activity {
 
     private Context context;
     private LinearLayout ll_parent;
@@ -66,7 +66,8 @@ public class Add_Address_Activity extends Activity {
     private EditText edt_name, edt_alias, edt_address, edt_country,
             edt_state, edt_district, edt_pincode, edt_mobile1, edt_email, edt_website;
     private Button btn_save;
-    private String user_id, visitCardUrl, photoUrl, type_id;
+    private String user_id, visitCardUrl, photoUrl, type_id, photo, visiting_card, address_id,
+            map_location_lattitude, map_location_logitude, name;
     public static final int CAMERA_REQUEST = 100;
     public static final int GALLERY_REQUEST = 200;
     private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
@@ -85,10 +86,11 @@ public class Add_Address_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_address);
+        setContentView(R.layout.activity_edit_address);
 
         init();
         getSessionData();
+        getIntentData();
         setEventHandler();
         setupToolbar();
     }
@@ -106,7 +108,7 @@ public class Add_Address_Activity extends Activity {
     }
 
     private void init() {
-        context = Add_Address_Activity.this;
+        context = Edit_Address_Activity.this;
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
         constantData = ConstantData.getInstance();
@@ -145,8 +147,6 @@ public class Add_Address_Activity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             builder.detectFileUriExposure();
         }
-
-        STATUS = getIntent().getStringExtra("STATUS");
     }
 
     private void getSessionData() {
@@ -158,6 +158,33 @@ public class Add_Address_Activity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getIntentData() {
+        address_id = getIntent().getStringExtra("address_id");
+        tv_addresstype.setText(getIntent().getStringExtra("type"));
+        edt_name.setText(getIntent().getStringExtra("name"));
+        edt_alias.setText(getIntent().getStringExtra("alias"));
+        edt_address.setText(getIntent().getStringExtra("address_line_one"));
+        edt_country.setText(getIntent().getStringExtra("country"));
+        edt_state.setText(getIntent().getStringExtra("state"));
+        edt_district.setText(getIntent().getStringExtra("district"));
+        edt_pincode.setText(getIntent().getStringExtra("pincode"));
+        edt_email.setText(getIntent().getStringExtra("email_id"));
+        edt_mobile1.setText(getIntent().getStringExtra("mobile_number"));
+        edt_website.setText(getIntent().getStringExtra("website"));
+        visiting_card = getIntent().getStringExtra("visiting_card");
+        map_location_lattitude = getIntent().getStringExtra("map_location_lattitude");
+        map_location_logitude = getIntent().getStringExtra("map_location_logitude");
+
+        constantData.setLatitude(map_location_lattitude);
+        constantData.setLongitude(map_location_logitude);
+
+        tv_pickloc.setText(constantData.getLatitude() + " , " + constantData.getLongitude());
+        photo = getIntent().getStringExtra("photo");
+        user_id = getIntent().getStringExtra("created_by");
+
+        STATUS = getIntent().getStringExtra("STATUS");
 
     }
 
@@ -223,8 +250,95 @@ public class Add_Address_Activity extends Activity {
         });
     }
 
-    public void removeField(View view) {
-        ll_mobilelayout.removeView((View) view.getParent());
+    public class GetAddressType extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "getAllAddressType");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.ADDRESSTYPEAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        addressTypeList = new ArrayList<AddressTypePojo>();
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                AddressTypePojo summary = new AddressTypePojo();
+                                JSONObject jsonObj = jsonarr.getJSONObject(i);
+                                summary.setType_id(jsonObj.getString("type_id"));
+                                summary.setType(jsonObj.getString("type"));
+                                addressTypeList.add(summary);
+                            }
+                            addressTypeDialog(addressTypeList);
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addressTypeDialog(final List<AddressTypePojo> addressTypeList) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+        builderSingle.setTitle("Select Address Type");
+        builderSingle.setCancelable(false);
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.list_row);
+
+        for (int i = 0; i < addressTypeList.size(); i++) {
+            arrayAdapter.add(String.valueOf(addressTypeList.get(i).getType()));
+        }
+
+        builderSingle.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tv_addresstype.setText(addressTypeList.get(which).getType());
+                type_id = addressTypeList.get(which).getType_id();
+            }
+        });
+        builderSingle.show();
     }
 
     private void selectDocument(int i) {
@@ -334,10 +448,6 @@ public class Add_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Website");
             return;
         }
-        if (tv_pickloc.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Pick Location");
-            return;
-        }
         if (tv_visitcard.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Attach Visiting Card");
             return;
@@ -361,10 +471,10 @@ public class Add_Address_Activity extends Activity {
         if (resultCode == RESULT_OK) {
             if (requestCode == GALLERY_REQUEST) {
                 Uri imageUri = data.getData();
-                CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).start(Add_Address_Activity.this);
+                CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).start(Edit_Address_Activity.this);
             }
             if (requestCode == CAMERA_REQUEST) {
-                CropImage.activity(photoURI).setGuidelines(CropImageView.Guidelines.ON).start(Add_Address_Activity.this);
+                CropImage.activity(photoURI).setGuidelines(CropImageView.Guidelines.ON).start(Edit_Address_Activity.this);
             }
 
             if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
@@ -425,97 +535,6 @@ public class Add_Address_Activity extends Activity {
             tv_attachphoto.setText(destinationFilename);
             photoToBeUploaded = new File(destinationFilename);
         }
-    }
-
-    public class GetAddressType extends AsyncTask<String, Void, String> {
-
-        ProgressDialog pd;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pd = new ProgressDialog(context);
-            pd.setMessage("Please wait ...");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String res = "[]";
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("type", "getAllAddressType");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            res = WebServiceCalls.APICall(ApplicationConstants.ADDRESSTYPEAPI, obj.toString());
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            String type = "", message = "";
-            try {
-                pd.dismiss();
-                if (!result.equals("")) {
-
-                    JSONObject mainObj = new JSONObject(result);
-                    type = mainObj.getString("type");
-                    message = mainObj.getString("message");
-                    if (type.equalsIgnoreCase("success")) {
-                        addressTypeList = new ArrayList<AddressTypePojo>();
-                        JSONArray jsonarr = mainObj.getJSONArray("result");
-                        if (jsonarr.length() > 0) {
-                            for (int i = 0; i < jsonarr.length(); i++) {
-                                AddressTypePojo summary = new AddressTypePojo();
-                                JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setType_id(jsonObj.getString("type_id"));
-                                summary.setType(jsonObj.getString("type"));
-                                addressTypeList.add(summary);
-                            }
-                            addressTypeDialog(addressTypeList);
-                        }
-                    } else {
-
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void addressTypeDialog(final List<AddressTypePojo> addressTypeList) {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-        builderSingle.setTitle("Select Address Type");
-        builderSingle.setCancelable(false);
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.list_row);
-
-        for (int i = 0; i < addressTypeList.size(); i++) {
-            arrayAdapter.add(String.valueOf(addressTypeList.get(i).getType()));
-        }
-
-        builderSingle.setNegativeButton(
-                "Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tv_addresstype.setText(addressTypeList.get(which).getType());
-                type_id = addressTypeList.get(which).getType_id();
-            }
-        });
-        builderSingle.show();
     }
 
     private class UploadVisitCard extends AsyncTask<File, Integer, String> {
@@ -649,7 +668,8 @@ public class Add_Address_Activity extends Activity {
             JsonArray array = new JsonArray();
             array.add(new JsonPrimitive(edt_mobile1.getText().toString().trim()));
 
-            obj.addProperty("type", "add");
+            obj.addProperty("type", "update");
+            obj.addProperty("address_id", address_id);
             obj.addProperty("type_id", type_id);
             obj.addProperty("name", edt_name.getText().toString().trim());
             obj.addProperty("alias", edt_alias.getText().toString().trim());
@@ -709,7 +729,7 @@ public class Add_Address_Activity extends Activity {
 
     protected void setupToolbar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Add Address");
+        mToolbar.setTitle("Edit Address");
         mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -718,4 +738,6 @@ public class Add_Address_Activity extends Activity {
             }
         });
     }
+
+
 }

@@ -365,7 +365,7 @@ public class Add_GST_Activity extends Activity {
                 obj.put("gst_document", photo_url);
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
-                obj.put("status", STATUS);
+                obj.put("status", STATUS.toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
