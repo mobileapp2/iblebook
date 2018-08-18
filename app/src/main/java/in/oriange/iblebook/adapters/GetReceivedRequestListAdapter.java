@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.ShareDetails_Activity;
 import in.oriange.iblebook.fragments.ReceivedRequests_Fragment;
 import in.oriange.iblebook.models.GetRequestsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
@@ -73,16 +74,6 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, View_PAN_Activity.class);
-//                intent.putExtra("tax_id", resultArrayList.get(position).getTax_id());
-//                intent.putExtra("name", resultArrayList.get(position).getName());
-//                intent.putExtra("alias", resultArrayList.get(position).getAlias());
-//                intent.putExtra("pan_number", resultArrayList.get(position).getPan_number());
-//                intent.putExtra("pan_document", resultArrayList.get(position).getPan_document());
-//                intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
-//                intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
-//                intent.putExtra("STATUS", STATUS);
-//                context.startActivity(intent);
                 createDialogForRequest(position);
             }
         });
@@ -110,7 +101,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 
     private void createDialogForRequest(final int position) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_request, null);
+        View promptView = layoutInflater.inflate(R.layout.prompt_viewrequest, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
 
@@ -165,6 +156,12 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                Intent intent = new Intent(context, ShareDetails_Activity.class);
+                intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                intent.putExtra("type", resultArrayList.get(position).getType());
+                context.startActivity(intent);
             }
         });
 

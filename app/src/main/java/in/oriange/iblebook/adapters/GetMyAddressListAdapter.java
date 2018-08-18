@@ -502,6 +502,4 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
         resultArrayList.remove(position);
         notifyItemRemoved(position);
     }
-
-
 }

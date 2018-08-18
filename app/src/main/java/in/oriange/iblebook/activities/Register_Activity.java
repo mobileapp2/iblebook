@@ -1,7 +1,7 @@
 package in.oriange.iblebook.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -164,9 +164,9 @@ public class Register_Activity extends Activity {
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
                         String OTP = mainObj.getString("otp");
-                        createDialogFOrOPT(OTP);
-                    } else {
-
+                        createDialogForOTP(OTP);
+                    } else if (type.equalsIgnoreCase("failure")) {
+                        Utilities.showAlertDialog(context, "Alert", message, false);
                     }
 
                 }
@@ -177,7 +177,7 @@ public class Register_Activity extends Activity {
         }
     }
 
-    private void createDialogFOrOPT(final String otp) {
+    private void createDialogForOTP(final String otp) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_enterotp, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -197,7 +197,7 @@ public class Register_Activity extends Activity {
                     }
                 } else {
                     Utilities.showMessageString(context, "Please Enter Correct OTP");
-                    createDialogFOrOPT(otp);
+                    createDialogForOTP(otp);
                 }
             }
         });

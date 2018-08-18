@@ -1,6 +1,6 @@
 package in.oriange.iblebook.utilities;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -687,23 +687,25 @@ public class Utilities {
     }
 
 
-    static AlertDialog alertDialog;
+    static AlertDialog.Builder alertDialog;
 
     @SuppressWarnings("deprecation")
     public static void showAlertDialog(Context context, String title,
                                        String message, Boolean status) {
-        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         if (status != null)
             alertDialog.setIcon((status) ? R.drawable.ic_success_24dp : R.drawable.ic_alert_red_24dp);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
+                dialog.dismiss();
             }
         });
-        alertDialog.show();
+        AlertDialog alertD = alertDialog.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
 

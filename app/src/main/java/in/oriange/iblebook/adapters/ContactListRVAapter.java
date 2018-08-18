@@ -215,7 +215,7 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
                         builder.setMessage("Request Sent Successfully");
                         builder.setTitle("Success");
                         builder.setCancelable(false);
