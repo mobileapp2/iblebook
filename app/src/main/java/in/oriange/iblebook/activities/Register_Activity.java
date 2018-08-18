@@ -8,8 +8,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,10 +117,113 @@ public class Register_Activity extends Activity {
         }
 
         if (Utilities.isNetworkAvailable(context)) {
-            new RegisterNewUser().execute();
+            new SendOTP().execute();
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
+    }
+
+    public class SendOTP extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "sendOTP");
+                obj.put("mobile", edt_mobile.getText().toString().trim());
+                obj.put("email", edt_email.getText().toString().trim());
+                obj.put("otp_type", "send");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.SENDOTPAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        String OTP = mainObj.getString("otp");
+                        createDialogFOrOPT(OTP);
+                    } else {
+
+                    }
+
+                }
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void createDialogFOrOPT(final String otp) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_enterotp, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle("Enter OTP");
+        alertDialogBuilder.setView(promptView);
+
+        final EditText edt_enterotp = promptView.findViewById(R.id.edt_enterotp);
+
+        alertDialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (otp.equals(edt_enterotp.getText().toString().trim())) {
+                    if (Utilities.isNetworkAvailable(context)) {
+                        new RegisterNewUser().execute();
+                    } else {
+                        Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    }
+                } else {
+                    Utilities.showMessageString(context, "Please Enter Correct OTP");
+                    createDialogFOrOPT(otp);
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        alertDialogBuilder.setNeutralButton("Resend", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Utilities.isNetworkAvailable(context)) {
+                    new SendOTP().execute();
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                }
+            }
+        });
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     public class RegisterNewUser extends AsyncTask<String, Void, String> {
@@ -171,6 +273,7 @@ public class Register_Activity extends Activity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage(message);
                         builder.setTitle("Success");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -178,7 +281,9 @@ public class Register_Activity extends Activity {
                                 overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

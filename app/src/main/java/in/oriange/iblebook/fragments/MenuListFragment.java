@@ -122,7 +122,7 @@ public class MenuListFragment extends Fragment {
                     builder.setTitle("Alert");
                     builder.setIcon(R.drawable.ic_alert_red_24dp);
                     builder.setCancelable(false);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             session.logoutUser();
                         }
@@ -133,7 +133,9 @@ public class MenuListFragment extends Fragment {
                             dialog.dismiss();
                         }
                     });
-                    builder.show();
+                    AlertDialog alertD = builder.create();
+                    alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                    alertD.show();
                 }
                 return false;
             }

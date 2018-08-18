@@ -83,7 +83,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 //                intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
 //                intent.putExtra("STATUS", STATUS);
 //                context.startActivity(intent);
-                setSelectionFilter(position);
+                createDialogForRequest(position);
             }
         });
 
@@ -108,7 +108,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
         }
     }
 
-    private void setSelectionFilter(final int position) {
+    private void createDialogForRequest(final int position) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_request, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);

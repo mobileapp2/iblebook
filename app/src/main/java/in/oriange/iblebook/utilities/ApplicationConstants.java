@@ -15,6 +15,7 @@ public class ApplicationConstants {
     //API LINK LIST
 
     public static final String USERAPI = "http://mazalatur.com/AddressBook/Apis/user.php";
+    public static final String SENDOTPAPI = "http://mazalatur.com/AddressBook/Apis/otp_api.php";
     public static final String DEVICEREGAPI = "http://mazalatur.com/AddressBook/Apis/profile.php";
     public static final String ADDRESSAPI = "http://mazalatur.com/AddressBook/Apis/address.php";
     public static final String ADDRESSTYPEAPI = "http://mazalatur.com/AddressBook/Apis/addresstype.php";
