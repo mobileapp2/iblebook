@@ -16,13 +16,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Register_Activity extends Activity {
     private Context context;
@@ -68,6 +68,7 @@ public class Register_Activity extends Activity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
             }
         });
 
@@ -174,6 +175,7 @@ public class Register_Activity extends Activity {
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
+                                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
                             }
                         });
                         builder.show();
@@ -189,44 +191,9 @@ public class Register_Activity extends Activity {
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.edt_name:
-                    input_name.setError(null);
-                    break;
-
-                case R.id.edt_mobile:
-                    if (!Utilities.isMobileNo(edt_mobile))
-                        input_mobile.setError("Please Enter Valid Mobile Number");
-                    break;
-
-                case R.id.edt_email:
-                    input_name.setError(null);
-                    break;
-
-                case R.id.edt_password:
-                    input_name.setError(null);
-                    break;
-
-                case R.id.edt_conformpassword:
-                    input_name.setError(null);
-                    break;
-
-            }
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
     }
 }

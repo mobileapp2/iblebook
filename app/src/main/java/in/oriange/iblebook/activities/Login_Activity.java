@@ -88,6 +88,7 @@ public class Login_Activity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, Register_Activity.class));
+                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
             }
         });
 

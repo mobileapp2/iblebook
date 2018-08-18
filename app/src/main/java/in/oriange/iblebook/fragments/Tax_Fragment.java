@@ -27,7 +27,7 @@ import java.util.List;
 public class Tax_Fragment extends Fragment {
 
     private Context context;
-    private TabLayout tabNamesTl;
+    private TabLayout tl_tabnames;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
@@ -42,11 +42,11 @@ public class Tax_Fragment extends Fragment {
     }
 
     private void init(View rootView) {
-        tabNamesTl = rootView.findViewById(R.id.tl_tabnames);
+        tl_tabnames = rootView.findViewById(R.id.tl_tabnames);
         viewPager = rootView.findViewById(R.id.viewPager);
         setupViewPager(viewPager);
-        tabNamesTl.setupWithViewPager(viewPager);
-        LinearLayout linearLayout = (LinearLayout) tabNamesTl.getChildAt(0);
+        tl_tabnames.setupWithViewPager(viewPager);
+        LinearLayout linearLayout = (LinearLayout) tl_tabnames.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(Color.GRAY);
@@ -94,26 +94,6 @@ public class Tax_Fragment extends Fragment {
     }
 
     private void setEventHandler() {
-//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                if (position == 0)
-//                    ((PAN_Fragment) adapter.getItem(position)).refresh();
-//                if (position == 1)
-//                    ((GST_Fragment) adapter.getItem(position)).refresh();
-//            }
-//
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
     }
 
 }

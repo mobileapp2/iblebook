@@ -333,5 +333,4 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
         resultArrayList.remove(position);
         notifyItemRemoved(position);
     }
-
 }

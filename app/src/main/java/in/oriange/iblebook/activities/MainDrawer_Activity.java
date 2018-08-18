@@ -80,7 +80,7 @@ public class MainDrawer_Activity extends FragmentActivity {
 
         bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#ffffff"));
         bottomNavigation.setAccentColor(Color.parseColor("#F57C00"));
-        bottomNavigation.setNotification("1", 3);
+//        bottomNavigation.setNotification("1", 3);
         bottomNavigation.setItemDisableColor(Color.parseColor("#747474"));
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {

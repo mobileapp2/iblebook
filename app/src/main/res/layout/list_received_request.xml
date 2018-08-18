@@ -18,6 +18,8 @@
             android:id="@+id/fl_mainframe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/ripple_effect"
+            android:clickable="true"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -41,9 +43,9 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tv_gstno"
+                    android:layout_alignLeft="@+id/tv_message"
                     android:layout_alignParentTop="true"
-                    android:layout_alignStart="@+id/tv_gstno"
+                    android:layout_alignStart="@+id/tv_message"
                     android:layout_marginRight="20dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -52,7 +54,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_gstno"
+                    android:id="@+id/tv_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_name"
@@ -69,14 +71,14 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/imv_more"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="top|end"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_menumore" />
+            <!--<ImageView-->
+            <!--android:id="@+id/imv_more"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_gravity="top|end"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:src="@drawable/icon_menumore" />-->
         </FrameLayout>
     </android.support.v7.widget.CardView>
 
