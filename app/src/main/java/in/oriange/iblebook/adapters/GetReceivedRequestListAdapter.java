@@ -29,6 +29,9 @@ import java.util.List;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.ShareAddressDetails_Activity;
+import in.oriange.iblebook.activities.ShareBankDetails_Activity;
+import in.oriange.iblebook.activities.ShareGSTDetails_Activity;
+import in.oriange.iblebook.activities.SharePANDetails_Activity;
 import in.oriange.iblebook.fragments.ReceivedRequests_Fragment;
 import in.oriange.iblebook.models.GetRequestsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
@@ -159,6 +162,27 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 
                 if (resultArrayList.get(position).getType().equals("address")) {
                     Intent intent = new Intent(context, ShareAddressDetails_Activity.class);
+                    intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                    intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                    intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                    intent.putExtra("type", resultArrayList.get(position).getType());
+                    context.startActivity(intent);
+                } else if (resultArrayList.get(position).getType().equals("pan")) {
+                    Intent intent = new Intent(context, SharePANDetails_Activity.class);
+                    intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                    intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                    intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                    intent.putExtra("type", resultArrayList.get(position).getType());
+                    context.startActivity(intent);
+                } else if (resultArrayList.get(position).getType().equals("gst")) {
+                    Intent intent = new Intent(context, ShareGSTDetails_Activity.class);
+                    intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                    intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                    intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                    intent.putExtra("type", resultArrayList.get(position).getType());
+                    context.startActivity(intent);
+                } else if (resultArrayList.get(position).getType().equals("bank")) {
+                    Intent intent = new Intent(context, ShareBankDetails_Activity.class);
                     intent.putExtra("name", resultArrayList.get(position).getSender_name());
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());

@@ -107,7 +107,7 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         tv_requesttype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] remarkName = {"Address", "PAN Details", "GST Details", "Bank Details"};
+                final String[] remarkName = {"Address Detail", "PAN Detail", "GST Detail", "Bank Detail"};
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
                 builderSingle.setTitle("Select Type");
@@ -153,13 +153,13 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
                 }
                 String type = "";
 
-                if (tv_requesttype.getText().toString().trim().equals("Address"))
+                if (tv_requesttype.getText().toString().trim().equals("Address Detail"))
                     type = "address";
-                else if (tv_requesttype.getText().toString().trim().equals("PAN Details"))
+                else if (tv_requesttype.getText().toString().trim().equals("PAN Detail"))
                     type = "pan";
-                else if (tv_requesttype.getText().toString().trim().equals("GST Details"))
+                else if (tv_requesttype.getText().toString().trim().equals("GST Detail"))
                     type = "gst";
-                else if (tv_requesttype.getText().toString().trim().equals("Bank Details"))
+                else if (tv_requesttype.getText().toString().trim().equals("Bank Detail"))
                     type = "bank";
 
                 if (Utilities.isNetworkAvailable(context)) {

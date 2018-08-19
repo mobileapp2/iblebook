@@ -137,7 +137,7 @@ public class ShareAddressDetails_Activity extends Activity {
                 if (Utilities.isNetworkAvailable(context)) {
                     new ShareDetails().execute(
                             edt_message.getText().toString().trim(),
-                            sender_id,
+                            user_id,
                             sender_mobile,
                             type,
                             addressList.get(lastSelectedPosition).getAddress_id()
