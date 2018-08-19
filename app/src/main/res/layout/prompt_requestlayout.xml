@@ -6,7 +6,47 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/tv_addresstype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Request Details From"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_initletter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circular_textview"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.9"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_requesttype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -16,54 +56,10 @@
         android:drawableRight="@drawable/icon_dropdown_black"
         android:focusable="false"
         android:gravity="center_vertical"
-        android:hint="Select Type"
+        android:hint="Select Request Type"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="16sp" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edt_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:gravity="center_vertical"
-            android:hint="Name"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edt_mobile_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:gravity="center_vertical"
-            android:hint="Mobile Number"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-    </android.support.design.widget.TextInputLayout>
-
-
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -77,7 +73,7 @@
             android:layout_marginRight="10dp"
             android:gravity="center_vertical"
             android:hint="Request Message"
-            android:inputType="textMultiLine|textCapSentences"
+            android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
             android:maxLength="192"
             android:padding="10dp"
             android:textColor="@color/black"

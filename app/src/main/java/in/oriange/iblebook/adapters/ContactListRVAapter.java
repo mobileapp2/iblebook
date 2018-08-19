@@ -95,20 +95,19 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         View promptView = layoutInflater.inflate(R.layout.prompt_requestlayout, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setTitle("Send Request");
 
-        EditText edt_name = promptView.findViewById(R.id.edt_name);
-        EditText edt_mobile_no = promptView.findViewById(R.id.edt_mobile_no);
+        final TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
+        final TextView tv_name = promptView.findViewById(R.id.tv_name);
         final EditText edt_message = promptView.findViewById(R.id.edt_message);
-        final TextView tv_addresstype = promptView.findViewById(R.id.tv_addresstype);
+        final TextView tv_requesttype = promptView.findViewById(R.id.tv_requesttype);
 
-        edt_name.setText(contactList.get(position).getName());
-        edt_mobile_no.setText(contactList.get(position).getPhoneNo());
+        tv_initletter.setText(String.valueOf(contactList.get(position).getName().charAt(0)));
+        tv_name.setText(contactList.get(position).getName() + " (" + contactList.get(position).getPhoneNo() + ") ");
 
-        tv_addresstype.setOnClickListener(new View.OnClickListener() {
+        tv_requesttype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] remarkName = {"Address", "Tax Details", "Bank Details"};
+                final String[] remarkName = {"Address", "PAN Details", "GST Details", "Bank Details"};
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
                 builderSingle.setTitle("Select Type");
@@ -133,16 +132,18 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        tv_addresstype.setText(remarkName[which]);
+                        tv_requesttype.setText(remarkName[which]);
                     }
                 });
-                builderSingle.show();
+                AlertDialog alert11 = builderSingle.create();
+                alert11.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                alert11.show();
             }
         });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
-                if (tv_addresstype.getText().toString().trim().equals("")) {
+                if (tv_requesttype.getText().toString().trim().equals("")) {
                     Utilities.showMessageString(context, "Please Select Type");
                     return;
                 }
@@ -152,20 +153,26 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
                 }
                 String type = "";
 
-                if (tv_addresstype.getText().toString().trim().equals("Address"))
+                if (tv_requesttype.getText().toString().trim().equals("Address"))
                     type = "address";
-                else if (tv_addresstype.getText().toString().trim().equals("Tax Details"))
-                    type = "tax";
-                else if (tv_addresstype.getText().toString().trim().equals("Bank Details"))
+                else if (tv_requesttype.getText().toString().trim().equals("PAN Details"))
+                    type = "pan";
+                else if (tv_requesttype.getText().toString().trim().equals("GST Details"))
+                    type = "gst";
+                else if (tv_requesttype.getText().toString().trim().equals("Bank Details"))
                     type = "bank";
 
+                if (Utilities.isNetworkAvailable(context)) {
+                    new SendRequest().execute(
+                            edt_message.getText().toString().trim(),
+                            user_id,
+                            contactList.get(position).getPhoneNo(),
+                            type
+                    );
+                } else {
+                    Utilities.showMessageString(context, "Please Check Internet Connection");
+                }
 
-                new SendRequest().execute(
-                        edt_message.getText().toString().trim(),
-                        user_id,
-                        contactList.get(position).getPhoneNo(),
-                        type
-                );
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -175,8 +182,9 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         });
 
         alertDialogBuilder.setCancelable(false);
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.show();
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alert.show();
     }
 
     public class SendRequest extends AsyncTask<String, Void, String> {
@@ -222,16 +230,7 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                        builder.setMessage("Request Sent Successfully");
-                        builder.setTitle("Success");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                        builder.show();
+                        Utilities.showAlertDialog(context, "Success", "Request Sent Successfully", true);
                     }
 
                 }
