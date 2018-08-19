@@ -11,7 +11,6 @@ public class ApplicationConstants {
     public static final String KEY_LOGIN_INFO = "KEY_LOGIN_INFO";
     public static final String KEY_ANDROIDTOKETID = "KEY_ANDROIDTOKETID";
 
-
     //API LINK LIST
 
     public static final String USERAPI = "http://mazalatur.com/AddressBook/Apis/user.php";
@@ -26,5 +25,5 @@ public class ApplicationConstants {
     public static final String SENDREQUESTAPI = "http://mazalatur.com/AddressBook/Apis/reqdata.php";
     public static final String GETREQUESTSAPI = "http://mazalatur.com/AddressBook/Apis/getreqdata.php";
     public static final String DISMISSREQUESTSAPI = "http://mazalatur.com/AddressBook/Apis/RequestRecordAction.php";
-    public static final String SHAREDETAILSAPI = "http://mazalatur.com/AddressBook/Apis/getshareddata.php";
+    public static final String SHAREDETAILSAPI = "http://mazalatur.com/AddressBook/Apis/sharedata.php";
 }

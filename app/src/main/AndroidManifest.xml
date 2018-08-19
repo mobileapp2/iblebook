@@ -27,6 +27,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDLPU8PFDrRXLsxV9FXqc-jm0o_8YkT7kA" />
 
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="false" />
+
         <activity
             android:name=".activities.SplashScreen_Activity"
             android:screenOrientation="portrait"
@@ -139,7 +143,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.ShareDetails_Activity"
+            android:name=".activities.ShareAddressDetails_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />

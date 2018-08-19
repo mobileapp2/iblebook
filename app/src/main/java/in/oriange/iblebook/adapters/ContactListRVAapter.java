@@ -18,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import in.oriange.iblebook.R;
@@ -151,13 +150,21 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
                     Utilities.showMessageString(context, "Please Enter Message");
                     return;
                 }
+                String type = "";
+
+                if (tv_addresstype.getText().toString().trim().equals("Address"))
+                    type = "address";
+                else if (tv_addresstype.getText().toString().trim().equals("Tax Details"))
+                    type = "tax";
+                else if (tv_addresstype.getText().toString().trim().equals("Bank Details"))
+                    type = "bank";
 
 
                 new SendRequest().execute(
                         edt_message.getText().toString().trim(),
                         user_id,
                         contactList.get(position).getPhoneNo(),
-                        tv_addresstype.getText().toString().trim()
+                        type
                 );
             }
         });

@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.ShareDetails_Activity;
+import in.oriange.iblebook.activities.ShareAddressDetails_Activity;
 import in.oriange.iblebook.fragments.ReceivedRequests_Fragment;
 import in.oriange.iblebook.models.GetRequestsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
@@ -156,12 +156,15 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-                Intent intent = new Intent(context, ShareDetails_Activity.class);
-                intent.putExtra("name", resultArrayList.get(position).getSender_name());
-                intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
-                intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
-                intent.putExtra("type", resultArrayList.get(position).getType());
-                context.startActivity(intent);
+
+                if (resultArrayList.get(position).getType().equals("address")) {
+                    Intent intent = new Intent(context, ShareAddressDetails_Activity.class);
+                    intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                    intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                    intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                    intent.putExtra("type", resultArrayList.get(position).getType());
+                    context.startActivity(intent);
+                }
             }
         });
 

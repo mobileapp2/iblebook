@@ -34,7 +34,7 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
-public class ShareDetails_Activity extends Activity {
+public class ShareAddressDetails_Activity extends Activity {
     private static Context context;
     public LinearLayout ll_parent;
     private static RecyclerView rv_addresslist;
@@ -52,7 +52,7 @@ public class ShareDetails_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_details);
+        setContentView(R.layout.activity_share_address_details);
 
         init();
         setupToolbar();
@@ -63,7 +63,7 @@ public class ShareDetails_Activity extends Activity {
     }
 
     private void init() {
-        context = ShareDetails_Activity.this;
+        context = ShareAddressDetails_Activity.this;
         session = new UserSessionManager(context);
         addressList = new ArrayList<>();
         ll_parent = findViewById(R.id.ll_parent);
@@ -138,7 +138,7 @@ public class ShareDetails_Activity extends Activity {
                     new ShareDetails().execute(
                             edt_message.getText().toString().trim(),
                             sender_id,
-                            mobile,
+                            sender_mobile,
                             type,
                             addressList.get(lastSelectedPosition).getAddress_id()
                     );
