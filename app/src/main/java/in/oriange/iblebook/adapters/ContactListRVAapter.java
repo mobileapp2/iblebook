@@ -75,21 +75,6 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         return contactList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private RelativeLayout rl_mainlayout;
-        private TextView tv_initletter, tv_name, tv_phoneno;
-
-
-        public MyViewHolder(View view) {
-            super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_name = (TextView) view.findViewById(R.id.tv_bankname);
-            tv_phoneno = (TextView) view.findViewById(R.id.tv_accountno);
-            rl_mainlayout = view.findViewById(R.id.rl_mainlayout);
-        }
-    }
-
     private void createRequestAlert(final List<ContactListPojo> contactList, final int position) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_requestlayout, null);
@@ -185,6 +170,21 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         AlertDialog alert = alertDialogBuilder.create();
         alert.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
         alert.show();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private RelativeLayout rl_mainlayout;
+        private TextView tv_initletter, tv_name, tv_phoneno;
+
+
+        public MyViewHolder(View view) {
+            super(view);
+            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
+            tv_name = (TextView) view.findViewById(R.id.tv_bankname);
+            tv_phoneno = (TextView) view.findViewById(R.id.tv_accountno);
+            rl_mainlayout = view.findViewById(R.id.rl_mainlayout);
+        }
     }
 
     public class SendRequest extends AsyncTask<String, Void, String> {

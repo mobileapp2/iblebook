@@ -2,15 +2,14 @@ package in.oriange.iblebook.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import in.oriange.iblebook.fragments.My_Address_Fragment;
 import in.oriange.iblebook.fragments.Offline_Address_Fragment;
 import in.oriange.iblebook.fragments.Received_Address_Fragment;
-
-import java.util.ArrayList;
 
 public class TopAddressNavViewPagerAdapter extends FragmentStatePagerAdapter {
 

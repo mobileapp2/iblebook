@@ -32,12 +32,66 @@ public class AutoCompleteLocation extends AutoCompleteTextView {
     private GoogleApiClient mGoogleApiClient;
     private AutoCompleteAdapter mAutoCompleteAdapter;
     private AutoCompleteLocationListener mAutoCompleteLocationListener;
+    private TextWatcher mAutoCompleteTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
-    public interface AutoCompleteLocationListener {
-        void onTextClear();
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            AutoCompleteLocation.this.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                    AutoCompleteLocation.this.getText().toString().equals("") ? null : mCloseIcon, null);
+            if (mAutoCompleteLocationListener != null) {
+                mAutoCompleteLocationListener.onTextClear();
+            }
+        }
 
-        void onItemSelected(Place selectedPlace);
-    }
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
+    private OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getX()
+                    > AutoCompleteLocation.this.getWidth()
+                    - AutoCompleteLocation.this.getPaddingRight()
+                    - mCloseIcon.getIntrinsicWidth()) {
+                AutoCompleteLocation.this.setText("");
+                AutoCompleteLocation.this.setCompoundDrawables(null, null, null, null);
+            }
+            return false;
+        }
+    };
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback =
+            new ResultCallback<PlaceBuffer>() {
+                @Override
+                public void onResult(@NonNull PlaceBuffer places) {
+                    if (!places.getStatus().isSuccess()) {
+                        places.release();
+                        return;
+                    }
+                    final Place place = places.get(0);
+                    if (mAutoCompleteLocationListener != null) {
+                        mAutoCompleteLocationListener.onItemSelected(place);
+                    }
+                    places.release();
+                }
+            };
+    private AdapterView.OnItemClickListener mAutocompleteClickListener =
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    AutoCompleteUIUtils.hideKeyboard(AutoCompleteLocation.this.getContext(), AutoCompleteLocation.this);
+                    final AutocompletePrediction item = mAutoCompleteAdapter.getItem(position);
+                    if (item != null) {
+                        final String placeId = item.getPlaceId();
+                        PendingResult<PlaceBuffer> placeResult =
+                                Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
+                        placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+                    }
+                }
+            };
 
     public AutoCompleteLocation(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,67 +163,9 @@ public class AutoCompleteLocation extends AutoCompleteTextView {
         mAutoCompleteLocationListener = autoCompleteLocationListener;
     }
 
-    private TextWatcher mAutoCompleteTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
+    public interface AutoCompleteLocationListener {
+        void onTextClear();
 
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            AutoCompleteLocation.this.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                    AutoCompleteLocation.this.getText().toString().equals("") ? null : mCloseIcon, null);
-            if (mAutoCompleteLocationListener != null) {
-                mAutoCompleteLocationListener.onTextClear();
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-        }
-    };
-
-    private OnTouchListener mOnTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getX()
-                    > AutoCompleteLocation.this.getWidth()
-                    - AutoCompleteLocation.this.getPaddingRight()
-                    - mCloseIcon.getIntrinsicWidth()) {
-                AutoCompleteLocation.this.setText("");
-                AutoCompleteLocation.this.setCompoundDrawables(null, null, null, null);
-            }
-            return false;
-        }
-    };
-
-    private AdapterView.OnItemClickListener mAutocompleteClickListener =
-            new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    AutoCompleteUIUtils.hideKeyboard(AutoCompleteLocation.this.getContext(), AutoCompleteLocation.this);
-                    final AutocompletePrediction item = mAutoCompleteAdapter.getItem(position);
-                    if (item != null) {
-                        final String placeId = item.getPlaceId();
-                        PendingResult<PlaceBuffer> placeResult =
-                                Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
-                        placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-                    }
-                }
-            };
-
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback =
-            new ResultCallback<PlaceBuffer>() {
-                @Override
-                public void onResult(@NonNull PlaceBuffer places) {
-                    if (!places.getStatus().isSuccess()) {
-                        places.release();
-                        return;
-                    }
-                    final Place place = places.get(0);
-                    if (mAutoCompleteLocationListener != null) {
-                        mAutoCompleteLocationListener.onItemSelected(place);
-                    }
-                    places.release();
-                }
-            };
+        void onItemSelected(Place selectedPlace);
+    }
 }

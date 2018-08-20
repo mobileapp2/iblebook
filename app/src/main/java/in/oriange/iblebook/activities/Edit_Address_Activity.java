@@ -2,7 +2,6 @@ package in.oriange.iblebook.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +60,11 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Edit_Address_Activity extends Activity {
 
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    int j = 0;
+    List<AddressTypePojo> addressTypeList;
     private Context context;
     private LinearLayout ll_parent;
     private TextView tv_addresstype, tv_visitcard, tv_attachphoto, tv_pickloc;
@@ -68,19 +73,14 @@ public class Edit_Address_Activity extends Activity {
     private Button btn_save;
     private String user_id, visitCardUrl, photoUrl, type_id, photo, visiting_card, address_id,
             map_location_lattitude, map_location_logitude, name;
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
     private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
-    public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    int j = 0;
     private UserSessionManager session;
     private ImageView imv_add_mobno;
     private LinearLayout ll_mobilelayout;
     private String STATUS, latitude = "", longitude = "";
     private DataBaseHelper dbHelper;
-    List<AddressTypePojo> addressTypeList;
     private ConstantData constantData;
 
     @Override
@@ -248,66 +248,6 @@ public class Edit_Address_Activity extends Activity {
                 ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
             }
         });
-    }
-
-    public class GetAddressType extends AsyncTask<String, Void, String> {
-
-        ProgressDialog pd;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pd = new ProgressDialog(context);
-            pd.setMessage("Please wait ...");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String res = "[]";
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("type", "getAllAddressType");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            res = WebServiceCalls.APICall(ApplicationConstants.ADDRESSTYPEAPI, obj.toString());
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            String type = "", message = "";
-            try {
-                pd.dismiss();
-                if (!result.equals("")) {
-
-                    JSONObject mainObj = new JSONObject(result);
-                    type = mainObj.getString("type");
-                    message = mainObj.getString("message");
-                    if (type.equalsIgnoreCase("success")) {
-                        addressTypeList = new ArrayList<AddressTypePojo>();
-                        JSONArray jsonarr = mainObj.getJSONArray("result");
-                        if (jsonarr.length() > 0) {
-                            for (int i = 0; i < jsonarr.length(); i++) {
-                                AddressTypePojo summary = new AddressTypePojo();
-                                JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setType_id(jsonObj.getString("type_id"));
-                                summary.setType(jsonObj.getString("type"));
-                                addressTypeList.add(summary);
-                            }
-                            addressTypeDialog(addressTypeList);
-                        }
-                    } else {
-
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void addressTypeDialog(final List<AddressTypePojo> addressTypeList) {
@@ -537,6 +477,78 @@ public class Edit_Address_Activity extends Activity {
         }
     }
 
+    protected void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Edit Address");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    public class GetAddressType extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "getAllAddressType");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.ADDRESSTYPEAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        addressTypeList = new ArrayList<AddressTypePojo>();
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                AddressTypePojo summary = new AddressTypePojo();
+                                JSONObject jsonObj = jsonarr.getJSONObject(i);
+                                summary.setType_id(jsonObj.getString("type_id"));
+                                summary.setType(jsonObj.getString("type"));
+                                addressTypeList.add(summary);
+                            }
+                            addressTypeDialog(addressTypeList);
+                        }
+                    } else {
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private class UploadVisitCard extends AsyncTask<File, Integer, String> {
 
         @Override
@@ -725,18 +737,6 @@ public class Edit_Address_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    protected void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Edit Address");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
 

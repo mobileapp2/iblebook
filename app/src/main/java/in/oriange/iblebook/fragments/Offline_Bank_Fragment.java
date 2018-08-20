@@ -34,15 +34,15 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Offline_Bank_Fragment extends Fragment {
 
-    private static Context context;
-    private FloatingActionButton fab_add_bank;
     public static FlowingDrawer ll_parent;
+    private static Context context;
     private static RecyclerView rv_banklist;
+    private static String user_id;
+    private static DataBaseHelper dbHelper;
+    private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private static String user_id;
-    private static DataBaseHelper dbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

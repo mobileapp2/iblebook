@@ -36,18 +36,16 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class ShareAddressDetails_Activity extends Activity {
     private static Context context;
-    public LinearLayout ll_parent;
     private static RecyclerView rv_addresslist;
+    private static String user_id;
+    private static int lastSelectedPosition = -1;
+    private static ArrayList<GetAddressListPojo> addressList;
+    public LinearLayout ll_parent;
+    ImageView img_check;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-
-    private static String user_id;
     private String mobile, type, name, sender_id, sender_mobile;
-
-    private static int lastSelectedPosition = -1;
-    private static ArrayList<GetAddressListPojo> addressList;
-    ImageView img_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +158,19 @@ public class ShareAddressDetails_Activity extends Activity {
         alertD.show();
     }
 
+    private void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        img_check = findViewById(R.id.img_check);
+        mToolbar.setTitle("Select Address");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     public static class GetAddressList extends AsyncTask<String, Void, String> {
 
         @Override
@@ -238,6 +249,73 @@ public class ShareAddressDetails_Activity extends Activity {
         }
     }
 
+    public static class GetAddressForShareAdapter extends RecyclerView.Adapter<GetAddressForShareAdapter.MyViewHolder> {
+
+        private static List<GetAddressListPojo> resultArrayList;
+        private final UserSessionManager session;
+        private Context context;
+        private String name;
+
+        public GetAddressForShareAdapter(Context context, List<GetAddressListPojo> resultArrayList) {
+            this.context = context;
+            this.resultArrayList = resultArrayList;
+            session = new UserSessionManager(context);
+            try {
+                JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                        ApplicationConstants.KEY_LOGIN_INFO));
+                JSONObject json = user_info.getJSONObject(0);
+                name = json.getString("name");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.list_row_addressshare, parent, false);
+            MyViewHolder myViewHolder = new MyViewHolder(view);
+            return myViewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
+            holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
+            holder.tv_addresstype.setText(resultArrayList.get(position).getType());
+            holder.tv_name.setText(resultArrayList.get(position).getName());
+
+            holder.rb_selectone.setChecked(lastSelectedPosition == position);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return resultArrayList.size();
+        }
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView tv_initletter, tv_addresstype, tv_name;
+            private RadioButton rb_selectone;
+
+            public MyViewHolder(View view) {
+                super(view);
+                tv_initletter = view.findViewById(R.id.tv_initletter);
+                tv_addresstype = view.findViewById(R.id.tv_addresstype);
+                tv_name = view.findViewById(R.id.tv_name);
+                rb_selectone = view.findViewById(R.id.rb_selectone);
+
+                rb_selectone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lastSelectedPosition = getAdapterPosition();
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        }
+    }
+
     public class ShareDetails extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -300,86 +378,6 @@ public class ShareAddressDetails_Activity extends Activity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    private void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        img_check = findViewById(R.id.img_check);
-        mToolbar.setTitle("Select Address");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
-
-    public static class GetAddressForShareAdapter extends RecyclerView.Adapter<GetAddressForShareAdapter.MyViewHolder> {
-
-        private final UserSessionManager session;
-        private Context context;
-        private String name;
-        private static List<GetAddressListPojo> resultArrayList;
-
-        public GetAddressForShareAdapter(Context context, List<GetAddressListPojo> resultArrayList) {
-            this.context = context;
-            this.resultArrayList = resultArrayList;
-            session = new UserSessionManager(context);
-            try {
-                JSONArray user_info = new JSONArray(session.getUserDetails().get(
-                        ApplicationConstants.KEY_LOGIN_INFO));
-                JSONObject json = user_info.getJSONObject(0);
-                name = json.getString("name");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.list_row_addressshare, parent, false);
-            MyViewHolder myViewHolder = new MyViewHolder(view);
-            return myViewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
-            holder.tv_addresstype.setText(resultArrayList.get(position).getType());
-            holder.tv_name.setText(resultArrayList.get(position).getName());
-
-            holder.rb_selectone.setChecked(lastSelectedPosition == position);
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return resultArrayList.size();
-        }
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView tv_initletter, tv_addresstype, tv_name;
-            private RadioButton rb_selectone;
-
-            public MyViewHolder(View view) {
-                super(view);
-                tv_initletter = view.findViewById(R.id.tv_initletter);
-                tv_addresstype = view.findViewById(R.id.tv_addresstype);
-                tv_name = view.findViewById(R.id.tv_name);
-                rb_selectone = view.findViewById(R.id.rb_selectone);
-
-                rb_selectone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lastSelectedPosition = getAdapterPosition();
-                        notifyDataSetChanged();
-                    }
-                });
             }
         }
     }

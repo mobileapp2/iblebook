@@ -10,19 +10,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import in.oriange.iblebook.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import in.oriange.iblebook.R;
 
 
 public class Requests_Fragment extends Fragment {
@@ -65,6 +61,9 @@ public class Requests_Fragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    private void setEventHandler() {
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -92,9 +91,6 @@ public class Requests_Fragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-    private void setEventHandler() {
     }
 
 

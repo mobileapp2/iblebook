@@ -10,16 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/black"
         android:text="Share Details To"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1">
 

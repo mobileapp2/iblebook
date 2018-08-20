@@ -33,15 +33,27 @@ import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Offline_GST_Fragment extends Fragment {
-    private static Context context;
-    private FloatingActionButton fab_add_gst;
     public static FlowingDrawer ll_parent;
+    private static Context context;
     private static RecyclerView rv_gstlist;
+    private static String user_id;
+    private static DataBaseHelper dbHelper;
+    private FloatingActionButton fab_add_gst;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private static String user_id;
-    private static DataBaseHelper dbHelper;
+
+    public static void setDefault() {
+//        ArrayList<GetTaxListPojo> gstList = new ArrayList<GetTaxListPojo>();
+//        gstList = dbHelper.getGSTListFromDb();
+//        rv_gstlist.setAdapter(new GetMyGSTListAdapter(context, gstList, "OFFLINE"));
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetGSTList().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -73,18 +85,6 @@ public class Offline_GST_Fragment extends Fragment {
             user_id = json.getString("user_id");
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void setDefault() {
-//        ArrayList<GetTaxListPojo> gstList = new ArrayList<GetTaxListPojo>();
-//        gstList = dbHelper.getGSTListFromDb();
-//        rv_gstlist.setAdapter(new GetMyGSTListAdapter(context, gstList, "OFFLINE"));
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetGSTList().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
     }
 

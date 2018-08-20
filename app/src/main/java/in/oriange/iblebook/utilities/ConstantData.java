@@ -3,6 +3,8 @@ package in.oriange.iblebook.utilities;
 public class ConstantData {
 
     public static ConstantData _instance;
+    private String latitude;
+    private String longitude;
 
     private ConstantData() {
     }
@@ -13,9 +15,6 @@ public class ConstantData {
         }
         return _instance;
     }
-
-    private String latitude;
-    private String longitude;
 
     public static ConstantData get_instance() {
         return _instance;

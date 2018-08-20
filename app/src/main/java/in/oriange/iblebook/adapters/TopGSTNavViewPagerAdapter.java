@@ -5,11 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import in.oriange.iblebook.fragments.My_GST_Fragment;
 import in.oriange.iblebook.fragments.Offline_GST_Fragment;
 import in.oriange.iblebook.fragments.Received_GST_Fragment;
-
-import java.util.ArrayList;
 
 public class TopGSTNavViewPagerAdapter extends FragmentStatePagerAdapter {
 

@@ -1,8 +1,6 @@
-
 package in.oriange.iblebook.fragments;
 
 import android.Manifest;
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,11 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.MainDrawer_Activity;
-import in.oriange.iblebook.activities.Profile_Activity;
-import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.UserSessionManager;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -43,11 +37,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.MainDrawer_Activity;
+import in.oriange.iblebook.activities.Profile_Activity;
+import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.UserSessionManager;
 
 import static android.app.Activity.RESULT_OK;
 import static in.oriange.iblebook.utilities.PermissionUtil.PERMISSION_ALL;
 
 public class MenuListFragment extends Fragment {
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    File file, profilPicFolder;
     private CircleImageView ivMenuUserProfilePhoto;
     private Context context;
     private UserSessionManager session;
@@ -57,11 +60,6 @@ public class MenuListFragment extends Fragment {
     private FloatingActionButton fab_edit_profilepic;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private String photo, name;
-
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    File file, profilPicFolder;
-    public Uri photoURI;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

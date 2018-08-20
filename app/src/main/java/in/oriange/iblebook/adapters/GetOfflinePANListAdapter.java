@@ -41,9 +41,9 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePANListAdapter.MyViewHolder> {
 
+    private static List<GetTaxListPojo> resultArrayList;
     private final UserSessionManager session;
     private Context context;
-    private static List<GetTaxListPojo> resultArrayList;
     private String name, STATUS;
     private DataBaseHelper dbHelper;
 
@@ -172,22 +172,6 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
         return resultArrayList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private FrameLayout fl_mainframe;
-        TextView tv_initletter, tv_name, tv_gstno;
-        private ImageView imv_more;
-
-        public MyViewHolder(View view) {
-            super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_name = (TextView) view.findViewById(R.id.tv_name);
-            tv_gstno = (TextView) view.findViewById(R.id.tv_gstno);
-            imv_more = view.findViewById(R.id.imv_more);
-            fl_mainframe = view.findViewById(R.id.fl_mainframe);
-        }
-    }
-
     private void setSelectionFilter(final int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -272,6 +256,27 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
         alertD.show();
     }
 
+    public void removeItem(int position) {
+        resultArrayList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tv_initletter, tv_name, tv_gstno;
+        private FrameLayout fl_mainframe;
+        private ImageView imv_more;
+
+        public MyViewHolder(View view) {
+            super(view);
+            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
+            tv_name = (TextView) view.findViewById(R.id.tv_name);
+            tv_gstno = (TextView) view.findViewById(R.id.tv_gstno);
+            imv_more = view.findViewById(R.id.imv_more);
+            fl_mainframe = view.findViewById(R.id.fl_mainframe);
+        }
+    }
+
     public class DeletePANDetails extends AsyncTask<String, Void, String> {
         int position;
         ProgressDialog pd;
@@ -327,10 +332,5 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
                 e.printStackTrace();
             }
         }
-    }
-
-    public void removeItem(int position) {
-        resultArrayList.remove(position);
-        notifyItemRemoved(position);
     }
 }

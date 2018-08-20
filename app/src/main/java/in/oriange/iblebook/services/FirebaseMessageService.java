@@ -8,10 +8,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.activities.MainDrawer_Activity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.MainDrawer_Activity;
 
 
 public class FirebaseMessageService extends FirebaseMessagingService {

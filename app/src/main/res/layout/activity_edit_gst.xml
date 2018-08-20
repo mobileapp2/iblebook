@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/ll_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
@@ -37,6 +37,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_address_name" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -51,9 +52,9 @@
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="center_vertical"
                         android:hint="Name"
-                        android:singleLine="true"
                         android:inputType="textCapWords"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -66,9 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <EditText
                         android:id="@+id/edt_alias"
                         android:layout_width="match_parent"
@@ -79,8 +82,8 @@
                         android:gravity="center_vertical"
                         android:hint="Alias (Short Name)"
                         android:inputType="textCapWords"
-                        android:singleLine="true"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -99,6 +102,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_card" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -114,8 +118,8 @@
                         android:hint="GST Number"
                         android:inputType="textCapCharacters"
                         android:maxLength="15"
-                        android:singleLine="true"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -133,8 +137,8 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/icon_attach" />
 
                 <TextView
@@ -147,8 +151,8 @@
                     android:focusable="false"
                     android:gravity="center_vertical"
                     android:hint="Attach File"
-                    android:singleLine="true"
                     android:padding="10dp"
+                    android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

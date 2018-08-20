@@ -6,34 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import in.oriange.iblebook.models.GetBankListPojo;
-import in.oriange.iblebook.models.GetTaxListPojo;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import in.oriange.iblebook.models.GetBankListPojo;
+import in.oriange.iblebook.models.GetTaxListPojo;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+    private static final int DATABASE_VERSION = 4;
     private static String DB_PATH = "";
     private static String DB_NAME = "Database";
-    private static final int DATABASE_VERSION = 4;
-
-    private SQLiteDatabase myDataBase;
     private final Context myContext;
+    private SQLiteDatabase myDataBase;
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
 
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
@@ -44,6 +33,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
         }
         System.out.println("Database path : " + DB_PATH);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 
     public void createDataBase(boolean dbExist) throws IOException {
@@ -261,7 +260,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                                      String gst_number,
                                      String pan_document,
                                      String gst_document,
-                                     String is_sent)  {
+                                     String is_sent) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("user_id", user_id);

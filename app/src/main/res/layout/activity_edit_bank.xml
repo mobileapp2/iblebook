@@ -35,8 +35,8 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/icon_address_name" />
 
                 <android.support.design.widget.TextInputLayout
@@ -98,8 +98,8 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/icon_bank" />
 
                 <android.support.design.widget.TextInputLayout
@@ -112,11 +112,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:inputType="textCapWords"
                         android:gravity="center_vertical"
                         android:hint="Bank Name"
-                        android:singleLine="true"
+                        android:inputType="textCapWords"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -150,9 +150,9 @@
                         android:gravity="center_vertical"
                         android:hint="IFSC Code"
                         android:inputType="textCapCharacters"
-                        android:singleLine="true"
                         android:maxLength="11"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -185,8 +185,8 @@
                         android:gravity="center_vertical"
                         android:hint="Account Number"
                         android:inputType="number"
-                        android:singleLine="true"
                         android:padding="10dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -216,8 +216,8 @@
                     android:focusable="false"
                     android:gravity="center_vertical"
                     android:hint="Attach File"
-                    android:singleLine="true"
                     android:padding="10dp"
+                    android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

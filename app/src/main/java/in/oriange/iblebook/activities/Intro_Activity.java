@@ -1,19 +1,15 @@
 package in.oriange.iblebook.activities;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.FloatRange;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
-import in.oriange.iblebook.R;
-import in.oriange.iblebook.utilities.UserSessionManager;
-
 import agency.tango.materialintroscreen.MaterialIntroActivity;
-import agency.tango.materialintroscreen.MessageButtonBehaviour;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
 import agency.tango.materialintroscreen.animations.IViewTranslation;
+import in.oriange.iblebook.R;
+import in.oriange.iblebook.utilities.UserSessionManager;
 
 public class Intro_Activity extends MaterialIntroActivity {
     @Override

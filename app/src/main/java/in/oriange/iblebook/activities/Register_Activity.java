@@ -1,13 +1,13 @@
 package in.oriange.iblebook.activities;
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -123,6 +123,61 @@ public class Register_Activity extends Activity {
         }
     }
 
+    private void createDialogForOTP(final String otp) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_enterotp, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle("Enter OTP");
+        alertDialogBuilder.setView(promptView);
+
+        final EditText edt_enterotp = promptView.findViewById(R.id.edt_enterotp);
+
+        alertDialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (otp.equals(edt_enterotp.getText().toString().trim())) {
+                    if (Utilities.isNetworkAvailable(context)) {
+                        new RegisterNewUser().execute();
+                    } else {
+                        Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    }
+                } else {
+                    Utilities.showMessageString(context, "Please Enter Correct OTP");
+                    createDialogForOTP(otp);
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        alertDialogBuilder.setNeutralButton("Resend", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Utilities.isNetworkAvailable(context)) {
+                    new SendOTP().execute();
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                }
+            }
+        });
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
+    }
+
     public class SendOTP extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -175,55 +230,6 @@ public class Register_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void createDialogForOTP(final String otp) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_enterotp, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle("Enter OTP");
-        alertDialogBuilder.setView(promptView);
-
-        final EditText edt_enterotp = promptView.findViewById(R.id.edt_enterotp);
-
-        alertDialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (otp.equals(edt_enterotp.getText().toString().trim())) {
-                    if (Utilities.isNetworkAvailable(context)) {
-                        new RegisterNewUser().execute();
-                    } else {
-                        Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                    }
-                } else {
-                    Utilities.showMessageString(context, "Please Enter Correct OTP");
-                    createDialogForOTP(otp);
-                }
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-
-        alertDialogBuilder.setNeutralButton("Resend", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (Utilities.isNetworkAvailable(context)) {
-                    new SendOTP().execute();
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
-            }
-        });
-
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-        alertD.show();
     }
 
     public class RegisterNewUser extends AsyncTask<String, Void, String> {
@@ -294,11 +300,5 @@ public class Register_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
     }
 }

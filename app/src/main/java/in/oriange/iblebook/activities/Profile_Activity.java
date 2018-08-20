@@ -2,7 +2,6 @@ package in.oriange.iblebook.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +53,10 @@ import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermission
 
 public class Profile_Activity extends Activity {
 
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    File file, profilPicFolder;
     private Context context;
     private FloatingActionButton fab_edt_profilepic;
     private CircleImageView imv_profile;
@@ -61,11 +65,6 @@ public class Profile_Activity extends Activity {
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
     private LinearLayout ll_parent;
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url;
-
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    File file, profilPicFolder;
-    public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
 
@@ -268,6 +267,60 @@ public class Profile_Activity extends Activity {
 //        doc_image_uri = Uri.fromFile(imageFile);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void askPermission() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(PERMISSIONS, PERMISSION_ALL);
+            return;
+        } else {
+            selectImage();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    selectImage();
+                } else {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                    builder.setTitle("Alert");
+                    builder.setMessage("Please provide permission for Camera and Gallery");
+                    builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.getPackageName(), null)));
+                        }
+                    });
+                    builder.create();
+                    builder.show();
+                }
+            }
+
+        }
+    }
+
+    protected void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Profile");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     private class UploadProfilePic extends AsyncTask<File, Integer, String> {
 
         @Override
@@ -328,59 +381,5 @@ public class Profile_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void askPermission() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(PERMISSIONS, PERMISSION_ALL);
-            return;
-        } else {
-            selectImage();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    selectImage();
-                } else {
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                    builder.setTitle("Alert");
-                    builder.setMessage("Please provide permission for Camera and Gallery");
-                    builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", context.getPackageName(), null)));
-                        }
-                    });
-                    builder.create();
-                    builder.show();
-                }
-            }
-
-        }
-    }
-
-    protected void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Profile");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }

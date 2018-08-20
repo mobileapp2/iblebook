@@ -13,16 +13,17 @@ import android.widget.TextView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.BotNavViewPagerAdapter;
 import in.oriange.iblebook.fragments.Contacts_Fragment;
 import in.oriange.iblebook.fragments.MenuListFragment;
-import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
-import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
 public class MainDrawer_Activity extends FragmentActivity {
-    private Context context;
     public static FlowingDrawer mDrawer;
+    private Context context;
     private AHBottomNavigation bottomNavigation;
     private AHBottomNavigationItem botNavAddress, botNavTax, botNavBank, botNavRequests, botNavContacts;
     private Fragment currentFragment;

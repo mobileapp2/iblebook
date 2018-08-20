@@ -32,13 +32,21 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ReceivedRequests_Fragment extends Fragment {
 
+    public static FlowingDrawer ll_parent;
     private static Context context;
     private static RecyclerView rv_requestlist;
-    private LinearLayoutManager layoutManager;
     private static SwipeRefreshLayout swipeRefreshLayout;
-    public static FlowingDrawer ll_parent;
-    private UserSessionManager session;
     private static String user_id;
+    private LinearLayoutManager layoutManager;
+    private UserSessionManager session;
+
+    public static void setDefault() {
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetRequestList().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -68,14 +76,6 @@ public class ReceivedRequests_Fragment extends Fragment {
             user_id = json.getString("user_id");
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetRequestList().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
     }
 

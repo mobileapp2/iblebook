@@ -41,9 +41,9 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class GetOfflineBankListAdapter extends RecyclerView.Adapter<GetOfflineBankListAdapter.MyViewHolder> {
 
+    private static List<GetBankListPojo> resultArrayList;
     private final UserSessionManager session;
     private Context context;
-    private static List<GetBankListPojo> resultArrayList;
     private String name, STATUS;
     private DataBaseHelper dbHelper;
 
@@ -178,22 +178,6 @@ public class GetOfflineBankListAdapter extends RecyclerView.Adapter<GetOfflineBa
         return resultArrayList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private FrameLayout fl_mainframe;
-        private TextView tv_initletter, tv_bankname, tv_accountno;
-        private ImageView imv_more;
-
-        public MyViewHolder(View view) {
-            super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_bankname = (TextView) view.findViewById(R.id.tv_bankname);
-            tv_accountno = (TextView) view.findViewById(R.id.tv_accountno);
-            imv_more = view.findViewById(R.id.imv_more);
-            fl_mainframe = view.findViewById(R.id.fl_mainframe);
-        }
-    }
-
     private void setSelectionFilter(final int position) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -307,6 +291,27 @@ public class GetOfflineBankListAdapter extends RecyclerView.Adapter<GetOfflineBa
         alertD.show();
     }
 
+    public void removeItem(int position) {
+        resultArrayList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private FrameLayout fl_mainframe;
+        private TextView tv_initletter, tv_bankname, tv_accountno;
+        private ImageView imv_more;
+
+        public MyViewHolder(View view) {
+            super(view);
+            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
+            tv_bankname = (TextView) view.findViewById(R.id.tv_bankname);
+            tv_accountno = (TextView) view.findViewById(R.id.tv_accountno);
+            imv_more = view.findViewById(R.id.imv_more);
+            fl_mainframe = view.findViewById(R.id.fl_mainframe);
+        }
+    }
+
     public class DeleteBankDetails extends AsyncTask<String, Void, String> {
         int position;
         ProgressDialog pd;
@@ -362,11 +367,6 @@ public class GetOfflineBankListAdapter extends RecyclerView.Adapter<GetOfflineBa
                 e.printStackTrace();
             }
         }
-    }
-
-    public void removeItem(int position) {
-        resultArrayList.remove(position);
-        notifyItemRemoved(position);
     }
 
 

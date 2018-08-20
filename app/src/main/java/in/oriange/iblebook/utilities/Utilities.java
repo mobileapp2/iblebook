@@ -1,6 +1,5 @@
 package in.oriange.iblebook.utilities;
 
-import android.support.v7.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -45,6 +45,7 @@ public class Utilities {
     public static SimpleDateFormat dfDate2 = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat dfDate3 = new SimpleDateFormat("MM/dd/yyyy");
     public static SimpleDateFormat dfDate4 = new SimpleDateFormat("yyyy/MM/dd");
+    static AlertDialog.Builder alertDialog;
 
     public static String getAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();
@@ -220,7 +221,6 @@ public class Utilities {
         }
     }
 
-
     public static boolean isMobileNoForNotCompulsory(EditText edt) {
         edt.setError(null);
         if ((edt.getText().toString().trim().length() == 10)
@@ -266,13 +266,6 @@ public class Utilities {
         }
     }
 
-    private static boolean isValidPinCode(String mobileno) {
-        String Mobile_PATTERN = "^[1-9][0-9]{5}$";                                               //^[+]?[0-9]{10,13}$
-        Pattern pattern = Pattern.compile(Mobile_PATTERN);
-        Matcher matcher = pattern.matcher(mobileno);
-        return matcher.matches();
-    }
-
 //    public static boolean isAdhar(EditText edt) {
 //        edt.setError(null);
 //        if (validateAadharNumber(edt.getText().toString().trim())) {
@@ -294,6 +287,13 @@ public class Utilities {
 //        }
 //        return isValidAadhar;
 //    }
+
+    private static boolean isValidPinCode(String mobileno) {
+        String Mobile_PATTERN = "^[1-9][0-9]{5}$";                                               //^[+]?[0-9]{10,13}$
+        Pattern pattern = Pattern.compile(Mobile_PATTERN);
+        Matcher matcher = pattern.matcher(mobileno);
+        return matcher.matches();
+    }
 
     public static boolean isVoterID(EditText edt) {
         edt.setError(null);
@@ -655,6 +655,8 @@ public class Utilities {
         return newDateString;
     }
 
+    //******************************* Massages Methods *********************************************
+
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -674,8 +676,6 @@ public class Utilities {
         return inSampleSize;
     }
 
-    //******************************* Massages Methods *********************************************
-
     public static void showMessage(int msg, Context context) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -685,9 +685,6 @@ public class Utilities {
     public static void showMessageString(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
-
-
-    static AlertDialog.Builder alertDialog;
 
     @SuppressWarnings("deprecation")
     public static void showAlertDialog(Context context, String title,

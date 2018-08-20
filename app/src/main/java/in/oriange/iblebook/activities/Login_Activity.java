@@ -118,63 +118,6 @@ public class Login_Activity extends Activity {
         }
     }
 
-    public class LoginUser extends AsyncTask<String, Void, String> {
-
-        ProgressDialog pd;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pd = new ProgressDialog(context);
-            pd.setMessage("Please wait ...");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String res = "[]";
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("type", "Login");
-                obj.put("Username", edt_username.getText().toString());
-                obj.put("password", edt_password.getText().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            res = WebServiceCalls.APICall(ApplicationConstants.USERAPI, obj.toString());
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            String type = "", message = "";
-            try {
-                pd.dismiss();
-                if (!result.equals("")) {
-                    JSONObject mainObj = new JSONObject(result);
-                    type = mainObj.getString("type");
-                    message = mainObj.getString("message");
-                    if (type.equalsIgnoreCase("success")) {
-                        JSONArray jsonarr = mainObj.getJSONArray("result");
-                        if (jsonarr.length() > 0) {
-                            for (int i = 0; i < jsonarr.length(); i++) {
-                                session.createUserLoginSession(jsonarr.toString());
-                                saveRegistrationID();
-                            }
-                        }
-                    } else if (type.equalsIgnoreCase("failure")) {
-                        Utilities.showSnackBar(ll_parent, message);
-                    }
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private void saveRegistrationID() {
         String user_id = "", regToken = "";
         try {
@@ -192,65 +135,6 @@ public class Login_Activity extends Activity {
                 new SendRegistrationToken().execute(user_id, regToken);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public class SendRegistrationToken extends AsyncTask<String, Integer, String> {
-        ProgressDialog pd;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pd = new ProgressDialog(context);
-            pd.setMessage("Please wait ...");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String res = "[]";
-            String s = "";
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("device_type", "Android");
-                obj.put("device_id", params[1]);
-                obj.put("ram", totalRAMSize());
-                obj.put("processor", Build.CPU_ABI);
-                obj.put("device_os", Build.VERSION.RELEASE);
-                obj.put("location", "0.0, 0.0");
-                obj.put("device_model", Build.MODEL);
-                obj.put("manufacturer", Build.MANUFACTURER);
-                obj.put("user_id", params[0]);
-                obj.put("type", "registerDevice");
-                s = obj.toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            res = WebServiceCalls.APICall(ApplicationConstants.DEVICEREGAPI, s);
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            pd.dismiss();
-            if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
-                try {
-                    int c = 0;
-                    JSONObject obj1 = new JSONObject(result);
-                    String success = obj1.getString("success");
-                    String message = obj1.getString("message");
-                    if (success.equalsIgnoreCase("1")) {
-                        startActivity(new Intent(context, MainDrawer_Activity.class));
-                        finish();
-                    } else {
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -313,6 +197,122 @@ public class Login_Activity extends Activity {
                                     .show();
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public class LoginUser extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "Login");
+                obj.put("Username", edt_username.getText().toString());
+                obj.put("password", edt_password.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.USERAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                session.createUserLoginSession(jsonarr.toString());
+                                saveRegistrationID();
+                            }
+                        }
+                    } else if (type.equalsIgnoreCase("failure")) {
+                        Utilities.showSnackBar(ll_parent, message);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class SendRegistrationToken extends AsyncTask<String, Integer, String> {
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            String s = "";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("device_type", "Android");
+                obj.put("device_id", params[1]);
+                obj.put("ram", totalRAMSize());
+                obj.put("processor", Build.CPU_ABI);
+                obj.put("device_os", Build.VERSION.RELEASE);
+                obj.put("location", "0.0, 0.0");
+                obj.put("device_model", Build.MODEL);
+                obj.put("manufacturer", Build.MANUFACTURER);
+                obj.put("user_id", params[0]);
+                obj.put("type", "registerDevice");
+                s = obj.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.DEVICEREGAPI, s);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pd.dismiss();
+            if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
+                try {
+                    int c = 0;
+                    JSONObject obj1 = new JSONObject(result);
+                    String success = obj1.getString("success");
+                    String message = obj1.getString("message");
+                    if (success.equalsIgnoreCase("1")) {
+                        startActivity(new Intent(context, MainDrawer_Activity.class));
+                        finish();
+                    } else {
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

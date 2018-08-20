@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.Add_PAN_Activity;
-import in.oriange.iblebook.adapters.GetMyPANListAdapter;
 import in.oriange.iblebook.adapters.GetOfflinePANListAdapter;
 import in.oriange.iblebook.models.GetTaxListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
@@ -34,15 +33,27 @@ import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Offline_PAN_Fragment extends Fragment {
+    public static FlowingDrawer ll_parent;
     private static Context context;
-    private FloatingActionButton fab_add_pan;
     private static RecyclerView rv_panlist;
+    private static String user_id;
+    private static DataBaseHelper dbHelper;
+    private FloatingActionButton fab_add_pan;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    public static FlowingDrawer ll_parent;
-    private static String user_id;
-    private static DataBaseHelper dbHelper;
+
+    public static void setDefault() {
+//        ArrayList<GetTaxListPojo> panList = new ArrayList<GetTaxListPojo>();
+//        panList = dbHelper.getPANListFromDb();
+//        rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "OFFLINE"));
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetPANList().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -74,18 +85,6 @@ public class Offline_PAN_Fragment extends Fragment {
             user_id = json.getString("user_id");
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void setDefault() {
-//        ArrayList<GetTaxListPojo> panList = new ArrayList<GetTaxListPojo>();
-//        panList = dbHelper.getPANListFromDb();
-//        rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "OFFLINE"));
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetPANList().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
     }
 

@@ -13,7 +13,7 @@ public class PermissionUtil {
 
     public static final int PERMISSION_ALL = 1;
 
-    public static boolean doesAppNeedPermissions(){
+    public static boolean doesAppNeedPermissions() {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1;
     }
 
@@ -25,12 +25,12 @@ public class PermissionUtil {
         return info.requestedPermissions;
     }
 
-    public static boolean askPermissions(Activity activity){
-        if(doesAppNeedPermissions()) {
+    public static boolean askPermissions(Activity activity) {
+        if (doesAppNeedPermissions()) {
             try {
                 String[] permissions = getPermissions(activity);
 
-                if(!checkPermissions(activity, permissions)) {
+                if (!checkPermissions(activity, permissions)) {
                     ActivityCompat.requestPermissions(activity, permissions,
                             PERMISSION_ALL);
                     return true;
@@ -38,7 +38,7 @@ public class PermissionUtil {
                 } else
                     return false;
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
@@ -46,7 +46,7 @@ public class PermissionUtil {
             return false;
     }
 
-    public static boolean checkPermissions(Context context, String... permissions){
+    public static boolean checkPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null &&
                 permissions != null) {
             for (String permission : permissions) {

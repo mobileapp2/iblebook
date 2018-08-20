@@ -13,15 +13,15 @@
         card_view:cardUseCompatPadding="true">
 
 
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
-                android:inputType="textCapWords"
-                android:iconifiedByDefault="false"
-                android:queryBackground="@android:color/transparent"
-                android:queryHint="Search By Name"/>
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+            android:iconifiedByDefault="false"
+            android:inputType="textCapWords"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="Search By Name" />
 
     </android.support.v7.widget.CardView>
 

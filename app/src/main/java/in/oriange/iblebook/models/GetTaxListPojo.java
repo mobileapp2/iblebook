@@ -24,119 +24,96 @@ public class GetTaxListPojo {
 
     private String pan_document;
 
-    public String getCreated_by ()
-    {
+    public String getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by (String created_by)
-    {
+    public void setCreated_by(String created_by) {
         this.created_by = created_by;
     }
 
-    public String getGst_document ()
-    {
+    public String getGst_document() {
         return gst_document;
     }
 
-    public void setGst_document (String gst_document)
-    {
+    public void setGst_document(String gst_document) {
         this.gst_document = gst_document;
     }
 
-    public String getUpdated_at ()
-    {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at (String updated_at)
-    {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
-    public String getAlias ()
-    {
+    public String getAlias() {
         return alias;
     }
 
-    public void setAlias (String alias)
-    {
+    public void setAlias(String alias) {
         this.alias = alias;
     }
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName (String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getCreated_at ()
-    {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at (String created_at)
-    {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public String getUpdated_by ()
-    {
+    public String getUpdated_by() {
         return updated_by;
     }
 
-    public void setUpdated_by (String updated_by)
-    {
+    public void setUpdated_by(String updated_by) {
         this.updated_by = updated_by;
     }
 
-    public String getGst_number ()
-    {
+    public String getGst_number() {
         return gst_number;
     }
 
-    public void setGst_number (String gst_number)
-    {
+    public void setGst_number(String gst_number) {
         this.gst_number = gst_number;
     }
 
-    public String getTax_id ()
-    {
+    public String getTax_id() {
         return tax_id;
     }
 
-    public void setTax_id (String tax_id)
-    {
+    public void setTax_id(String tax_id) {
         this.tax_id = tax_id;
     }
 
-    public String getPan_number ()
-    {
+    public String getPan_number() {
         return pan_number;
     }
 
-    public void setPan_number (String pan_number)
-    {
+    public void setPan_number(String pan_number) {
         this.pan_number = pan_number;
     }
 
-    public String getPan_document ()
-    {
+    public String getPan_document() {
         return pan_document;
     }
 
-    public void setPan_document (String pan_document)
-    {
+    public void setPan_document(String pan_document) {
         this.pan_document = pan_document;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [created_by = "+created_by+", gst_document = "+gst_document+", updated_at = "+updated_at+", alias = "+alias+", name = "+name+", created_at = "+created_at+", updated_by = "+updated_by+", gst_number = "+gst_number+", tax_id = "+tax_id+", pan_number = "+pan_number+", pan_document = "+pan_document+"]";
+    public String toString() {
+        return "ClassPojo [created_by = " + created_by + ", gst_document = " + gst_document + ", updated_at = " + updated_at + ", alias = " + alias + ", name = " + name + ", created_at = " + created_at + ", updated_by = " + updated_by + ", gst_number = " + gst_number + ", tax_id = " + tax_id + ", pan_number = " + pan_number + ", pan_document = " + pan_document + "]";
     }
 }

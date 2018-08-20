@@ -7,9 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
-import in.oriange.iblebook.activities.Login_Activity;
-
 import java.util.HashMap;
+
+import in.oriange.iblebook.activities.Login_Activity;
 
 public class UserSessionManager {
 
@@ -101,9 +101,6 @@ public class UserSessionManager {
                 pref.getString(ApplicationConstants.KEY_ANDROIDTOKETID, ""));
         return androidTokenID;
     }
-
-
-
 
 
 }

@@ -41,9 +41,9 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressListAdapter.MyViewHolder> {
 
+    private static List<GetAddressListPojo> resultArrayList;
     private final UserSessionManager session;
     private Context context;
-    private static List<GetAddressListPojo> resultArrayList;
     private String name, STATUS;
     private DataBaseHelper dbHelper;
 
@@ -179,22 +179,6 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
     @Override
     public int getItemCount() {
         return resultArrayList.size();
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private FrameLayout fl_mainframe;
-        TextView tv_initletter, tv_addresstype, tv_name;
-        private ImageView imv_more;
-
-        public MyViewHolder(View view) {
-            super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_addresstype = (TextView) view.findViewById(R.id.tv_addresstype);
-            tv_name = (TextView) view.findViewById(R.id.tv_name);
-            imv_more = view.findViewById(R.id.imv_more);
-            fl_mainframe = view.findViewById(R.id.fl_mainframe);
-        }
     }
 
     private void setSelectionFilter(final int position) {
@@ -441,6 +425,27 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
         alertD.show();
     }
 
+    public void removeItem(int position) {
+        resultArrayList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tv_initletter, tv_addresstype, tv_name;
+        private FrameLayout fl_mainframe;
+        private ImageView imv_more;
+
+        public MyViewHolder(View view) {
+            super(view);
+            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
+            tv_addresstype = (TextView) view.findViewById(R.id.tv_addresstype);
+            tv_name = (TextView) view.findViewById(R.id.tv_name);
+            imv_more = view.findViewById(R.id.imv_more);
+            fl_mainframe = view.findViewById(R.id.fl_mainframe);
+        }
+    }
+
     public class DeleteAddressDetails extends AsyncTask<String, Void, String> {
         int position;
         ProgressDialog pd;
@@ -496,10 +501,5 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                 e.printStackTrace();
             }
         }
-    }
-
-    public void removeItem(int position) {
-        resultArrayList.remove(position);
-        notifyItemRemoved(position);
     }
 }

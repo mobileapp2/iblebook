@@ -1,7 +1,6 @@
 package in.oriange.iblebook.activities;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import in.oriange.iblebook.R;

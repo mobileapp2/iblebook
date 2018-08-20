@@ -32,14 +32,14 @@ import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class My_Address_Fragment extends Fragment {
-    private static Context context;
-    private FloatingActionButton fab_add_address;
     public static FlowingDrawer ll_parent;
+    private static Context context;
     private static RecyclerView rv_addresslist;
+    private static String user_id;
+    private FloatingActionButton fab_add_address;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private static String user_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

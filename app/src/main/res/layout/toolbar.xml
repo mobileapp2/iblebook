@@ -13,17 +13,17 @@
         android:layout_width="2dp"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:gravity="center"
         android:layout_weight="0.1"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tool_titile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.8"
         android:layout_margin="10dp"
+        android:layout_weight="0.8"
         android:text="Address Book"
         android:textColor="#fff"
         android:textSize="18sp"
@@ -34,7 +34,7 @@
         android:layout_width="5dp"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:gravity="center"
         android:layout_weight="0.1"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:gravity="center" />
 </TableRow>

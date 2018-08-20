@@ -23,10 +23,10 @@ import in.oriange.iblebook.utilities.Utilities;
 public class PickMapLoaction_Activity extends FragmentActivity
         implements OnMapReadyCallback, AutoCompleteLocation.AutoCompleteLocationListener {
 
+    LatLng latLng1;
     private Context context;
     private GoogleMap mMap;
     private Button btn_save;
-    LatLng latLng1;
     private ConstantData constantData;
 
     @Override

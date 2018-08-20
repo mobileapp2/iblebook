@@ -18,73 +18,59 @@ public class GetRequestsListPojo {
 
     private String sender_mobile;
 
-    public String getMessage ()
-    {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage (String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getRequest_id ()
-    {
+    public String getRequest_id() {
         return request_id;
     }
 
-    public void setRequest_id (String request_id)
-    {
+    public void setRequest_id(String request_id) {
         this.request_id = request_id;
     }
 
-    public String getStatus ()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus (String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getSender_id ()
-    {
+    public String getSender_id() {
         return sender_id;
     }
 
-    public void setSender_id (String sender_id)
-    {
+    public void setSender_id(String sender_id) {
         this.sender_id = sender_id;
     }
 
-    public String getSender_name ()
-    {
+    public String getSender_name() {
         return sender_name;
     }
 
-    public void setSender_name (String sender_name)
-    {
+    public void setSender_name(String sender_name) {
         this.sender_name = sender_name;
     }
 
-    public String getType ()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType (String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getMobile ()
-    {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile (String mobile)
-    {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 

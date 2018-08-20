@@ -2,7 +2,6 @@ package in.oriange.iblebook.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +52,10 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Edit_Bank_Activity extends Activity {
 
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public static final int DOCUMENT_REQUEST = 300;
+    public Uri photoURI;
     private Context context;
     private UserSessionManager session;
     private String user_id, document, bank_id, name;
@@ -59,12 +63,7 @@ public class Edit_Bank_Activity extends Activity {
     private TextView tv_attachfile;
     private Button btn_save;
     private LinearLayout ll_parent;
-
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    public static final int DOCUMENT_REQUEST = 300;
     private File file, bankDocFolder, fileToBeUploaded;
-    public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
     private int position;
@@ -320,6 +319,19 @@ public class Edit_Bank_Activity extends Activity {
         fileToBeUploaded = new File(destinationFilename);
     }
 
+    protected void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Edit Bank Detials");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     private class UploadDocument extends AsyncTask<File, Integer, String> {
 
         @Override
@@ -444,18 +456,5 @@ public class Edit_Bank_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    protected void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Edit Bank Detials");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }

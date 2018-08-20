@@ -489,14 +489,27 @@ public class View_Address_Activity extends Activity {
         alertD.show();
     }
 
+    protected void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Address Details");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     public class DownloadDocument extends AsyncTask<String, Integer, Boolean> {
-        private ProgressDialog mProgressDialog;
         int lenghtOfFile = -1;
         int count = 0;
         int content = -1;
         int counter = 0;
         int progress = 0;
         URL downloadurl = null;
+        private ProgressDialog mProgressDialog;
 
         @Override
         protected void onPreExecute() {
@@ -674,18 +687,5 @@ public class View_Address_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    protected void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Address Details");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }

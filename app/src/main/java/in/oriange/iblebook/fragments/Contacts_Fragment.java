@@ -79,21 +79,6 @@ public class Contacts_Fragment extends Fragment {
             setDefault();
     }
 
-    public class contactList extends AsyncTask<Void, Void, List> {
-
-        @Override
-        protected List doInBackground(Void... voids) {
-            List contactList = getContactList();
-            return contactList;
-        }
-
-        @Override
-        protected void onPostExecute(List list) {
-            super.onPostExecute(list);
-            bindRecyclerview(list);
-        }
-    }
-
     private List getContactList() {
         ContentResolver cr = context.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
@@ -228,6 +213,21 @@ public class Contacts_Fragment extends Fragment {
                     builder.show();
                 }
             }
+        }
+    }
+
+    public class contactList extends AsyncTask<Void, Void, List> {
+
+        @Override
+        protected List doInBackground(Void... voids) {
+            List contactList = getContactList();
+            return contactList;
+        }
+
+        @Override
+        protected void onPostExecute(List list) {
+            super.onPostExecute(list);
+            bindRecyclerview(list);
         }
     }
 

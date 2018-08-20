@@ -2,7 +2,6 @@ package in.oriange.iblebook.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +60,11 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Add_Address_Activity extends Activity {
 
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    int j = 0;
+    List<AddressTypePojo> addressTypeList;
     private Context context;
     private LinearLayout ll_parent;
     private TextView tv_addresstype, tv_visitcard, tv_attachphoto, tv_pickloc;
@@ -67,19 +72,14 @@ public class Add_Address_Activity extends Activity {
             edt_state, edt_district, edt_pincode, edt_mobile1, edt_email, edt_website;
     private Button btn_save;
     private String user_id, visitCardUrl, photoUrl, type_id;
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
     private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
-    public Uri photoURI;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    int j = 0;
     private UserSessionManager session;
     private ImageView imv_add_mobno;
     private LinearLayout ll_mobilelayout;
     private String STATUS, latitude = "", longitude = "";
     private DataBaseHelper dbHelper;
-    List<AddressTypePojo> addressTypeList;
     private ConstantData constantData;
 
     @Override
@@ -427,6 +427,49 @@ public class Add_Address_Activity extends Activity {
         }
     }
 
+    private void addressTypeDialog(final List<AddressTypePojo> addressTypeList) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+        builderSingle.setTitle("Select Address Type");
+        builderSingle.setCancelable(false);
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.list_row);
+
+        for (int i = 0; i < addressTypeList.size(); i++) {
+            arrayAdapter.add(String.valueOf(addressTypeList.get(i).getType()));
+        }
+
+        builderSingle.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tv_addresstype.setText(addressTypeList.get(which).getType());
+                type_id = addressTypeList.get(which).getType_id();
+            }
+        });
+        builderSingle.show();
+    }
+
+    protected void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Add Address");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     public class GetAddressType extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -485,37 +528,6 @@ public class Add_Address_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void addressTypeDialog(final List<AddressTypePojo> addressTypeList) {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-        builderSingle.setTitle("Select Address Type");
-        builderSingle.setCancelable(false);
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.list_row);
-
-        for (int i = 0; i < addressTypeList.size(); i++) {
-            arrayAdapter.add(String.valueOf(addressTypeList.get(i).getType()));
-        }
-
-        builderSingle.setNegativeButton(
-                "Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tv_addresstype.setText(addressTypeList.get(which).getType());
-                type_id = addressTypeList.get(which).getType_id();
-            }
-        });
-        builderSingle.show();
     }
 
     private class UploadVisitCard extends AsyncTask<File, Integer, String> {
@@ -705,17 +717,5 @@ public class Add_Address_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-    }
-
-    protected void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Add Address");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }
