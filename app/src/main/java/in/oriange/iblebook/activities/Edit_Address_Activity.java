@@ -682,7 +682,7 @@ public class Edit_Address_Activity extends Activity {
             obj.addProperty("email_id", edt_email.getText().toString().trim());
             obj.addProperty("website", edt_website.getText().toString().trim());
             obj.addProperty("visiting_card", visitCardUrl);
-            obj.addProperty("map_location_logitude", constantData.getLatitude());
+            obj.addProperty("map_location_logitude", constantData.getLongitude());
             obj.addProperty("map_location_lattitude", constantData.getLatitude());
             obj.addProperty("photo", photoUrl);
             obj.addProperty("status", STATUS.toLowerCase());

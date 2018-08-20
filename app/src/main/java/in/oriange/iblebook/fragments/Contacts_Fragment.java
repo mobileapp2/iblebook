@@ -63,6 +63,7 @@ public class Contacts_Fragment extends Fragment {
         contactList = new ArrayList<ContactListPojo>();
         rv_contacts.setLayoutManager(new LinearLayoutManager(getContext()));
         searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
     }
 
     private void setDefault() {

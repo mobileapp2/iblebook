@@ -165,8 +165,8 @@ public class My_Address_Fragment extends Fragment {
                                     summary.setEmail_id(jsonObj.getString("email_id"));
                                     summary.setWebsite(jsonObj.getString("website"));
                                     summary.setVisiting_card(jsonObj.getString("visiting_card"));
-                                    summary.setMap_location_lattitude(jsonObj.getString("map_location_logitude"));
-                                    summary.setMap_location_logitude(jsonObj.getString("map_location_lattitude"));
+                                    summary.setMap_location_lattitude(jsonObj.getString("map_location_lattitude"));
+                                    summary.setMap_location_logitude(jsonObj.getString("map_location_logitude"));
                                     summary.setPhoto(jsonObj.getString("photo"));
                                     summary.setStatus(jsonObj.getString("status"));
                                     summary.setCreated_by(jsonObj.getString("created_by"));
