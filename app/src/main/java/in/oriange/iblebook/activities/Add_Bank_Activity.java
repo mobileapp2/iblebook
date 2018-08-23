@@ -173,33 +173,40 @@ public class Add_Bank_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
+
         if (edt_bank_name.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Bank Name");
             return;
         }
-        if (!Utilities.isIfscValid(edt_ifsc)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
-            return;
+
+        if (!edt_ifsc.getText().toString().trim().equals("")) {
+            if (!Utilities.isIfscValid(edt_ifsc)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
+                return;
+            }
         }
+
         if (edt_account_no.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Account Number");
             return;
         }
-        if (tv_attachfile.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Attach Document");
-            return;
-        }
+
+//        if (tv_attachfile.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Attach Document");
+//            return;
+//        }
 
 //        if (STATUS.equals("ONLINE")) {
-        if (Utilities.isNetworkAvailable(context)) {
-            new UploadDocument().execute(fileToBeUploaded);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new UploadDocument().execute(fileToBeUploaded);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//        }
 //        } else if (STATUS.equals("OFFLINE")) {
 //            long result = dbHelper.insertBankDetailsInDb(user_id,
 //                    edt_name.getText().toString().trim(),
@@ -226,6 +233,20 @@ public class Add_Bank_Activity extends Activity {
 //                Utilities.showSnackBar(ll_parent, "Bank Details Did Not Save Properly");
 //            }
 //        }
+
+        if (tv_attachfile.getText().toString().trim().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadBankDetails().execute();
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        } else {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadDocument().execute(fileToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        }
     }
 
     @Override

@@ -255,45 +255,63 @@ public class View_PAN_Activity extends Activity {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_sharepan, null);
-        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
-        TextView tv_file = promptView.findViewById(R.id.tv_file);
+//        TextView tv_name = promptView.findViewById(R.id.tv_name);
+//        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
+//        TextView tv_file = promptView.findViewById(R.id.tv_file);
 
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
 
-        tv_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_name.isChecked())
-                    cb_name.setChecked(true);
-                else
-                    cb_name.setChecked(false);
-            }
-        });
-        tv_panno.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_panno.isChecked())
-                    cb_panno.setChecked(true);
-                else
-                    cb_panno.setChecked(false);
-            }
-        });
-        tv_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_file.isChecked())
-                    cb_file.setChecked(true);
-                else
-                    cb_file.setChecked(false);
-            }
-        });
+        if (edt_name.getText().toString().trim().equals("")) {
+            cb_name.setVisibility(View.GONE);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (edt_pan_no.getText().toString().trim().equals("")) {
+            cb_panno.setVisibility(View.GONE);
+        } else {
+            cb_panno.setVisibility(View.VISIBLE);
+        }
+
+        if (pan_document.equals("")) {
+            cb_file.setVisibility(View.GONE);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+//        tv_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_name.isChecked())
+//                    cb_name.setChecked(true);
+//                else
+//                    cb_name.setChecked(false);
+//            }
+//        });
+//        tv_panno.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_panno.isChecked())
+//                    cb_panno.setChecked(true);
+//                else
+//                    cb_panno.setChecked(false);
+//            }
+//        });
+//        tv_file.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_file.isChecked())
+//                    cb_file.setChecked(true);
+//                else
+//                    cb_file.setChecked(false);
+//            }
+//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
@@ -329,7 +347,7 @@ public class View_PAN_Activity extends Activity {
         });
 
         alertDialogBuilder.setCancelable(false);
-        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
+        AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();
 
     }

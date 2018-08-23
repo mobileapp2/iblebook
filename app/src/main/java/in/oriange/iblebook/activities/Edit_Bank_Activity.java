@@ -183,22 +183,29 @@ public class Edit_Bank_Activity extends Activity {
     }
 
     private void submitData() {
+
         if (edt_name.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
+
         if (edt_bank_name.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Bank Name");
             return;
         }
-        if (!Utilities.isIfscValid(edt_ifsc)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
-            return;
+
+        if (!edt_ifsc.getText().toString().trim().equals("")) {
+            if (!Utilities.isIfscValid(edt_ifsc)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
+                return;
+            }
         }
+
         if (edt_account_no.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Account Number");
             return;

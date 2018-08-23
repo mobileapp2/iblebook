@@ -180,41 +180,59 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
-        TextView tv_file = promptView.findViewById(R.id.tv_file);
+//        TextView tv_name = promptView.findViewById(R.id.tv_name);
+//        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
+//        TextView tv_file = promptView.findViewById(R.id.tv_file);
 
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
 
-        tv_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_name.isChecked())
-                    cb_name.setChecked(true);
-                else
-                    cb_name.setChecked(false);
-            }
-        });
-        tv_panno.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_panno.isChecked())
-                    cb_panno.setChecked(true);
-                else
-                    cb_panno.setChecked(false);
-            }
-        });
-        tv_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_file.isChecked())
-                    cb_file.setChecked(true);
-                else
-                    cb_file.setChecked(false);
-            }
-        });
+        if (resultArrayList.get(position).getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getPan_number().equals("")) {
+            cb_panno.setVisibility(View.GONE);
+        } else {
+            cb_panno.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getPan_document().equals("")) {
+            cb_file.setVisibility(View.GONE);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+//        tv_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_name.isChecked())
+//                    cb_name.setChecked(true);
+//                else
+//                    cb_name.setChecked(false);
+//            }
+//        });
+//        tv_panno.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_panno.isChecked())
+//                    cb_panno.setChecked(true);
+//                else
+//                    cb_panno.setChecked(false);
+//            }
+//        });
+//        tv_file.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_file.isChecked())
+//                    cb_file.setChecked(true);
+//                else
+//                    cb_file.setChecked(false);
+//            }
+//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {

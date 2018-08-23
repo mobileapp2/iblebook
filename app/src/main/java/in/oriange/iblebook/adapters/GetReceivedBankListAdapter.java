@@ -166,11 +166,11 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        TextView tv_bankname = promptView.findViewById(R.id.tv_bankname);
-        TextView tv_ifsccode = promptView.findViewById(R.id.tv_ifsccode);
-        TextView tv_accno = promptView.findViewById(R.id.tv_accno);
-        TextView tv_file = promptView.findViewById(R.id.tv_file);
+//        TextView tv_name = promptView.findViewById(R.id.tv_name);
+//        TextView tv_bankname = promptView.findViewById(R.id.tv_bankname);
+//        TextView tv_ifsccode = promptView.findViewById(R.id.tv_ifsccode);
+//        TextView tv_accno = promptView.findViewById(R.id.tv_accno);
+//        TextView tv_file = promptView.findViewById(R.id.tv_file);
 
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
@@ -178,51 +178,81 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
         final CheckBox cb_accno = promptView.findViewById(R.id.cb_accno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
 
-        tv_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_name.isChecked())
-                    cb_name.setChecked(true);
-                else
-                    cb_name.setChecked(false);
-            }
-        });
-        tv_bankname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_bankname.isChecked())
-                    cb_bankname.setChecked(true);
-                else
-                    cb_bankname.setChecked(false);
-            }
-        });
-        tv_ifsccode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_ifsccode.isChecked())
-                    cb_ifsccode.setChecked(true);
-                else
-                    cb_ifsccode.setChecked(false);
-            }
-        });
-        tv_accno.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_accno.isChecked())
-                    cb_accno.setChecked(true);
-                else
-                    cb_accno.setChecked(false);
-            }
-        });
-        tv_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!cb_file.isChecked())
-                    cb_file.setChecked(true);
-                else
-                    cb_file.setChecked(false);
-            }
-        });
+        if (resultArrayList.get(position).getAccount_holder_name().equals("")) {
+            cb_name.setVisibility(View.GONE);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getBank_name().equals("")) {
+            cb_bankname.setVisibility(View.GONE);
+        } else {
+            cb_bankname.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getIfsc_code().equals("")) {
+            cb_ifsccode.setVisibility(View.GONE);
+        } else {
+            cb_ifsccode.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getAccount_no().equals("")) {
+            cb_accno.setVisibility(View.GONE);
+        } else {
+            cb_accno.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getDocument().equals("")) {
+            cb_file.setVisibility(View.GONE);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+//        tv_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_name.isChecked())
+//                    cb_name.setChecked(true);
+//                else
+//                    cb_name.setChecked(false);
+//            }
+//        });
+//        tv_bankname.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_bankname.isChecked())
+//                    cb_bankname.setChecked(true);
+//                else
+//                    cb_bankname.setChecked(false);
+//            }
+//        });
+//        tv_ifsccode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_ifsccode.isChecked())
+//                    cb_ifsccode.setChecked(true);
+//                else
+//                    cb_ifsccode.setChecked(false);
+//            }
+//        });
+//        tv_accno.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_accno.isChecked())
+//                    cb_accno.setChecked(true);
+//                else
+//                    cb_accno.setChecked(false);
+//            }
+//        });
+//        tv_file.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!cb_file.isChecked())
+//                    cb_file.setChecked(true);
+//                else
+//                    cb_file.setChecked(false);
+//            }
+//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
