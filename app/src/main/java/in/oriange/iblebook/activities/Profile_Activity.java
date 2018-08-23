@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,20 +55,20 @@ import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermission
 
 public class Profile_Activity extends Activity {
 
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    public Uri photoURI;
-    File file, profilPicFolder;
     private Context context;
     private FloatingActionButton fab_edt_profilepic;
-    private CircleImageView imv_profile;
+    public static final int CAMERA_REQUEST = 100;
     private UserSessionManager session;
     private TextView tv_name;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
-    private LinearLayout ll_parent;
+    public static final int GALLERY_REQUEST = 200;
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
+    public Uri photoURI;
+    File file, profilPicFolder;
+    private ImageView imv_profile;
+    private CoordinatorLayout ll_parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class Profile_Activity extends Activity {
         getSessionData();
         setDefaults();
         setEventHandler();
-        setupToolbar();
+//        setupToolbar();
     }
 
     private void init() {
@@ -87,7 +89,7 @@ public class Profile_Activity extends Activity {
         fab_edt_profilepic = findViewById(R.id.fab_edt_profilepic);
         ll_parent = findViewById(R.id.ll_parent);
         imv_profile = findViewById(R.id.imv_profile);
-        tv_name = findViewById(R.id.tv_bankname);
+//        tv_name = findViewById(R.id.tv_bankname);
         edt_name = findViewById(R.id.edt_name);
         edt_aliasname = findViewById(R.id.edt_aliasname);
         edt_mobile = findViewById(R.id.edt_mobile);
@@ -130,7 +132,7 @@ public class Profile_Activity extends Activity {
                 .placeholder(R.drawable.icon_userprofile)
                 .into(imv_profile);
 
-        tv_name.setText(name);
+//        tv_name.setText(name);
         edt_name.setText(name);
         edt_aliasname.setText(alias);
         edt_mobile.setText(country_code + "" + mobile);
@@ -139,45 +141,45 @@ public class Profile_Activity extends Activity {
     }
 
     private void setEventHandler() {
+//        imv_profile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater layoutInflater = LayoutInflater.from(context);
+//                View promptView = layoutInflater.inflate(R.layout.prompt_profile_pic, null);
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+//                alertDialogBuilder.setView(promptView);
+//                CircleImageView imv_labphoto = promptView.findViewById(R.id.imv_profile);
+//                Picasso.with(context)
+//                        .load(photo)
+//                        .placeholder(R.drawable.icon_userprofile)
+//                        .into(imv_labphoto);
+//                AlertDialog alertD = alertDialogBuilder.create();
+//                alertD.show();
+//
+//            }
+//        });
 
-        imv_profile.setOnClickListener(new View.OnClickListener() {
+        fab_edt_profilepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutInflater layoutInflater = LayoutInflater.from(context);
-                View promptView = layoutInflater.inflate(R.layout.prompt_profile_pic, null);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setView(promptView);
-                CircleImageView imv_labphoto = promptView.findViewById(R.id.imv_profile);
-                Picasso.with(context)
-                        .load(photo)
-                        .placeholder(R.drawable.icon_userprofile)
-                        .into(imv_labphoto);
-                AlertDialog alertD = alertDialogBuilder.create();
-                alertD.show();
-
-            }
-        });
-        if (Utilities.isNetworkAvailable(context)) {
-            fab_edt_profilepic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                if (Utilities.isNetworkAvailable(context)) {
                     if (doesAppNeedPermissions()) {
                         askPermission();
                     } else {
                         selectImage();
                     }
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                 }
-            });
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
 
-
+            }
+        });
         edt_name.setLongClickable(false);
         edt_aliasname.setLongClickable(false);
         edt_mobile.setLongClickable(false);
         edt_email.setLongClickable(false);
     }
+
 
     private void selectImage() {
         final CharSequence[] options = {"Take a Photo", "Choose from Gallery"};
