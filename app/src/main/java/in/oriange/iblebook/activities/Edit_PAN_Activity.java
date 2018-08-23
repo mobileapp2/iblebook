@@ -182,10 +182,12 @@ public class Edit_PAN_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
+
         if (!Utilities.isPanNum(edt_pan_no)) {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid PAN Number");
             return;

@@ -171,26 +171,29 @@ public class Add_PAN_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
+
         if (!Utilities.isPanNum(edt_pan_no)) {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid PAN Number");
             return;
         }
-        if (tv_attachfile.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Attach Document");
-            return;
-        }
+
+//        if (tv_attachfile.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Attach Document");
+//            return;
+//        }
 
 
 //        if (STATUS.equals("ONLINE")) {
-        if (Utilities.isNetworkAvailable(context)) {
-            new UploadDocument().execute(fileToBeUploaded);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new UploadDocument().execute(fileToBeUploaded);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//        }
 //        } else if (STATUS.equals("OFFLINE")) {
 //            long result = dbHelper.insertTaxDetailsInDb(
 //                    user_id,
@@ -218,6 +221,20 @@ public class Add_PAN_Activity extends Activity {
 //                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
 //            }
 //        }
+
+        if (tv_attachfile.getText().toString().trim().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadPANDetails().execute();
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        } else {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadDocument().execute(fileToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        }
     }
 
     @Override

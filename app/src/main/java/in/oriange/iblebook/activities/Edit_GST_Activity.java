@@ -182,10 +182,12 @@ public class Edit_GST_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
+
         if (!Utilities.isGSTValid(edt_gst_no)) {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
             return;
