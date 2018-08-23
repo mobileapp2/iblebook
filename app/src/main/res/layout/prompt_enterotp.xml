@@ -11,7 +11,7 @@
         android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:hint="Enter OTP"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:maxLength="10"
         android:padding="10dp"
         android:singleLine="true"

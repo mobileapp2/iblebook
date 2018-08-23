@@ -40,7 +40,7 @@ public class Offline_GST_Fragment extends Fragment {
     private static DataBaseHelper dbHelper;
     private FloatingActionButton fab_add_gst;
     private LinearLayoutManager layoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private static SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
 
     public static void setDefault() {
@@ -118,9 +118,7 @@ public class Offline_GST_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pd.setMessage("Please wait...");
-//            pd.setCancelable(false);
-//            pd.show();
+            swipeRefreshLayout.setRefreshing(true);
         }
 
         @Override
@@ -142,7 +140,7 @@ public class Offline_GST_Fragment extends Fragment {
             super.onPostExecute(result);
             String type = "", message = "";
             try {
-//                pd.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
                 if (!result.equals("")) {
                     JSONObject mainObj = new JSONObject(result);
                     type = mainObj.getString("type");

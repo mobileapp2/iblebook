@@ -100,9 +100,6 @@ public class ReceivedRequests_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pd.setMessage("Please wait...");
-//            pd.setCancelable(false);
-//            pd.show();
             swipeRefreshLayout.setRefreshing(true);
         }
 
@@ -125,7 +122,6 @@ public class ReceivedRequests_Fragment extends Fragment {
             super.onPostExecute(result);
             String type = "", message = "";
             try {
-//                pd.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
                 if (!result.equals("")) {
                     JSONObject mainObj = new JSONObject(result);
