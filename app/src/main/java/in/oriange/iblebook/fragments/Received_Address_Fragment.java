@@ -34,8 +34,8 @@ public class Received_Address_Fragment extends Fragment {
     private static Context context;
     private static RecyclerView rv_addresslist;
     private static String user_id;
-    private LinearLayoutManager layoutManager;
     private static SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager layoutManager;
     private UserSessionManager session;
 
     @Override

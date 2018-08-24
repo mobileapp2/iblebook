@@ -21,11 +21,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -43,7 +41,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.MultipartUtility;
@@ -55,18 +52,18 @@ import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermission
 
 public class Profile_Activity extends Activity {
 
+    public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    File file, profilPicFolder;
     private Context context;
     private FloatingActionButton fab_edt_profilepic;
-    public static final int CAMERA_REQUEST = 100;
     private UserSessionManager session;
     private TextView tv_name;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
-    public static final int GALLERY_REQUEST = 200;
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    public Uri photoURI;
-    File file, profilPicFolder;
     private ImageView imv_profile;
     private CoordinatorLayout ll_parent;
 

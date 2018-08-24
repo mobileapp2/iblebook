@@ -36,9 +36,9 @@ public class My_Bank_Fragment extends Fragment {
     private static Context context;
     private static RecyclerView rv_banklist;
     private static String user_id;
+    private static SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
-    private static SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
 
     @Override

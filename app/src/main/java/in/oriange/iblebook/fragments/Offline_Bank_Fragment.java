@@ -39,9 +39,9 @@ public class Offline_Bank_Fragment extends Fragment {
     private static RecyclerView rv_banklist;
     private static String user_id;
     private static DataBaseHelper dbHelper;
+    private static SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
-    private static SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
 
     @Override

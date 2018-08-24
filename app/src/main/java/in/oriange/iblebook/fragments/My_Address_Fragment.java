@@ -36,9 +36,9 @@ public class My_Address_Fragment extends Fragment {
     private static Context context;
     private static RecyclerView rv_addresslist;
     private static String user_id;
+    private static SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fab_add_address;
     private LinearLayoutManager layoutManager;
-    private static SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
 
     @Override

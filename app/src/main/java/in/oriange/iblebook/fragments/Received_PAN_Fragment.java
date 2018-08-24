@@ -34,9 +34,9 @@ public class Received_PAN_Fragment extends Fragment {
     private static Context context;
     private static RecyclerView rv_panlist;
     private static String user_id;
+    private static SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fab_add_pan;
     private LinearLayoutManager layoutManager;
-    private static SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
 
     public static void setDefault() {

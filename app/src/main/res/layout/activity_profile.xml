@@ -192,13 +192,12 @@
 
     </ScrollView>
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_edt_profilepic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:src="@drawable/icon_edit"
+        android:src="@drawable/ic_camera_white_24dp"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="end|bottom"
