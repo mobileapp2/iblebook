@@ -14,6 +14,29 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/ll_nothingtoshow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Welcome To"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_loginlogo" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,7 +44,6 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -41,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="Name"
-                        android:inputType="textCapWords"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:singleLine="true"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
@@ -62,7 +84,7 @@
                     android:layout_marginRight="20dp"
                     android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:hint="Alias Name"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapWords|textNoSuggestions"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
@@ -126,7 +148,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email Address"
-                        android:inputType="textEmailAddress"
+                        android:inputType="textEmailAddress|textNoSuggestions"
                         android:singleLine="true"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
@@ -210,7 +232,6 @@
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
-
             <TextView
                 android:id="@+id/tv_alreadyregister"
                 android:layout_width="match_parent"
@@ -222,6 +243,7 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

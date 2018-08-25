@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agency.tango.materialintroscreen.parallax.ParallaxLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/intro_backgroung3"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imv_intro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/imv_splash3" />
+
+</agency.tango.materialintroscreen.parallax.ParallaxLinearLayout>

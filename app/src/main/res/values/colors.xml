@@ -15,4 +15,9 @@
     <color name="default_text">#212121</color>
     <color name="default_hint_text">#757575</color>
     <color name="red">#F44336</color>
+
+    <color name="intro_backgroung1">#FFE0B2</color>
+    <color name="intro_backgroung2">#96FEFD</color>
+    <color name="intro_backgroung3">#B7FFC0</color>
+    <color name="intro_backgroung4">#B7C3FF</color>
 </resources>
