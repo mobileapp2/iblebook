@@ -41,6 +41,12 @@ public class MainDrawer_Activity extends FragmentActivity {
         setupToolbar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MenuListFragment.setupHeader();
+    }
+
     private void init() {
         context = MainDrawer_Activity.this;
         mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);

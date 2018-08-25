@@ -51,15 +51,16 @@ public class MenuListFragment extends Fragment {
     public static final int GALLERY_REQUEST = 200;
     public Uri photoURI;
     File file, profilPicFolder;
-    private CircleImageView ivMenuUserProfilePhoto;
-    private Context context;
-    private UserSessionManager session;
+    private static CircleImageView ivMenuUserProfilePhoto;
+    private static Context context;
+    private static UserSessionManager session;
     private NavigationView vNavigation;
-    private TextView tv_name;
+    private static TextView tv_name;
     private CircleImageView imv_labphoto;
     private FloatingActionButton fab_edit_profilepic;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
-    private String photo, name;
+    private static String photo;
+    private static String name;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class MenuListFragment extends Fragment {
             profilPicFolder.mkdirs();
     }
 
-    private void getSessionData() {
+    private static void getSessionData() {
         try {
             JSONArray user_info = new JSONArray(session.getUserDetails().get(
                     ApplicationConstants.KEY_LOGIN_INFO));
@@ -101,43 +102,17 @@ public class MenuListFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        setupHeader();
     }
 
+    public static void setupHeader() {
+        getSessionData();
+        Picasso.with(context)
+                .load(photo)
+                .placeholder(R.drawable.icon_userprofile)
+                .into(ivMenuUserProfilePhoto);
+        Picasso.with(context).setLoggingEnabled(true);
 
-    private void setEventHandlers() {
-        vNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menu_profile) {
-                    startActivity(new Intent(context, Profile_Activity.class));
-                    MainDrawer_Activity.mDrawer.closeMenu();
-                }
-                if (menuItem.getItemId() == R.id.menu_logout) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Are you sure you want to log out?");
-                    builder.setTitle("Alert");
-                    builder.setIcon(R.drawable.ic_alert_red_24dp);
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            session.logoutUser();
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertD = builder.create();
-                    alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-                    alertD.show();
-                }
-                return false;
-            }
-        });
+        tv_name.setText(name.trim());
     }
 
     private void selectImage() {
@@ -229,15 +204,41 @@ public class MenuListFragment extends Fragment {
 //        doc_image_uri = Uri.fromFile(imageFile);
     }
 
-    private void setupHeader() {
+    private void setEventHandlers() {
 
-        Picasso.with(context)
-                .load(photo)
-                .placeholder(R.drawable.icon_userprofile)
-                .into(ivMenuUserProfilePhoto);
-        Picasso.with(context).setLoggingEnabled(true);
+        setupHeader();
 
-        tv_name.setText(name.trim());
+        vNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_profile) {
+                    startActivity(new Intent(context, Profile_Activity.class));
+                    MainDrawer_Activity.mDrawer.closeMenu();
+                }
+                if (menuItem.getItemId() == R.id.menu_logout) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure you want to log out?");
+                    builder.setTitle("Alert");
+                    builder.setIcon(R.drawable.ic_alert_red_24dp);
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            session.logoutUser();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertD = builder.create();
+                    alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                    alertD.show();
+                }
+                return false;
+            }
+        });
     }
 
     public void askPermission() {
@@ -281,3 +282,5 @@ public class MenuListFragment extends Fragment {
     }
 
 }
+
+

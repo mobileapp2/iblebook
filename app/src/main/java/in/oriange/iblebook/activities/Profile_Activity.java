@@ -31,6 +31,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -46,6 +47,7 @@ import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.MultipartUtility;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
+import in.oriange.iblebook.utilities.WebServiceCalls;
 
 import static in.oriange.iblebook.utilities.PermissionUtil.PERMISSION_ALL;
 import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermissions;
@@ -61,7 +63,7 @@ public class Profile_Activity extends Activity {
     private UserSessionManager session;
     private TextView tv_name;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
-    private String user_id, photo, name, alias, country_code, mobile, email, photo_url;
+    private String user_id, photo, name, alias, country_code, mobile, email, photo_url, password;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
     private ImageView imv_profile;
@@ -116,6 +118,7 @@ public class Profile_Activity extends Activity {
             alias = json.getString("alias");
             country_code = json.getString("country_code");
             mobile = json.getString("mobile");
+            password = json.getString("password");
             email = json.getString("email");
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,7 +179,6 @@ public class Profile_Activity extends Activity {
         edt_mobile.setLongClickable(false);
         edt_email.setLongClickable(false);
     }
-
 
     private void selectImage() {
         final CharSequence[] options = {"Take a Photo", "Choose from Gallery"};
@@ -361,7 +363,6 @@ public class Profile_Activity extends Activity {
                     String type = mainObj.getString("type");
                     String message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("Success")) {
-                        Utilities.showSnackBar(ll_parent, message);
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         photo_url = Obj1.getString("document_url");
                         photo = photo_url;
@@ -370,15 +371,86 @@ public class Profile_Activity extends Activity {
                                 .placeholder(R.drawable.icon_userprofile)
                                 .into(imv_profile);
 
+
+                        if (Utilities.isNetworkAvailable(context)) {
+                            new UpdateProfileData().execute();
+                        } else {
+                            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                        }
+
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }
                 } else {
-//                    Utilities.showSnackBar(ll_parent, message);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+    public class UpdateProfileData extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "Update");
+                obj.put("user_id", user_id);
+                obj.put("name", name);
+                obj.put("alias", alias);
+                obj.put("country_code", "+91");
+                obj.put("mobile", mobile);
+                obj.put("email", email);
+                obj.put("password", password);
+                obj.put("photo", photo_url);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.USERAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        Utilities.showAlertDialog(context, "Success", "Profile Pic Update Successfully", true);
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                session.updateSession(jsonarr.toString());
+                            }
+                        }
+                    } else if (type.equalsIgnoreCase("failure")) {
+                        Utilities.showSnackBar(ll_parent, message);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

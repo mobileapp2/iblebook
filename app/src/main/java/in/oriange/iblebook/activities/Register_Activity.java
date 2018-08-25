@@ -257,7 +257,7 @@ public class Register_Activity extends Activity {
                 obj.put("mobile", edt_mobile.getText().toString().trim());
                 obj.put("email", edt_email.getText().toString().trim());
                 obj.put("password", edt_password.getText().toString().trim());
-                obj.put("photo", "patil.png");
+                obj.put("photo", "");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

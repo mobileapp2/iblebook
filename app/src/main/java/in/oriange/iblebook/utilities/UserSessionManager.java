@@ -64,6 +64,15 @@ public class UserSessionManager {
         return user;
     }
 
+    public void updateSession(String loginInfo) {
+        editor = pref.edit();
+        editor.remove(ApplicationConstants.KEY_LOGIN_INFO);
+        editor.remove(ApplicationConstants.IS_USER_LOGIN);
+        editor.apply();
+        editor.commit();
+        createUserLoginSession(loginInfo);
+    }
+
     public void logoutUser() {
         cleanLoginInfo();
         Intent i = new Intent(_context, Login_Activity.class);
