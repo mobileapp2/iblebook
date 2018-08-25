@@ -49,18 +49,41 @@ import static in.oriange.iblebook.utilities.PermissionUtil.PERMISSION_ALL;
 public class MenuListFragment extends Fragment {
     public static final int CAMERA_REQUEST = 100;
     public static final int GALLERY_REQUEST = 200;
-    public Uri photoURI;
-    File file, profilPicFolder;
     private static CircleImageView ivMenuUserProfilePhoto;
     private static Context context;
     private static UserSessionManager session;
-    private NavigationView vNavigation;
     private static TextView tv_name;
+    private static String photo;
+    private static String name;
+    public Uri photoURI;
+    File file, profilPicFolder;
+    private NavigationView vNavigation;
     private CircleImageView imv_labphoto;
     private FloatingActionButton fab_edit_profilepic;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
-    private static String photo;
-    private static String name;
+
+    private static void getSessionData() {
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
+            JSONObject json = user_info.getJSONObject(0);
+            photo = json.getString("photo");
+            name = json.getString("name");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setupHeader() {
+        getSessionData();
+        Picasso.with(context)
+                .load(photo)
+                .placeholder(R.drawable.icon_userprofile)
+                .into(ivMenuUserProfilePhoto);
+        Picasso.with(context).setLoggingEnabled(true);
+
+        tv_name.setText(name.trim());
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,29 +113,6 @@ public class MenuListFragment extends Fragment {
         profilPicFolder = new File(Environment.getExternalStorageDirectory() + "/Address Book/" + "Profile Pic");
         if (!profilPicFolder.exists())
             profilPicFolder.mkdirs();
-    }
-
-    private static void getSessionData() {
-        try {
-            JSONArray user_info = new JSONArray(session.getUserDetails().get(
-                    ApplicationConstants.KEY_LOGIN_INFO));
-            JSONObject json = user_info.getJSONObject(0);
-            photo = json.getString("photo");
-            name = json.getString("name");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void setupHeader() {
-        getSessionData();
-        Picasso.with(context)
-                .load(photo)
-                .placeholder(R.drawable.icon_userprofile)
-                .into(ivMenuUserProfilePhoto);
-        Picasso.with(context).setLoggingEnabled(true);
-
-        tv_name.setText(name.trim());
     }
 
     private void selectImage() {
@@ -212,10 +212,11 @@ public class MenuListFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.menu_profile) {
-                    startActivity(new Intent(context, Profile_Activity.class));
                     MainDrawer_Activity.mDrawer.closeMenu();
+                    startActivity(new Intent(context, Profile_Activity.class));
                 }
                 if (menuItem.getItemId() == R.id.menu_logout) {
+                    MainDrawer_Activity.mDrawer.closeMenu();
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Are you sure you want to log out?");
                     builder.setTitle("Alert");

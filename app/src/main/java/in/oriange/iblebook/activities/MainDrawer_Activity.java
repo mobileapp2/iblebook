@@ -118,7 +118,7 @@ public class MainDrawer_Activity extends FragmentActivity {
         TextView Title = findViewById(R.id.tool_titile);
 
         btn_drawer.setBackgroundResource(R.drawable.icon_threebar);
-        Title.setText("Address Book");
+        Title.setText("Iblebook");
 
         btn_drawer.setOnClickListener(new View.OnClickListener() {
             @Override

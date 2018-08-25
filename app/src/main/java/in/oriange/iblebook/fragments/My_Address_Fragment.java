@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -37,6 +38,7 @@ public class My_Address_Fragment extends Fragment {
     private static RecyclerView rv_addresslist;
     private static String user_id;
     private static SwipeRefreshLayout swipeRefreshLayout;
+    private static LinearLayout ll_nothingtoshow;
     private FloatingActionButton fab_add_address;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
@@ -56,6 +58,7 @@ public class My_Address_Fragment extends Fragment {
         session = new UserSessionManager(context);
         ll_parent = getActivity().findViewById(R.id.drawerlayout);
         fab_add_address = rootView.findViewById(R.id.fab_add_address);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
         rv_addresslist = rootView.findViewById(R.id.rv_addresslist);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
@@ -76,8 +79,12 @@ public class My_Address_Fragment extends Fragment {
     private void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
             new GetAddressList().execute();
+            swipeRefreshLayout.setRefreshing(true);
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            swipeRefreshLayout.setRefreshing(false);
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_addresslist.setVisibility(View.GONE);
         }
 
     }
@@ -97,7 +104,7 @@ public class My_Address_Fragment extends Fragment {
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(context)) {
                     new GetAddressList().execute();
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
                 } else {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                     swipeRefreshLayout.setRefreshing(false);
@@ -174,13 +181,23 @@ public class My_Address_Fragment extends Fragment {
                                     addressList.add(summary);
                                 }
                             }
+                            if (addressList.size() == 0) {
+                                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                                rv_addresslist.setVisibility(View.GONE);
+                            } else {
+                                rv_addresslist.setVisibility(View.VISIBLE);
+                                ll_nothingtoshow.setVisibility(View.GONE);
+                            }
                             rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressList, "ONLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failure")) {
-
+                        ll_nothingtoshow.setVisibility(View.VISIBLE);
+                        rv_addresslist.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_addresslist.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }

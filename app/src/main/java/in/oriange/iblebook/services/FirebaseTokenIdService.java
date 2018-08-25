@@ -12,14 +12,14 @@ import in.oriange.iblebook.utilities.UserSessionManager;
  * Created by priyeshp on 02-01-18.
  */
 
-public class FirebaseIdService extends FirebaseInstanceIdService {
+public class FirebaseTokenIdService extends FirebaseInstanceIdService {
 
     private Context context;
     private UserSessionManager session;
 
     @Override
     public void onTokenRefresh() {
-        context = FirebaseIdService.this;
+        context = FirebaseTokenIdService.this;
         session = new UserSessionManager(context);
 
         String token = FirebaseInstanceId.getInstance().getToken();

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.LinearLayout;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -37,16 +38,9 @@ public class ReceivedRequests_Fragment extends Fragment {
     private static RecyclerView rv_requestlist;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static String user_id;
+    private static LinearLayout ll_nothingtoshow;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
-
-    public static void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetRequestList().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -59,13 +53,16 @@ public class ReceivedRequests_Fragment extends Fragment {
         return rootView;
     }
 
-    private void init(View rootView) {
-        session = new UserSessionManager(context);
-        rv_requestlist = rootView.findViewById(R.id.rv_requestlist);
-        ll_parent = getActivity().findViewById(R.id.drawerlayout);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
-        layoutManager = new LinearLayoutManager(context);
-        rv_requestlist.setLayoutManager(layoutManager);
+    public static void setDefault() {
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetRequestList().execute();
+            swipeRefreshLayout.setRefreshing(true);
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            swipeRefreshLayout.setRefreshing(false);
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_requestlist.setVisibility(View.GONE);
+        }
     }
 
     private void getSessionData() {
@@ -78,6 +75,17 @@ public class ReceivedRequests_Fragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    private void init(View rootView) {
+        session = new UserSessionManager(context);
+        rv_requestlist = rootView.findViewById(R.id.rv_requestlist);
+        ll_parent = getActivity().findViewById(R.id.drawerlayout);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        layoutManager = new LinearLayoutManager(context);
+        rv_requestlist.setLayoutManager(layoutManager);
+    }
+
 
     private void setEventHandlers() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -151,7 +159,8 @@ public class ReceivedRequests_Fragment extends Fragment {
                                 summary.setSender_mobile(jsonObj.getString("sender_mobile"));
                                 requestList.add(summary);
                             }
-
+                            rv_requestlist.setVisibility(View.VISIBLE);
+                            ll_nothingtoshow.setVisibility(View.GONE);
                             ScaleInAnimationAdapter alphaAdapter1 = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new GetReceivedRequestListAdapter(context, requestList)));
                             alphaAdapter1.setDuration(500);
                             alphaAdapter1.setInterpolator(new OvershootInterpolator());
@@ -160,10 +169,13 @@ public class ReceivedRequests_Fragment extends Fragment {
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {
-
+                        ll_nothingtoshow.setVisibility(View.VISIBLE);
+                        rv_requestlist.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_requestlist.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }

@@ -18,9 +18,8 @@
     <application
         android:name=".AddressBook"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_loginlogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -43,7 +42,6 @@
         </activity>
         <activity
             android:name=".activities.Intro_Activity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Intro" />
         <activity
             android:name=".activities.Login_Activity"
@@ -162,7 +160,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
 
-        <service android:name=".services.FirebaseIdService">
+        <service android:name=".services.FirebaseTokenIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

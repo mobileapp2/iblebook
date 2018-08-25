@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -39,21 +40,11 @@ public class Offline_PAN_Fragment extends Fragment {
     private static String user_id;
     private static DataBaseHelper dbHelper;
     private static SwipeRefreshLayout swipeRefreshLayout;
+    private static LinearLayout ll_nothingtoshow;
     private FloatingActionButton fab_add_pan;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
 
-    public static void setDefault() {
-//        ArrayList<GetTaxListPojo> panList = new ArrayList<GetTaxListPojo>();
-//        panList = dbHelper.getPANListFromDb();
-//        rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "OFFLINE"));
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetPANList().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -66,15 +57,20 @@ public class Offline_PAN_Fragment extends Fragment {
         return rootView;
     }
 
-    private void init(View rootView) {
-        session = new UserSessionManager(context);
-        dbHelper = new DataBaseHelper(context);
-        ll_parent = getActivity().findViewById(R.id.drawerlayout);
-        fab_add_pan = rootView.findViewById(R.id.fab_add_pan);
-        rv_panlist = rootView.findViewById(R.id.rv_panlist);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
-        layoutManager = new LinearLayoutManager(context);
-        rv_panlist.setLayoutManager(layoutManager);
+    public static void setDefault() {
+//        ArrayList<GetTaxListPojo> panList = new ArrayList<GetTaxListPojo>();
+//        panList = dbHelper.getPANListFromDb();
+//        rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "OFFLINE"));
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new GetPANList().execute();
+            swipeRefreshLayout.setRefreshing(true);
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            swipeRefreshLayout.setRefreshing(false);
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_panlist.setVisibility(View.GONE);
+        }
     }
 
     private void getSessionData() {
@@ -86,6 +82,18 @@ public class Offline_PAN_Fragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void init(View rootView) {
+        session = new UserSessionManager(context);
+        dbHelper = new DataBaseHelper(context);
+        ll_parent = getActivity().findViewById(R.id.drawerlayout);
+        fab_add_pan = rootView.findViewById(R.id.fab_add_pan);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
+        rv_panlist = rootView.findViewById(R.id.rv_panlist);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        layoutManager = new LinearLayoutManager(context);
+        rv_panlist.setLayoutManager(layoutManager);
     }
 
     private void setEventHandlers() {
@@ -103,7 +111,7 @@ public class Offline_PAN_Fragment extends Fragment {
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(context)) {
                     new GetPANList().execute();
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
                 } else {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                     swipeRefreshLayout.setRefreshing(false);
@@ -164,13 +172,23 @@ public class Offline_PAN_Fragment extends Fragment {
                                     panList.add(summary);
                                 }
                             }
+                            if (panList.size() == 0) {
+                                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                                rv_panlist.setVisibility(View.GONE);
+                            } else {
+                                rv_panlist.setVisibility(View.VISIBLE);
+                                ll_nothingtoshow.setVisibility(View.GONE);
+                            }
                             rv_panlist.setAdapter(new GetOfflinePANListAdapter(context, panList, "OFFLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failed")) {
-
+                        ll_nothingtoshow.setVisibility(View.VISIBLE);
+                        rv_panlist.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_panlist.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }

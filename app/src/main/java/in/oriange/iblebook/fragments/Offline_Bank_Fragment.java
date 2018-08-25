@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -40,6 +41,7 @@ public class Offline_Bank_Fragment extends Fragment {
     private static String user_id;
     private static DataBaseHelper dbHelper;
     private static SwipeRefreshLayout swipeRefreshLayout;
+    private static LinearLayout ll_nothingtoshow;
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
@@ -60,6 +62,7 @@ public class Offline_Bank_Fragment extends Fragment {
         dbHelper = new DataBaseHelper(context);
         ll_parent = getActivity().findViewById(R.id.drawerlayout);
         fab_add_bank = rootView.findViewById(R.id.fab_add_bank);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
         rv_banklist = rootView.findViewById(R.id.rv_banklist);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
@@ -84,8 +87,12 @@ public class Offline_Bank_Fragment extends Fragment {
 
         if (Utilities.isNetworkAvailable(context)) {
             new GetBankList().execute();
+            swipeRefreshLayout.setRefreshing(true);
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            swipeRefreshLayout.setRefreshing(false);
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_banklist.setVisibility(View.GONE);
         }
 
     }
@@ -105,7 +112,7 @@ public class Offline_Bank_Fragment extends Fragment {
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(context)) {
                     new GetBankList().execute();
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
                 } else {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
                     swipeRefreshLayout.setRefreshing(false);
@@ -169,14 +176,23 @@ public class Offline_Bank_Fragment extends Fragment {
                                     bankList.add(summary);
                                 }
                             }
+                            if (bankList.size() == 0) {
+                                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                                rv_banklist.setVisibility(View.GONE);
+                            } else {
+                                rv_banklist.setVisibility(View.VISIBLE);
+                                ll_nothingtoshow.setVisibility(View.GONE);
+                            }
                             rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, bankList, "OFFLINE"));
                         }
                     } else if (type.equalsIgnoreCase("failed")) {
-//                        bankList = new ArrayList<GetBankListPojo>();
-//                    rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "OFFLINE"));
+                        ll_nothingtoshow.setVisibility(View.VISIBLE);
+                        rv_banklist.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_banklist.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }
