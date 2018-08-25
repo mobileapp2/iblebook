@@ -16,6 +16,10 @@ public class GetReceivedDetailsListPojo {
 
     private String record_id;
 
+    private String message;
+
+    private String sender_mobile;
+
     public String getStatus() {
         return status;
     }
@@ -70,6 +74,22 @@ public class GetReceivedDetailsListPojo {
 
     public void setRecord_id(String record_id) {
         this.record_id = record_id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getSender_mobile() {
+        return sender_mobile;
+    }
+
+    public void setSender_mobile(String sender_mobile) {
+        this.sender_mobile = sender_mobile;
     }
 
     @Override

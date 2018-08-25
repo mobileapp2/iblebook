@@ -142,14 +142,14 @@ public class ReceivedDetails_Fragment extends Fragment {
                                 GetReceivedDetailsListPojo summary = new GetReceivedDetailsListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
                                 summary.setShared_details_id(jsonObj.getString("shared_details_id"));
-//                                summary.setMessage(jsonObj.getString("message"));
+                                summary.setMessage(jsonObj.getString("message"));
                                 summary.setRecord_id(jsonObj.getString("record_id"));
                                 summary.setSender_id(jsonObj.getString("sender_id"));
                                 summary.setMobile(jsonObj.getString("mobile"));
                                 summary.setType(jsonObj.getString("type"));
                                 summary.setStatus(jsonObj.getString("status"));
                                 summary.setSender_name(jsonObj.getString("sender_name"));
-//                                summary.setSender_mobile(jsonObj.getString("sender_mobile"));
+                                summary.setSender_mobile(jsonObj.getString("sender_mobile"));
                                 detailsList.add(summary);
                             }
 

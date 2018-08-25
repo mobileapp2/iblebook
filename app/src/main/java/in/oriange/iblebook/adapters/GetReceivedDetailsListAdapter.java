@@ -1,9 +1,16 @@
 package in.oriange.iblebook.adapters;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,8 +69,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getSender_name());
-//        holder.tv_message.setText(resultArrayList.get(position).getMessage());
-        holder.tv_message.setText("Message parameter is to be added in the webservice");
+        holder.tv_message.setText(resultArrayList.get(position).getMessage());
 
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,46 +108,44 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
 
         tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         tv_name.setText(resultArrayList.get(position).getSender_name());
-        tv_message.setText("Message parameter is to be added in the webservice");
+        tv_message.setText(resultArrayList.get(position).getMessage());
 
         ImageView imv_call = promptView.findViewById(R.id.imv_call);
 
         imv_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-//                            Uri.fromParts("package", context.getPackageName(), null)));
-//                    Utilities.showMessageString(context, "Please provide permission for making call");
-//                } else {
-//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-//                    alertDialogBuilder.setTitle("Alert");
-//                    alertDialogBuilder.setIcon(R.drawable.ic_alert_red_24dp);
-//                    alertDialogBuilder.setMessage("Are you sure you want to make a call ?");
-//                    alertDialogBuilder.setCancelable(true);
-//                    alertDialogBuilder.setPositiveButton(
-//                            "Yes", new DialogInterface.OnClickListener() {
-//                                @SuppressLint("MissingPermission")
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                    context.startActivity(new Intent(Intent.ACTION_CALL,
-//                                            Uri.parse("tel:" + resultArrayList.get(position).getSender_mobile())));
-//                                }
-//                            });
-//                    alertDialogBuilder.setNegativeButton(
-//                            "No",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//                    AlertDialog alert11 = alertDialogBuilder.create();
-//                    alert11.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-//                    alert11.show();
-//                }
-
-                Utilities.showMessageString(context, "Mobile Number to be added in webservice");
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", context.getPackageName(), null)));
+                    Utilities.showMessageString(context, "Please provide permission for making call");
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                    alertDialogBuilder.setTitle("Alert");
+                    alertDialogBuilder.setIcon(R.drawable.ic_alert_red_24dp);
+                    alertDialogBuilder.setMessage("Are you sure you want to make a call ?");
+                    alertDialogBuilder.setCancelable(true);
+                    alertDialogBuilder.setPositiveButton(
+                            "Yes", new DialogInterface.OnClickListener() {
+                                @SuppressLint("MissingPermission")
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    context.startActivity(new Intent(Intent.ACTION_CALL,
+                                            Uri.parse("tel:" + resultArrayList.get(position).getSender_mobile())));
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = alertDialogBuilder.create();
+                    alert11.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                    alert11.show();
+                }
             }
         });
 
