@@ -66,7 +66,7 @@ public class Profile_Activity extends Activity {
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url, password;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
-    private ImageView imv_profile;
+    private ImageView imv_profile, img_finish;
     private CoordinatorLayout ll_parent;
 
     @Override
@@ -88,6 +88,7 @@ public class Profile_Activity extends Activity {
         fab_edt_profilepic = findViewById(R.id.fab_edt_profilepic);
         ll_parent = findViewById(R.id.ll_parent);
         imv_profile = findViewById(R.id.imv_profile);
+        img_finish = findViewById(R.id.img_finish);
 //        tv_name = findViewById(R.id.tv_bankname);
         edt_name = findViewById(R.id.edt_name);
         edt_aliasname = findViewById(R.id.edt_aliasname);
@@ -158,6 +159,13 @@ public class Profile_Activity extends Activity {
 //
 //            }
 //        });
+
+        img_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         fab_edt_profilepic.setOnClickListener(new View.OnClickListener() {
             @Override

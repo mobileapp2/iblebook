@@ -49,10 +49,10 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
-            notificationBuilder.setSmallIcon(R.drawable.icon_address_email);
-        else
-            notificationBuilder.setSmallIcon(R.drawable.icon_address_email);
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
+//            notificationBuilder.setSmallIcon(R.drawable.icon_address_email);
+//        else
+        notificationBuilder.setSmallIcon(R.drawable.icon_mainlogo);
 
         notificationBuilder.setContentTitle("Address Book");
         notificationBuilder.setContentText(messageBody);

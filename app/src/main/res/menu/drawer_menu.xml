@@ -2,26 +2,26 @@
     <group android:id="@+id/menu_group_1">
         <item
             android:id="@+id/menu_profile"
-            android:icon="@drawable/ic_global_menu_feed"
+            android:icon="@drawable/ic_menu_profile"
             android:title="Profile" />
 
-        <item
-            android:id="@+id/menu_address"
-            android:icon="@drawable/ic_global_menu_feed"
-            android:title="Address" />
+        <!--<item-->
+        <!--android:id="@+id/menu_address"-->
+        <!--android:icon="@drawable/ic_global_menu_feed"-->
+        <!--android:title="Address" />-->
 
-        <item
-            android:id="@+id/menu_gst"
-            android:icon="@drawable/ic_global_menu_feed"
-            android:title="GST Number" />
-        <item
-            android:id="@+id/menu_bank"
-            android:icon="@drawable/ic_global_menu_feed"
-            android:title="Bank Details" />
+        <!--<item-->
+        <!--android:id="@+id/menu_gst"-->
+        <!--android:icon="@drawable/ic_global_menu_feed"-->
+        <!--android:title="GST Number" />-->
+        <!--<item-->
+        <!--android:id="@+id/menu_bank"-->
+        <!--android:icon="@drawable/ic_global_menu_feed"-->
+        <!--android:title="Bank Details" />-->
 
         <item
             android:id="@+id/menu_logout"
-            android:icon="@drawable/ic_global_menu_feed"
+            android:icon="@drawable/ic_menu_logout"
             android:title="Logout" />
     </group>
 </menu>

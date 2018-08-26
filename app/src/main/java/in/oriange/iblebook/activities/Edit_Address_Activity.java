@@ -71,7 +71,7 @@ public class Edit_Address_Activity extends Activity {
     private EditText edt_name, edt_alias, edt_address, edt_country,
             edt_state, edt_district, edt_pincode, edt_mobile1, edt_email, edt_website;
     private Button btn_save;
-    private String user_id, visitCardUrl, photoUrl, type_id, photo, visiting_card, address_id,
+    private String user_id, visitCardUrl = "", photoUrl = "", type_id, address_id,
             map_location_lattitude, map_location_logitude, name;
     private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
@@ -161,6 +161,7 @@ public class Edit_Address_Activity extends Activity {
     }
 
     private void getIntentData() {
+        type_id = getIntent().getStringExtra("type_id");
         address_id = getIntent().getStringExtra("address_id");
         tv_addresstype.setText(getIntent().getStringExtra("type"));
         edt_name.setText(getIntent().getStringExtra("name"));
@@ -173,7 +174,7 @@ public class Edit_Address_Activity extends Activity {
         edt_email.setText(getIntent().getStringExtra("email_id"));
         edt_mobile1.setText(getIntent().getStringExtra("mobile_number"));
         edt_website.setText(getIntent().getStringExtra("website"));
-        visiting_card = getIntent().getStringExtra("visiting_card");
+        visitCardUrl = getIntent().getStringExtra("visiting_card");
         map_location_lattitude = getIntent().getStringExtra("map_location_lattitude");
         map_location_logitude = getIntent().getStringExtra("map_location_logitude");
 
@@ -181,7 +182,7 @@ public class Edit_Address_Activity extends Activity {
         constantData.setLongitude(map_location_logitude);
 
         tv_pickloc.setText(constantData.getLatitude() + " , " + constantData.getLongitude());
-        photo = getIntent().getStringExtra("photo");
+        photoUrl = getIntent().getStringExtra("photo");
         user_id = getIntent().getStringExtra("created_by");
 
         STATUS = getIntent().getStringExtra("STATUS");
@@ -352,10 +353,10 @@ public class Edit_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-            return;
-        }
+//        if (edt_alias.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+//            return;
+//        }
         if (edt_address.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Address");
             return;
@@ -376,31 +377,59 @@ public class Edit_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid Pin Code");
             return;
         }
-        if (!Utilities.isMobileNo(edt_mobile1)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
-            return;
+        if (!edt_mobile1.getText().toString().equals("")) {
+            if (!Utilities.isMobileNo(edt_mobile1)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
         }
-        if (!Utilities.isEmailValid(edt_email)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
-            return;
+        if (!edt_email.getText().toString().equals("")) {
+            if (!Utilities.isEmailValid(edt_email)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                return;
+            }
         }
-        if (edt_website.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Website");
-            return;
-        }
-        if (tv_visitcard.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Attach Visiting Card");
-            return;
-        }
-        if (tv_attachphoto.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Attach Photo");
-            return;
-        }
+//        if (edt_website.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Enter Website");
+//            return;
+//        }
+//        if (tv_pickloc.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Pick Location");
+//            return;
+//        }
+//        if (tv_visitcard.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Attach Visiting Card");
+//            return;
+//        }
+//        if (tv_attachphoto.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Attach Photo");
+//            return;
+//        }
 
-        if (Utilities.isNetworkAvailable(context)) {
-            new UploadVisitCard().execute(visitCardToBeUploaded);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadVisitCard().execute(visitCardToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadVisitCard().execute(visitCardToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadPhoto().execute(photoToBeUploaded);
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
+        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+            if (Utilities.isNetworkAvailable(context)) {
+                new UploadAddressDetails().execute();
+            } else {
+                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            }
         }
     }
 
@@ -591,7 +620,25 @@ public class Edit_Address_Activity extends Activity {
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         visitCardUrl = Obj1.getString("document_url");
-                        new UploadPhoto().execute(photoToBeUploaded);
+
+                        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+                            if (Utilities.isNetworkAvailable(context)) {
+                                new UploadPhoto().execute(photoToBeUploaded);
+                            } else {
+                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                            }
+                        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+                            if (Utilities.isNetworkAvailable(context)) {
+                                new UploadAddressDetails().execute();
+                            } else {
+                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                            }
+                        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+
+                        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+
+                        }
+
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }
@@ -646,7 +693,25 @@ public class Edit_Address_Activity extends Activity {
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
                         photoUrl = Obj1.getString("document_url");
-                        new UploadAddressDetails().execute();
+
+                        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+                            if (Utilities.isNetworkAvailable(context)) {
+                                new UploadAddressDetails().execute();
+                            } else {
+                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                            }
+                        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+
+                        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+                            if (Utilities.isNetworkAvailable(context)) {
+                                new UploadAddressDetails().execute();
+                            } else {
+                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                            }
+                        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+
+                        }
+
                     } else {
                         Utilities.showSnackBar(ll_parent, message);
                     }

@@ -122,9 +122,11 @@ public class View_GST_Activity extends Activity {
     }
 
     private void setDefaults() {
-//        if (STATUS.equals("OFFLINE")) {
-//            tv_attachfile.setText("View Document");
-//        }
+        if (gst_document.equals("")) {
+            tv_attachfile.setText("No Document Attached");
+            tv_attachfile.setFocusable(false);
+            tv_attachfile.setClickable(false);
+        }
     }
 
     private void setEventHandler() {

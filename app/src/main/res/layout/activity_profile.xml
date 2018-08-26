@@ -27,27 +27,43 @@
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@android:color/transparent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imv_profile"
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:contentDescription="Profile"
-                android:scaleType="centerCrop" />
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleTextAppearance="@android:color/transparent">
 
-            <android.support.v7.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Profile" />
+                <ImageView
+                    android:id="@+id/imv_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:contentDescription="Profile"
+                    android:scaleType="centerCrop" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+                <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Profile" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+            <ImageView
+                android:id="@+id/img_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:src="@drawable/icon_backarrow_16p" />
+
+
+        </FrameLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 
