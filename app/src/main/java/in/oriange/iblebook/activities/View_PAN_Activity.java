@@ -261,59 +261,30 @@ public class View_PAN_Activity extends Activity {
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-//        TextView tv_name = promptView.findViewById(R.id.tv_name);
-//        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
-//        TextView tv_file = promptView.findViewById(R.id.tv_file);
-
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
 
         if (edt_name.getText().toString().trim().equals("")) {
             cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
         } else {
             cb_name.setVisibility(View.VISIBLE);
         }
 
         if (edt_pan_no.getText().toString().trim().equals("")) {
             cb_panno.setVisibility(View.GONE);
+            cb_panno.setChecked(false);
         } else {
             cb_panno.setVisibility(View.VISIBLE);
         }
 
         if (pan_document.equals("")) {
             cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
         } else {
             cb_file.setVisibility(View.VISIBLE);
         }
-
-//        tv_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_name.isChecked())
-//                    cb_name.setChecked(true);
-//                else
-//                    cb_name.setChecked(false);
-//            }
-//        });
-//        tv_panno.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_panno.isChecked())
-//                    cb_panno.setChecked(true);
-//                else
-//                    cb_panno.setChecked(false);
-//            }
-//        });
-//        tv_file.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_file.isChecked())
-//                    cb_file.setChecked(true);
-//                else
-//                    cb_file.setChecked(false);
-//            }
-//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
@@ -322,11 +293,11 @@ public class View_PAN_Activity extends Activity {
                     sb.append("Name - " + edt_name.getText().toString().trim() + "\n");
                 }
                 if (cb_panno.isChecked()) {
-                    sb.append("PAN Code - " + edt_pan_no.getText().toString().trim() + "\n");
+                    sb.append("PAN - " + edt_pan_no.getText().toString().trim() + "\n");
                 }
                 if (cb_file.isChecked()) {
                     pan_document = pan_document.replaceAll(" ", "%20");
-                    sb.append("File Url - " + pan_document + "\n");
+                    sb.append("File - " + pan_document + "\n");
                 }
 
                 if (!cb_name.isChecked() && !cb_panno.isChecked() && !cb_file.isChecked()) {

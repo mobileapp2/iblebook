@@ -190,20 +190,6 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-//        TextView tv_addresstype = promptView.findViewById(R.id.tv_addresstype);
-//        TextView tv_name = promptView.findViewById(R.id.tv_name);
-//        TextView tv_address = promptView.findViewById(R.id.tv_address);
-//        TextView tv_country = promptView.findViewById(R.id.tv_country);
-//        TextView tv_state = promptView.findViewById(R.id.tv_state);
-//        TextView tv_district = promptView.findViewById(R.id.tv_district);
-//        TextView tv_pincode = promptView.findViewById(R.id.tv_pincode);
-//        TextView tv_mobile = promptView.findViewById(R.id.tv_mobile);
-//        TextView tv_email = promptView.findViewById(R.id.tv_email);
-//        TextView tv_website = promptView.findViewById(R.id.tv_website);
-//        TextView tv_maplocation = promptView.findViewById(R.id.tv_maplocation);
-//        TextView tv_visitcard = promptView.findViewById(R.id.tv_visitcard);
-//        TextView tv_photo = promptView.findViewById(R.id.tv_photo);
-
         final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
@@ -218,180 +204,49 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
         final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
         final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
 
-//        tv_addresstype.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_addresstype.isChecked())
-//                    cb_addresstype.setChecked(true);
-//                else
-//                    cb_addresstype.setChecked(false);
-//            }
-//        });
-//        tv_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_name.isChecked())
-//                    cb_name.setChecked(true);
-//                else
-//                    cb_name.setChecked(false);
-//            }
-//        });
-//        tv_address.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_address.isChecked())
-//                    cb_address.setChecked(true);
-//                else
-//                    cb_address.setChecked(false);
-//            }
-//        });
-//        tv_country.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_country.isChecked())
-//                    cb_country.setChecked(true);
-//                else
-//                    cb_country.setChecked(false);
-//            }
-//        });
-//        tv_state.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_state.isChecked())
-//                    cb_state.setChecked(true);
-//                else
-//                    cb_state.setChecked(false);
-//            }
-//        });
-//        tv_district.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_district.isChecked())
-//                    cb_district.setChecked(true);
-//                else
-//                    cb_district.setChecked(false);
-//            }
-//        });
-//        tv_pincode.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_pincode.isChecked())
-//                    cb_pincode.setChecked(true);
-//                else
-//                    cb_pincode.setChecked(false);
-//            }
-//        });
-//        tv_mobile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_mobile.isChecked())
-//                    cb_mobile.setChecked(true);
-//                else
-//                    cb_mobile.setChecked(false);
-//            }
-//        });
-//        tv_email.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_email.isChecked())
-//                    cb_email.setChecked(true);
-//                else
-//                    cb_email.setChecked(false);
-//            }
-//        });
-//        tv_website.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_website.isChecked())
-//                    cb_website.setChecked(true);
-//                else
-//                    cb_website.setChecked(false);
-//            }
-//        });
-//        tv_maplocation.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_maplocation.isChecked())
-//                    cb_maplocation.setChecked(true);
-//                else
-//                    cb_maplocation.setChecked(false);
-//            }
-//        });
-//        tv_visitcard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_visitcard.isChecked())
-//                    cb_visitcard.setChecked(true);
-//                else
-//                    cb_visitcard.setChecked(false);
-//            }
-//        });
-//        tv_photo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_photo.isChecked())
-//                    cb_photo.setChecked(true);
-//                else
-//                    cb_photo.setChecked(false);
-//            }
-//        });
+        cb_country.setVisibility(View.GONE);
+        cb_state.setVisibility(View.GONE);
+        cb_district.setVisibility(View.GONE);
+        cb_pincode.setVisibility(View.GONE);
 
         if (resultArrayList.get(position).getType().trim().equals("")) {
             cb_addresstype.setVisibility(View.GONE);
+            cb_addresstype.setChecked(false);
         } else {
             cb_addresstype.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getName().trim().equals("")) {
             cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
         } else {
             cb_name.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getAddress_line_one().trim().equals("")) {
             cb_address.setVisibility(View.GONE);
+            cb_address.setChecked(false);
         } else {
             cb_address.setVisibility(View.VISIBLE);
         }
 
-        if (resultArrayList.get(position).getCountry().trim().equals("")) {
-            cb_country.setVisibility(View.GONE);
-        } else {
-            cb_country.setVisibility(View.VISIBLE);
-        }
-
-        if (resultArrayList.get(position).getState().trim().equals("")) {
-            cb_state.setVisibility(View.GONE);
-        } else {
-            cb_state.setVisibility(View.VISIBLE);
-        }
-
-        if (resultArrayList.get(position).getDistrict().trim().equals("")) {
-            cb_district.setVisibility(View.GONE);
-        } else {
-            cb_district.setVisibility(View.VISIBLE);
-        }
-
-        if (resultArrayList.get(position).getPincode().trim().equals("")) {
-            cb_pincode.setVisibility(View.GONE);
-        } else {
-            cb_pincode.setVisibility(View.VISIBLE);
-        }
-
         if (resultArrayList.get(position).getMobile_number().trim().equals("")) {
             cb_mobile.setVisibility(View.GONE);
+            cb_mobile.setChecked(false);
         } else {
             cb_mobile.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getEmail_id().trim().equals("")) {
             cb_email.setVisibility(View.GONE);
+            cb_email.setChecked(false);
         } else {
             cb_email.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getWebsite().trim().equals("")) {
             cb_website.setVisibility(View.GONE);
+            cb_website.setChecked(false);
         } else {
             cb_website.setVisibility(View.VISIBLE);
         }
@@ -399,18 +254,21 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
         if (resultArrayList.get(position).getMap_location_logitude().trim().equals("")
                 || resultArrayList.get(position).getMap_location_lattitude().trim().equals("")) {
             cb_maplocation.setVisibility(View.GONE);
+            cb_maplocation.setChecked(false);
         } else {
             cb_maplocation.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getVisiting_card().trim().equals("")) {
             cb_visitcard.setVisibility(View.GONE);
+            cb_visitcard.setChecked(false);
         } else {
             cb_visitcard.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getPhoto().trim().equals("")) {
             cb_photo.setVisibility(View.GONE);
+            cb_photo.setChecked(false);
         } else {
             cb_photo.setVisibility(View.VISIBLE);
         }
@@ -420,47 +278,35 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 StringBuilder sb = new StringBuilder();
 
                 if (cb_addresstype.isChecked()) {
-                    sb.append("Address Type- " + resultArrayList.get(position).getType() + "\n");
+                    sb.append("Address Type - " + resultArrayList.get(position).getType() + "\n");
                 }
 
                 if (cb_name.isChecked()) {
-                    sb.append("Name- " + resultArrayList.get(position).getName() + "\n");
+                    sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
                 }
 
                 if (cb_address.isChecked()) {
-                    sb.append("Address- " + resultArrayList.get(position).getAddress_line_one() + "\n");
-                }
-
-                if (cb_country.isChecked()) {
-                    sb.append("Country- " + resultArrayList.get(position).getCountry() + "\n");
-                }
-
-                if (cb_state.isChecked()) {
-                    sb.append("State- " + resultArrayList.get(position).getState() + "\n");
-                }
-
-                if (cb_district.isChecked()) {
-                    sb.append("District- " + resultArrayList.get(position).getDistrict() + "\n");
-                }
-
-                if (cb_pincode.isChecked()) {
-                    sb.append("Pin Code- " + resultArrayList.get(position).getPincode() + "\n");
+                    sb.append("Address - " + resultArrayList.get(position).getAddress_line_one() + ", " +
+                            resultArrayList.get(position).getDistrict() + ", " +
+                            resultArrayList.get(position).getState() + ", " +
+                            resultArrayList.get(position).getCountry() + ", " +
+                            resultArrayList.get(position).getPincode() + "\n");
                 }
 
                 if (cb_mobile.isChecked()) {
-                    sb.append("Mobile Number- " + resultArrayList.get(position).getMobile_number() + "\n");
+                    sb.append("Mobile No - " + resultArrayList.get(position).getMobile_number() + "\n");
                 }
 
                 if (cb_email.isChecked()) {
-                    sb.append("Email Address- " + resultArrayList.get(position).getEmail_id() + "\n");
+                    sb.append("Email - " + resultArrayList.get(position).getEmail_id() + "\n");
                 }
 
                 if (cb_website.isChecked()) {
-                    sb.append("Website- " + resultArrayList.get(position).getWebsite() + "\n");
+                    sb.append("Website - " + resultArrayList.get(position).getWebsite() + "\n");
                 }
 
                 if (cb_maplocation.isChecked()) {
-                    sb.append("Map Location- " + resultArrayList.get(position).getMap_location_lattitude()
+                    sb.append("Location - " + resultArrayList.get(position).getMap_location_lattitude()
                             + ", " + resultArrayList.get(position).getMap_location_logitude() + "\n");
                 }
 
@@ -468,7 +314,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                     String url = "";
                     url = resultArrayList.get(position).getVisiting_card();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("Visit Card - " + url + "\n");
+                    sb.append("Visiting Card - " + url + "\n");
                 }
 
                 if (cb_photo.isChecked()) {
@@ -478,8 +324,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                     sb.append("Photo - " + url + "\n");
                 }
 
-                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_country.isChecked() &&
-                        !cb_state.isChecked() && !cb_district.isChecked() && !cb_pincode.isChecked() && !cb_mobile.isChecked()
+                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
                         && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
                         && !cb_photo.isChecked()) {
                     Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();

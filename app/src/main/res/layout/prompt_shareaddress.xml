@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
@@ -36,7 +36,7 @@
 
             <CheckBox
                 android:id="@+id/cb_addresstype"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -63,7 +63,7 @@
 
             <CheckBox
                 android:id="@+id/cb_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -90,7 +90,7 @@
 
             <CheckBox
                 android:id="@+id/cb_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -117,7 +117,7 @@
 
             <CheckBox
                 android:id="@+id/cb_country"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -144,7 +144,7 @@
 
             <CheckBox
                 android:id="@+id/cb_state"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -171,7 +171,7 @@
 
             <CheckBox
                 android:id="@+id/cb_district"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -198,7 +198,7 @@
 
             <CheckBox
                 android:id="@+id/cb_pincode"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -225,11 +225,11 @@
 
             <CheckBox
                 android:id="@+id/cb_mobile"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Mobile Number"
+                android:text="Mobile No"
                 android:textSize="16sp" />
 
             <!--</LinearLayout>-->
@@ -252,11 +252,11 @@
 
             <CheckBox
                 android:id="@+id/cb_email"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Email Address"
+                android:text="Email "
                 android:textSize="16sp" />
 
             <!--</LinearLayout>-->
@@ -279,7 +279,7 @@
 
             <CheckBox
                 android:id="@+id/cb_website"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
@@ -306,11 +306,11 @@
 
             <CheckBox
                 android:id="@+id/cb_maplocation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Map Location"
+                android:text="Location"
                 android:textSize="16sp" />
 
             <!--</LinearLayout>-->
@@ -333,11 +333,11 @@
 
             <CheckBox
                 android:id="@+id/cb_visitcard"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Visit Card Photo"
+                android:text="Visiting Card"
                 android:textSize="16sp" />
 
             <!--</LinearLayout>-->
@@ -360,7 +360,7 @@
 
             <CheckBox
                 android:id="@+id/cb_photo"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"

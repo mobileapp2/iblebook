@@ -64,7 +64,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="7dp"
-                    android:src="@drawable/icon_address_name" />
+                    android:src="@drawable/ic_menu_profile" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -409,7 +409,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="7dp"
-                    android:src="@drawable/icon_website" />
+                    android:src="@drawable/icon_india" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"

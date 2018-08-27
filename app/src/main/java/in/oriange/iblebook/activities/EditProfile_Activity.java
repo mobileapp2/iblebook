@@ -103,9 +103,11 @@ public class EditProfile_Activity extends Activity {
                     Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
                     return;
                 }
-                if (!Utilities.isEmailValid(edt_email)) {
-                    Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
-                    return;
+                if (!edt_email.getText().toString().trim().equals("")) {
+                    if (!Utilities.isEmailValid(edt_email)) {
+                        Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                        return;
+                    }
                 }
 
 

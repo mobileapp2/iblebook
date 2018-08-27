@@ -256,13 +256,9 @@ public class View_GST_Activity extends Activity {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_sharepgst, null);
-        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
-
-//        TextView tv_name = promptView.findViewById(R.id.tv_name);
-//        TextView tv_gstno = promptView.findViewById(R.id.tv_gstno);
-//        TextView tv_file = promptView.findViewById(R.id.tv_file);
 
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
@@ -270,49 +266,24 @@ public class View_GST_Activity extends Activity {
 
         if (edt_name.getText().toString().trim().equals("")) {
             cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
         } else {
             cb_name.setVisibility(View.VISIBLE);
         }
 
         if (edt_gst_no.getText().toString().trim().equals("")) {
             cb_gstno.setVisibility(View.GONE);
+            cb_gstno.setChecked(false);
         } else {
             cb_gstno.setVisibility(View.VISIBLE);
         }
 
         if (gst_document.equals("")) {
             cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
         } else {
             cb_file.setVisibility(View.VISIBLE);
         }
-
-//        tv_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_name.isChecked())
-//                    cb_name.setChecked(true);
-//                else
-//                    cb_name.setChecked(false);
-//            }
-//        });
-//        tv_gstno.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_gstno.isChecked())
-//                    cb_gstno.setChecked(true);
-//                else
-//                    cb_gstno.setChecked(false);
-//            }
-//        });
-//        tv_file.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_file.isChecked())
-//                    cb_file.setChecked(true);
-//                else
-//                    cb_file.setChecked(false);
-//            }
-//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
@@ -321,11 +292,11 @@ public class View_GST_Activity extends Activity {
                     sb.append("Name - " + edt_name.getText().toString().trim() + "\n");
                 }
                 if (cb_gstno.isChecked()) {
-                    sb.append("GST Code - " + edt_gst_no.getText().toString().trim() + "\n");
+                    sb.append("GST - " + edt_gst_no.getText().toString().trim() + "\n");
                 }
                 if (cb_file.isChecked()) {
                     gst_document = gst_document.replaceAll(" ", "%20");
-                    sb.append("File Url - " + gst_document + "\n");
+                    sb.append("File - " + gst_document + "\n");
                 }
 
                 if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {

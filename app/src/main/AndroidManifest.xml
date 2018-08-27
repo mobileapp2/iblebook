@@ -22,6 +22,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDLPU8PFDrRXLsxV9FXqc-jm0o_8YkT7kA" />
@@ -159,6 +160,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.EditProfile_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".services.FirebaseTokenIdService">
             <intent-filter>
@@ -171,7 +177,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.EditProfile_Activity"></activity>
     </application>
 
 </manifest>

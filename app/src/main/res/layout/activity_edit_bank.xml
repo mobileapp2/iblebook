@@ -33,11 +33,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/icon_address_name" />
+                    android:src="@drawable/ic_menu_profile" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -174,8 +174,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:src="@drawable/icon_account_no" />

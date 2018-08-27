@@ -180,10 +180,6 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-//        TextView tv_name = promptView.findViewById(R.id.tv_name);
-//        TextView tv_panno = promptView.findViewById(R.id.tv_panno);
-//        TextView tv_file = promptView.findViewById(R.id.tv_file);
-
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
         final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
@@ -206,34 +202,6 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
             cb_file.setVisibility(View.VISIBLE);
         }
 
-//        tv_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_name.isChecked())
-//                    cb_name.setChecked(true);
-//                else
-//                    cb_name.setChecked(false);
-//            }
-//        });
-//        tv_panno.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_panno.isChecked())
-//                    cb_panno.setChecked(true);
-//                else
-//                    cb_panno.setChecked(false);
-//            }
-//        });
-//        tv_file.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_file.isChecked())
-//                    cb_file.setChecked(true);
-//                else
-//                    cb_file.setChecked(false);
-//            }
-//        });
-
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
                 StringBuilder sb = new StringBuilder();
@@ -241,13 +209,13 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
                     sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
                 }
                 if (cb_panno.isChecked()) {
-                    sb.append("PAN Code - " + resultArrayList.get(position).getPan_number() + "\n");
+                    sb.append("PAN - " + resultArrayList.get(position).getPan_number() + "\n");
                 }
                 String url = "";
                 if (cb_file.isChecked()) {
                     url = resultArrayList.get(position).getPan_document();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("File Url - " + url + "\n");
+                    sb.append("File - " + url + "\n");
                 }
 
                 if (!cb_name.isChecked() && !cb_panno.isChecked() && !cb_file.isChecked()) {

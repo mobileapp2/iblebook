@@ -271,12 +271,6 @@ public class View_Bank_Activity extends Activity {
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setTitle("Share Filter");
 
-//        TextView tv_name = promptView.findViewById(R.id.tv_name);
-//        TextView tv_bankname = promptView.findViewById(R.id.tv_bankname);
-//        TextView tv_ifsccode = promptView.findViewById(R.id.tv_ifsccode);
-//        TextView tv_accno = promptView.findViewById(R.id.tv_accno);
-//        TextView tv_file = promptView.findViewById(R.id.tv_file);
-
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
         final CheckBox cb_ifsccode = promptView.findViewById(R.id.cb_ifsccode);
@@ -285,88 +279,47 @@ public class View_Bank_Activity extends Activity {
 
         if (edt_name.getText().toString().trim().equals("")) {
             cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
         } else {
             cb_name.setVisibility(View.VISIBLE);
         }
 
         if (edt_bank_name.getText().toString().trim().equals("")) {
             cb_bankname.setVisibility(View.GONE);
+            cb_bankname.setChecked(false);
         } else {
             cb_bankname.setVisibility(View.VISIBLE);
         }
 
         if (edt_ifsc.getText().toString().trim().equals("")) {
             cb_ifsccode.setVisibility(View.GONE);
+            cb_ifsccode.setChecked(false);
         } else {
             cb_ifsccode.setVisibility(View.VISIBLE);
         }
 
         if (edt_account_no.getText().toString().trim().equals("")) {
             cb_accno.setVisibility(View.GONE);
+            cb_accno.setChecked(false);
         } else {
             cb_accno.setVisibility(View.VISIBLE);
         }
 
         if (document.equals("")) {
             cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
         } else {
             cb_file.setVisibility(View.VISIBLE);
         }
-
-//        tv_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_name.isChecked())
-//                    cb_name.setChecked(true);
-//                else
-//                    cb_name.setChecked(false);
-//            }
-//        });
-//        tv_bankname.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_bankname.isChecked())
-//                    cb_bankname.setChecked(true);
-//                else
-//                    cb_bankname.setChecked(false);
-//            }
-//        });
-//        tv_ifsccode.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_ifsccode.isChecked())
-//                    cb_ifsccode.setChecked(true);
-//                else
-//                    cb_ifsccode.setChecked(false);
-//            }
-//        });
-//        tv_accno.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_accno.isChecked())
-//                    cb_accno.setChecked(true);
-//                else
-//                    cb_accno.setChecked(false);
-//            }
-//        });
-//        tv_file.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!cb_file.isChecked())
-//                    cb_file.setChecked(true);
-//                else
-//                    cb_file.setChecked(false);
-//            }
-//        });
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialod, int id) {
                 StringBuilder sb = new StringBuilder();
                 if (cb_name.isChecked()) {
-                    sb.append("Name of Account Holder - " + edt_name.getText().toString().trim() + "\n");
+                    sb.append("Name - " + edt_name.getText().toString().trim() + "\n");
                 }
                 if (cb_bankname.isChecked()) {
-                    sb.append("Bank Name - " + edt_bank_name.getText().toString().trim() + "\n");
+                    sb.append("Bank - " + edt_bank_name.getText().toString().trim() + "\n");
                 }
                 if (cb_ifsccode.isChecked()) {
                     sb.append("IFSC Code - " + edt_ifsc.getText().toString().trim() + "\n");
@@ -376,11 +329,11 @@ public class View_Bank_Activity extends Activity {
                 }
                 if (cb_file.isChecked()) {
                     document = document.replaceAll(" ", "%20");
-                    if (Utilities.isNetworkAvailable(context)) {
-//                        new DownloadDocumentForShare().execute(document);
-                    } else {
-                        sb.append("File Url - " + document + "\n");
-                    }
+//                    if (Utilities.isNetworkAvailable(context)) {
+////                        new DownloadDocumentForShare().execute(document);
+//                    } else {
+                    sb.append("File - " + document + "\n");
+//                    }
                 }
 
                 if (!cb_name.isChecked() && !cb_bankname.isChecked() && !cb_ifsccode.isChecked()
@@ -391,15 +344,14 @@ public class View_Bank_Activity extends Activity {
 
                 Log.i("SharedBankDetails", sb.toString());
                 String finalDataShare = name + " shares bank details with you " + "\n" + sb.toString();
-
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
-                if (cb_file.isChecked()) {
-                    if (Utilities.isNetworkAvailable(context)) {
-                        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + shareFilePath));
-                    }
-                }
+//                if (cb_file.isChecked()) {
+//                    if (Utilities.isNetworkAvailable(context)) {
+//                        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + shareFilePath));
+//                    }
+//                }
 
                 context.startActivity(Intent.createChooser(sharingIntent, "Choose from following"));
             }

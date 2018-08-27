@@ -99,9 +99,11 @@ public class Register_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
             return;
         }
-        if (!Utilities.isEmailValid(edt_email)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
-            return;
+        if (!edt_email.getText().toString().trim().equals("")) {
+            if (!Utilities.isEmailValid(edt_email)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                return;
+            }
         }
         if (edt_password.getText().toString().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Password");
