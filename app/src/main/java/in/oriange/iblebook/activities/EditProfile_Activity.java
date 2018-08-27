@@ -157,27 +157,6 @@ public class EditProfile_Activity extends Activity {
             }
         });
 
-        edt_enterpassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!edt_enterpassword.getText().toString().trim().equals(edt_confirmpassword.getText().toString().trim())) {
-                    edt_enterpassword.setError("Passwords does not match");
-                } else {
-                    edt_enterpassword.setError(null);
-                }
-            }
-        });
-
         edt_confirmpassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -302,7 +281,9 @@ public class EditProfile_Activity extends Activity {
                                 finish();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 session.updateSession(jsonarr.toString());
@@ -374,7 +355,9 @@ public class EditProfile_Activity extends Activity {
                                 finish();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 session.updateSession(jsonarr.toString());

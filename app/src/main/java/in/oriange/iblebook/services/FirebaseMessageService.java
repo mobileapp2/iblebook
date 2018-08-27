@@ -52,7 +52,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
 //            notificationBuilder.setSmallIcon(R.drawable.icon_address_email);
 //        else
-        notificationBuilder.setSmallIcon(R.drawable.icon_mainlogo);
+        notificationBuilder.setSmallIcon(R.drawable.icon_launcher);
 
         notificationBuilder.setContentTitle("Address Book");
         notificationBuilder.setContentText(messageBody);
