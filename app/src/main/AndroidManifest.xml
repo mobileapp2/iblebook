@@ -171,7 +171,7 @@
             </intent-filter>
         </service>
 
-
+        <activity android:name=".activities.EditProfile_Activity"></activity>
     </application>
 
 </manifest>

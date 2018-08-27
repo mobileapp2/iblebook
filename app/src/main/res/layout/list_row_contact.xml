@@ -18,7 +18,6 @@
             android:id="@+id/rl_mainlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ripple_effect"
             android:clickable="true"
             android:padding="10dp">
 

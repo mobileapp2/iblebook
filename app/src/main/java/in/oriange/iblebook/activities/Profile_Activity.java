@@ -54,12 +54,8 @@ import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermission
 
 public class Profile_Activity extends Activity {
 
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    public Uri photoURI;
-    File file, profilPicFolder;
     private Context context;
-    private FloatingActionButton fab_edt_profilepic;
+    public static final int CAMERA_REQUEST = 100;
     private UserSessionManager session;
     private TextView tv_name;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
@@ -68,6 +64,10 @@ public class Profile_Activity extends Activity {
     private ProgressDialog pd;
     private ImageView imv_profile, img_finish;
     private CoordinatorLayout ll_parent;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    File file, profilPicFolder;
+    private FloatingActionButton fab_edt_profilepic, fab_edtprofie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class Profile_Activity extends Activity {
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
         fab_edt_profilepic = findViewById(R.id.fab_edt_profilepic);
+        fab_edtprofie = findViewById(R.id.fab_edtprofie);
         ll_parent = findViewById(R.id.ll_parent);
         imv_profile = findViewById(R.id.imv_profile);
         img_finish = findViewById(R.id.img_finish);
@@ -114,7 +115,6 @@ public class Profile_Activity extends Activity {
             JSONObject json = user_info.getJSONObject(0);
             user_id = json.getString("user_id");
             photo = json.getString("photo");
-            photo = json.getString("photo");
             name = json.getString("name");
             alias = json.getString("alias");
             country_code = json.getString("country_code");
@@ -133,10 +133,9 @@ public class Profile_Activity extends Activity {
                 .placeholder(R.drawable.icon_userprofile)
                 .into(imv_profile);
 
-//        tv_name.setText(name);
         edt_name.setText(name);
         edt_aliasname.setText(alias);
-        edt_mobile.setText(country_code + "" + mobile);
+        edt_mobile.setText(/*country_code + "" + */mobile);
         edt_email.setText(email);
 
     }
@@ -182,6 +181,17 @@ public class Profile_Activity extends Activity {
 
             }
         });
+
+        fab_edtprofie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditProfile_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         edt_name.setLongClickable(false);
         edt_aliasname.setLongClickable(false);
         edt_mobile.setLongClickable(false);
@@ -378,8 +388,6 @@ public class Profile_Activity extends Activity {
                                 .load(photo_url)
                                 .placeholder(R.drawable.icon_userprofile)
                                 .into(imv_profile);
-
-
                         if (Utilities.isNetworkAvailable(context)) {
                             new UpdateProfileData().execute();
                         } else {

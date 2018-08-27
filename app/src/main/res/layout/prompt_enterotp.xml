@@ -4,18 +4,26 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edt_enterotp"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center_vertical"
-        android:hint="Enter OTP"
-        android:inputType="numberPassword"
-        android:maxLength="10"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_enterotp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:hint="Enter OTP"
+            android:inputType="textPassword"
+            android:maxLength="10"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
 
 </LinearLayout>

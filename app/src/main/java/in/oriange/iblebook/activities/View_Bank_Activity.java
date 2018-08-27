@@ -42,6 +42,7 @@ import in.oriange.iblebook.fragments.Offline_Bank_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_Bank_Activity extends Activity {
@@ -50,11 +51,12 @@ public class View_Bank_Activity extends Activity {
     private EditText edt_name, edt_alias, edt_bank_name, edt_ifsc, edt_account_no;
     private TextView tv_attachfile;
     private LinearLayout ll_parent;
-    private File downloadedDocsfolder, file;
+    private File downloadedDocsfolder, file, shareFile;
     private FloatingActionButton fab_share, fab_edit, fab_delete;
     private UserSessionManager session;
     private int position;
     private DataBaseHelper dbHelper;
+    private String shareFilePath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +265,6 @@ public class View_Bank_Activity extends Activity {
     }
 
     private void setSelectionFilter() {
-
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_sharebank, null);
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
@@ -375,7 +376,11 @@ public class View_Bank_Activity extends Activity {
                 }
                 if (cb_file.isChecked()) {
                     document = document.replaceAll(" ", "%20");
-                    sb.append("File Url - " + document + "\n");
+                    if (Utilities.isNetworkAvailable(context)) {
+//                        new DownloadDocumentForShare().execute(document);
+                    } else {
+                        sb.append("File Url - " + document + "\n");
+                    }
                 }
 
                 if (!cb_name.isChecked() && !cb_bankname.isChecked() && !cb_ifsccode.isChecked()
@@ -386,9 +391,16 @@ public class View_Bank_Activity extends Activity {
 
                 Log.i("SharedBankDetails", sb.toString());
                 String finalDataShare = name + " shares bank details with you " + "\n" + sb.toString();
+
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
+                if (cb_file.isChecked()) {
+                    if (Utilities.isNetworkAvailable(context)) {
+                        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + shareFilePath));
+                    }
+                }
+
                 context.startActivity(Intent.createChooser(sharingIntent, "Choose from following"));
             }
         });
@@ -399,8 +411,12 @@ public class View_Bank_Activity extends Activity {
         });
 
         alertDialogBuilder.setCancelable(false);
-        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
+        AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new DownloadDocumentForShare().execute(document);
+        }
 
     }
 
@@ -545,6 +561,95 @@ public class View_Bank_Activity extends Activity {
                 context.startActivity(intent);
 
             }
+        }
+    }
+
+    public class DownloadDocumentForShare extends AsyncTask<String, Integer, Boolean> {
+        int lenghtOfFile = -1;
+        int count = 0;
+        int content = -1;
+        int counter = 0;
+        int progress = 0;
+        URL downloadurl = null;
+        private ProgressDialog mProgressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setMessage("Downloading Document");
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            boolean success = false;
+            HttpURLConnection httpURLConnection = null;
+            InputStream inputStream = null;
+            int read = -1;
+            byte[] buffer = new byte[1024];
+            FileOutputStream fileOutputStream = null;
+            long total = 0;
+
+
+            try {
+                downloadurl = new URL(params[0]);
+                httpURLConnection = (HttpURLConnection) downloadurl.openConnection();
+                lenghtOfFile = httpURLConnection.getContentLength();
+                inputStream = httpURLConnection.getInputStream();
+
+                shareFile = new File(downloadedDocsfolder, Uri.parse(params[0]).getLastPathSegment());
+                fileOutputStream = new FileOutputStream(shareFile);
+                while ((read = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, read);
+                    counter = counter + read;
+                    publishProgress(counter);
+                }
+                success = true;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+
+                if (httpURLConnection != null) {
+                    httpURLConnection.disconnect();
+                }
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fileOutputStream != null) {
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return success;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progress = (int) (((double) values[0] / lenghtOfFile) * 100);
+            mProgressDialog.setProgress(progress);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            mProgressDialog.dismiss();
+            shareFilePath = shareFile.getAbsolutePath();
         }
     }
 

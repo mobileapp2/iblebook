@@ -91,10 +91,10 @@ public class Register_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-        if (edt_aliasname.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Alias Enter Name");
-            return;
-        }
+//        if (edt_aliasname.getText().toString().trim().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Alias Enter Name");
+//            return;
+//        }
         if (!Utilities.isMobileNo(edt_mobile)) {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
             return;

@@ -7,19 +7,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-        </LinearLayout>
-    </ScrollView>
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -67,6 +54,17 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_edt_profilepic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_camera_white_24dp"
+        app:elevation="6dp"
+        app:layout_anchor="@id/app_bar_layout"
+        app:layout_anchorGravity="end|bottom"
+        app:pressedTranslationZ="12dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,6 +100,7 @@
                         android:id="@+id/edt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:focusable="false"
                         android:hint="Name"
                         android:singleLine="true"
@@ -109,15 +108,14 @@
                         android:textSize="16sp" />
 
                 </android.support.design.widget.TextInputLayout>
+
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_aliasname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:clickable="false"
-                android:focusable="false">
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/edt_aliasname"
@@ -125,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="10dp"
+                    android:clickable="false"
                     android:focusable="false"
                     android:hint="Alias Name"
                     android:singleLine="true"
@@ -151,14 +150,13 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_mobile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false">
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/edt_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:focusable="false"
                         android:hint="Mobile Number"
                         android:maxLength="13"
@@ -187,36 +185,32 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false">
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:focusable="false"
                         android:hint="Email Address"
                         android:singleLine="true"
                         android:textColor="@color/darkgrey"
                         android:textSize="16sp" />
+
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_edtprofie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:fab_size="mini" />
         </LinearLayout>
 
     </ScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_edt_profilepic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_camera_white_24dp"
-        app:elevation="6dp"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="end|bottom"
-        app:pressedTranslationZ="12dp" />
 
 </android.support.design.widget.CoordinatorLayout>
