@@ -1,10 +1,12 @@
 package in.oriange.iblebook.utilities;
 
+import java.util.ArrayList;
+
+import in.oriange.iblebook.models.GetAddressListPojo;
+
 public class ConstantData {
 
     public static ConstantData _instance;
-    private String latitude;
-    private String longitude;
 
     private ConstantData() {
     }
@@ -15,6 +17,9 @@ public class ConstantData {
         }
         return _instance;
     }
+
+    private String latitude;
+    private String longitude;
 
     public static ConstantData get_instance() {
         return _instance;
@@ -38,5 +43,15 @@ public class ConstantData {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    private ArrayList<GetAddressListPojo> addressList;
+
+    public ArrayList<GetAddressListPojo> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(ArrayList<GetAddressListPojo> addressList) {
+        this.addressList = addressList;
     }
 }

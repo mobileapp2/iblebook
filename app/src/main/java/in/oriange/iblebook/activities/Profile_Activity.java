@@ -24,7 +24,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -57,7 +56,6 @@ public class Profile_Activity extends Activity {
     private Context context;
     public static final int CAMERA_REQUEST = 100;
     private UserSessionManager session;
-    private TextView tv_name;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url, password;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required

@@ -67,6 +67,17 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+        if (resultArrayList.get(position).getType().equals("address")) {
+            holder.tv_type.setText("Shared Address Details");
+        } else if (resultArrayList.get(position).getType().equals("pan")) {
+            holder.tv_type.setText("Shared PAN Details");
+        } else if (resultArrayList.get(position).getType().equals("gst")) {
+            holder.tv_type.setText("Shared GST Details");
+        } else if (resultArrayList.get(position).getType().equals("bank")) {
+            holder.tv_type.setText("Shared Bank Details");
+        }
+
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getSender_name());
         holder.tv_message.setText(resultArrayList.get(position).getMessage());
@@ -183,7 +194,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_initletter, tv_name, tv_message;
+        TextView tv_initletter, tv_name, tv_message, tv_type;
         private FrameLayout fl_mainframe;
 
         public MyViewHolder(View view) {
@@ -191,6 +202,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
             tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_message = (TextView) view.findViewById(R.id.tv_message);
+            tv_type = (TextView) view.findViewById(R.id.tv_type);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
         }
     }

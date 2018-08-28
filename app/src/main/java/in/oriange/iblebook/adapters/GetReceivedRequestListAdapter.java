@@ -70,6 +70,17 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+        if (resultArrayList.get(position).getType().equals("address")) {
+            holder.tv_type.setText("Requested For Address Details");
+        } else if (resultArrayList.get(position).getType().equals("pan")) {
+            holder.tv_type.setText("Requested For PAN Details");
+        } else if (resultArrayList.get(position).getType().equals("gst")) {
+            holder.tv_type.setText("Requested For GST Details");
+        } else if (resultArrayList.get(position).getType().equals("bank")) {
+            holder.tv_type.setText("Requested For Bank Details");
+        }
+
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getSender_name());
         holder.tv_message.setText(resultArrayList.get(position).getMessage());
@@ -94,9 +105,20 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptView);
 
+        TextView tv_type = promptView.findViewById(R.id.tv_type);
         TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
         TextView tv_name = promptView.findViewById(R.id.tv_name);
         TextView tv_message = promptView.findViewById(R.id.tv_message);
+
+        if (resultArrayList.get(position).getType().equals("address")) {
+            tv_type.setText("Address Details Requested By");
+        } else if (resultArrayList.get(position).getType().equals("pan")) {
+            tv_type.setText("PAN Details Requested By");
+        } else if (resultArrayList.get(position).getType().equals("gst")) {
+            tv_type.setText("GST Details Requested By");
+        } else if (resultArrayList.get(position).getType().equals("bank")) {
+            tv_type.setText("Bank Details Requested By");
+        }
 
         tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         tv_name.setText(resultArrayList.get(position).getSender_name());
@@ -128,8 +150,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                                 }
                             });
                     alertDialogBuilder.setNegativeButton(
-                            "No",
-                            new DialogInterface.OnClickListener() {
+                            "No", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
@@ -218,7 +239,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_initletter, tv_name, tv_message;
+        TextView tv_initletter, tv_name, tv_message, tv_type;
         private FrameLayout fl_mainframe;
 
         public MyViewHolder(View view) {
@@ -226,6 +247,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_message = (TextView) view.findViewById(R.id.tv_message);
+            tv_type = (TextView) view.findViewById(R.id.tv_type);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
         }
     }
