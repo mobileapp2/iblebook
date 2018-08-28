@@ -73,9 +73,9 @@ public class GetOfflineBankListAdapter extends RecyclerView.Adapter<GetOfflineBa
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getBank_name().charAt(0)));
-        holder.tv_bankname.setText(resultArrayList.get(position).getBank_name());
-        holder.tv_accountno.setText(resultArrayList.get(position).getAccount_no());
+        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getAccount_holder_name().charAt(0)));
+        holder.tv_bankname.setText(resultArrayList.get(position).getAccount_holder_name());
+        holder.tv_accountno.setText(resultArrayList.get(position).getBank_name());
 
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
