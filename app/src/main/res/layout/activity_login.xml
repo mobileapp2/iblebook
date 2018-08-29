@@ -11,13 +11,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="50dp"
                 android:src="@drawable/icon_loginlogo" />
 
             <LinearLayout
@@ -29,10 +30,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/icon_username" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="18dp"
+                    android:src="@drawable/icon_name"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_username"
@@ -44,8 +46,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Username"
-                        android:singleLine="true"
                         android:inputType="textNoSuggestions"
+                        android:singleLine="true"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
 
@@ -61,10 +63,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/icon_password" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="18dp"
+                    android:src="@drawable/icon_password"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_password"
@@ -103,6 +106,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:text="Forgot Password ?"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -113,6 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="Not yet Registered ?"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>

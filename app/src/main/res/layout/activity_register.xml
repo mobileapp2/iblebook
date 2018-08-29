@@ -47,10 +47,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="18dp"
-                    android:src="@drawable/icon_name" />
+                    android:src="@drawable/icon_name"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_name"
@@ -80,7 +81,7 @@
                     android:id="@+id/edt_aliasname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="45dp"
                     android:layout_marginRight="20dp"
                     android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:hint="Alias Name"
@@ -100,10 +101,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="18dp"
-                    android:src="@drawable/icon_mobile" />
+                    android:src="@drawable/icon_mobile"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_mobile"
@@ -133,10 +135,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="18dp"
-                    android:src="@drawable/icon_email" />
+                    android:src="@drawable/icon_email"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_email"
@@ -165,10 +168,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="18dp"
-                    android:src="@drawable/icon_password" />
+                    android:src="@drawable/icon_password"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_password"
@@ -197,10 +201,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="18dp"
-                    android:src="@drawable/icon_password" />
+                    android:src="@drawable/icon_password"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_conformpassword"
@@ -239,6 +244,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="Already Registered ?"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
