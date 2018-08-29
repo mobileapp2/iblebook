@@ -202,9 +202,7 @@ public class Utilities {
 
     public static boolean isPanNum(EditText edt) {
         edt.setError(null);
-        if ((edt.getText().toString().trim().length() == 10)
-                && (isValidPanNum(edt.getText().toString().trim()))
-                || (edt.getText().toString().trim().length() == 0))
+        if ((edt.getText().toString().trim().length() == 10) && (isValidPanNum(edt.getText().toString().trim())))
             return true;
         else {
             return false;

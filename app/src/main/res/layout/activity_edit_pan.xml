@@ -29,14 +29,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_address_name" />
+                    android:layout_marginTop="7dp"
+                    android:src="@drawable/icon_name"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -46,16 +47,16 @@
                         android:id="@+id/edt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="center_vertical"
                         android:hint="Name"
-                        android:inputType="textCapWords"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14dp" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -74,16 +75,16 @@
                         android:id="@+id/edt_alias"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="8dp"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="center_vertical"
                         android:hint="Alias (Short Name)"
-                        android:inputType="textCapWords"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14dp" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -92,14 +93,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_card" />
+                    android:layout_marginTop="7dp"
+                    android:src="@drawable/icon_card"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -109,8 +111,8 @@
                         android:id="@+id/edt_pan_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
                         android:digits=" ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                         android:gravity="center_vertical"
                         android:hint="PAN Number"
@@ -119,7 +121,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14dp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -128,8 +130,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
+                android:layout_gravity="start"
+                android:layout_marginLeft="32dp"
                 android:text="(E.g. AAAPL1234C)"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
@@ -140,17 +142,18 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_attach" />
+                    android:src="@drawable/icon_attach"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/tv_attachfile"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:background="?attr/editTextBackground"
                     android:focusable="false"
                     android:gravity="center_vertical"
@@ -158,24 +161,25 @@
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_button"
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
     </ScrollView>
+
 
 </LinearLayout>

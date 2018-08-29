@@ -39,6 +39,7 @@ import java.net.URL;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_PAN_Fragment;
 import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
+import in.oriange.iblebook.fragments.Received_PAN_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -502,6 +503,9 @@ public class View_PAN_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+                        new My_PAN_Fragment.GetPANList().execute();
+                        new Offline_PAN_Fragment.GetPANList().execute();
+                        new Received_PAN_Fragment.GetPANList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -509,8 +513,6 @@ public class View_PAN_Activity extends Activity {
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
-                                new My_PAN_Fragment.GetPANList().execute();
-                                new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
                         builder.show();

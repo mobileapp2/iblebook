@@ -29,6 +29,10 @@ import java.util.List;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.ReceivedDetails_Fragment;
+import in.oriange.iblebook.fragments.Received_Address_Fragment;
+import in.oriange.iblebook.fragments.Received_Bank_Fragment;
+import in.oriange.iblebook.fragments.Received_GST_Fragment;
+import in.oriange.iblebook.fragments.Received_PAN_Fragment;
 import in.oriange.iblebook.models.GetReceivedDetailsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -303,8 +307,16 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
                         new ReceivedDetails_Fragment.GetDetailsList().execute();
                         removeItem(position);
+
+
+                        new Received_Address_Fragment.GetAddressList().execute();
+                        new Received_Bank_Fragment.GetBankList().execute();
+                        new Received_GST_Fragment.GetGSTList().execute();
+                        new Received_PAN_Fragment.GetPANList().execute();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Approved Successfully");
                         builder.setTitle("Success");

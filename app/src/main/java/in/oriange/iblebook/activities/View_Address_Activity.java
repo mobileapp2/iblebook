@@ -39,6 +39,7 @@ import java.net.URL;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_Address_Fragment;
 import in.oriange.iblebook.fragments.Offline_Address_Fragment;
+import in.oriange.iblebook.fragments.Received_Address_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -644,14 +645,17 @@ public class View_Address_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        new My_Address_Fragment.GetAddressList().execute();
+                        new Offline_Address_Fragment.GetAddressList().execute();
+                        new Received_Address_Fragment.GetAddressList().execute();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Address Details Deleted Successfully");
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new My_Address_Fragment.GetAddressList().execute();
-                                new Offline_Address_Fragment.GetAddressList().execute();
                                 finish();
                             }
                         });

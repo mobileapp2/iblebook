@@ -15,6 +15,8 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,6 +164,25 @@ public class Add_Address_Activity extends Activity {
     }
 
     private void setEventHandler() {
+
+        edt_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edt_alias.setText(edt_name.getText().toString());
+            }
+        });
+
+
         tv_addresstype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -298,10 +319,10 @@ public class Add_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Name");
             return;
         }
-//        if (edt_alias.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-//            return;
-//        }
+        if (edt_alias.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            return;
+        }
         if (edt_address.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Address");
             return;

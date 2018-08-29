@@ -37,17 +37,18 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_address_type" />
+                        android:src="@drawable/icon_address_type"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <EditText
                         android:id="@+id/edt_addresstype"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:clickable="false"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:focusable="false"
@@ -56,9 +57,8 @@
                         android:inputType="textCapWords"
                         android:padding="10dp"
                         android:singleLine="true"
-                        android:text="Office"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -68,11 +68,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_address_name" />
+                        android:src="@drawable/icon_name"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -89,11 +90,10 @@
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="Name"
-                            android:inputType="textCapWords"
+                            android:inputType="textCapWords|textNoSuggestions|textMultiLine"
                             android:padding="10dp"
-                            android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -113,18 +113,17 @@
                             android:id="@+id/edt_alias"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="35dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginRight="8dp"
                             android:clickable="false"
                             android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="Alias (Short Name)"
-                            android:inputType="textCapWords"
+                            android:inputType="textCapWords|textNoSuggestions|textMultiLine"
                             android:padding="10dp"
-                            android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -136,11 +135,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_address_route" />
+                        android:src="@drawable/icon_address_route"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                             android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
                             android:padding="10dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -170,11 +170,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_india" />
+                        android:src="@drawable/icon_india"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -194,7 +195,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -205,11 +206,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_state" />
+                        android:src="@drawable/icon_state"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -230,11 +232,10 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -243,11 +244,12 @@
 
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_district" />
+                        android:src="@drawable/icon_district"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -266,7 +268,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -277,11 +279,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_pin_code" />
+                        android:src="@drawable/icon_pin_code"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -302,7 +305,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -313,11 +316,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_address_mobile" />
+                        android:src="@drawable/icon_address_mobile"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -338,7 +342,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -350,11 +354,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_address_email" />
+                        android:src="@drawable/icon_address_email"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -374,7 +379,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -385,11 +390,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_india" />
+                        android:src="@drawable/icon_website"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -409,7 +415,7 @@
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -421,17 +427,18 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_location" />
+                        android:src="@drawable/icon_location"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <TextView
                         android:id="@+id/edt_viewloc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:background="?attr/editTextBackground"
                         android:clickable="false"
                         android:focusable="false"
@@ -441,7 +448,7 @@
                         android:singleLine="true"
                         android:text="View On Map"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -452,17 +459,18 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_attach" />
+                        android:src="@drawable/icon_attach"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <TextView
                         android:id="@+id/edt_visitcard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:background="?attr/editTextBackground"
                         android:clickable="false"
                         android:focusable="false"
@@ -472,7 +480,7 @@
                         android:singleLine="true"
                         android:text="Download Visit Card"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -483,17 +491,18 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_attach" />
+                        android:src="@drawable/icon_attach"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <TextView
                         android:id="@+id/edt_attachphoto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:background="?attr/editTextBackground"
                         android:clickable="false"
                         android:focusable="false"
@@ -503,7 +512,7 @@
                         android:singleLine="true"
                         android:text="Download photo"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -554,6 +563,5 @@
         </com.github.clans.fab.FloatingActionMenu>
 
     </FrameLayout>
-
 
 </LinearLayout>

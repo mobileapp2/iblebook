@@ -574,7 +574,7 @@ public class Login_Activity extends Activity {
                         startActivity(new Intent(context, MainDrawer_Activity.class));
                         finish();
                     } else {
-
+                        Utilities.showAlertDialog(context, "Server Not Responding", "Please Try After Sometime", false);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

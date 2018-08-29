@@ -39,6 +39,7 @@ import java.net.URL;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_GST_Fragment;
 import in.oriange.iblebook.fragments.Offline_GST_Fragment;
+import in.oriange.iblebook.fragments.Received_GST_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -501,6 +502,11 @@ public class View_GST_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        new My_GST_Fragment.GetGSTList().execute();
+                        new Offline_GST_Fragment.GetGSTList().execute();
+                        new Received_GST_Fragment.GetGSTList().execute();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("GST Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -508,8 +514,6 @@ public class View_GST_Activity extends Activity {
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
-                                new My_GST_Fragment.GetGSTList().execute();
-                                new Offline_GST_Fragment.GetGSTList().execute();
                             }
                         });
                         builder.show();

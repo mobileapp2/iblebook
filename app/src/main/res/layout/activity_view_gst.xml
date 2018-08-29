@@ -37,10 +37,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_address_name" />
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/icon_name"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -58,7 +60,7 @@
                             android:hint="Name"
                             android:padding="10dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -76,15 +78,15 @@
                             android:id="@+id/edt_alias"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="35dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginRight="8dp"
                             android:clickable="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="Alias (Short Name)"
                             android:padding="10dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -99,7 +101,9 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_card" />
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/icon_card"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -109,15 +113,15 @@
                             android:id="@+id/edt_gst_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
                             android:clickable="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="GST Number"
                             android:padding="10dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -130,10 +134,11 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_attach" />
+                        android:src="@drawable/icon_attach"
+                        android:tint="@color/colorPrimaryDark" />
 
                     <TextView
                         android:id="@+id/tv_attachfile"
@@ -147,7 +152,7 @@
                         android:padding="10dp"
                         android:text="Download Attachment"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
             </LinearLayout>

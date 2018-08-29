@@ -15,6 +15,8 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,7 @@ import droidninja.filepicker.FilePickerConst;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_PAN_Fragment;
 import in.oriange.iblebook.fragments.Offline_PAN_Fragment;
+import in.oriange.iblebook.fragments.Received_PAN_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.MultipartUtility;
@@ -130,6 +133,24 @@ public class Edit_PAN_Activity extends Activity {
     }
 
     private void setEventHandler() {
+
+        edt_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edt_alias.setText(edt_name.getText().toString());
+            }
+        });
+
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,10 +204,10 @@ public class Edit_PAN_Activity extends Activity {
             return;
         }
 
-//        if (edt_alias.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
-//            return;
-//        }
+        if (edt_alias.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            return;
+        }
 
         if (!Utilities.isPanNum(edt_pan_no)) {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid PAN Number");
@@ -421,6 +442,11 @@ public class Edit_PAN_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        new My_PAN_Fragment.GetPANList().execute();
+                        new Offline_PAN_Fragment.GetPANList().execute();
+                        new Received_PAN_Fragment.GetPANList().execute();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Updated Successfully");
                         builder.setTitle("Success");
@@ -428,8 +454,6 @@ public class Edit_PAN_Activity extends Activity {
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
-                                new My_PAN_Fragment.GetPANList().execute();
-                                new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
                         builder.show();

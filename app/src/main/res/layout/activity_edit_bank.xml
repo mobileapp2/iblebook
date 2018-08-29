@@ -33,11 +33,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_menu_profile" />
+                    android:layout_marginTop="7dp"
+                    android:src="@drawable/icon_name"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -47,16 +48,16 @@
                         android:id="@+id/edt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="center_vertical"
                         android:hint="Name of Account Holder"
-                        android:inputType="textCapWords"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -75,16 +76,16 @@
                         android:id="@+id/edt_alias"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="8dp"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="center_vertical"
                         android:hint="Alias (Short Name)"
-                        android:inputType="textCapWords"
+                        android:inputType="textCapWords|textNoSuggestions"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -96,11 +97,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/icon_bank" />
+                    android:src="@drawable/icon_bank"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -110,15 +112,15 @@
                         android:id="@+id/edt_bank_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
                         android:hint="Bank Name"
                         android:inputType="textCapWords"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -130,11 +132,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/icon_ifsc_code" />
+                    android:src="@drawable/icon_ifsc_code"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -144,8 +147,8 @@
                         android:id="@+id/edt_ifsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                         android:gravity="center_vertical"
                         android:hint="IFSC Code"
@@ -154,7 +157,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -178,7 +181,8 @@
                     android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/icon_account_no" />
+                    android:src="@drawable/icon_account_no"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -188,15 +192,15 @@
                         android:id="@+id/edt_account_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
                         android:hint="Account Number"
                         android:inputType="number"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -205,20 +209,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_attach" />
+                    android:src="@drawable/icon_attach"
+                    android:tint="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/tv_attachfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:background="?attr/editTextBackground"
                     android:focusable="false"
                     android:gravity="center_vertical"
@@ -226,7 +232,7 @@
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -240,7 +246,7 @@
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

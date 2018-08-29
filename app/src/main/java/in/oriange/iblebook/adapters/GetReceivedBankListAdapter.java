@@ -63,16 +63,17 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.list_row_bank, parent, false);
+        View view = inflater.inflate(R.layout.list_row_gst, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getAccount_holder_name().charAt(0)));
-        holder.tv_bankname.setText(resultArrayList.get(position).getAccount_holder_name());
-        holder.tv_accountno.setText(resultArrayList.get(position).getBank_name());
+        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getBank_name().charAt(0)));
+        holder.tv_alias.setText(resultArrayList.get(position).getAlias());
+        holder.tv_name.setText(resultArrayList.get(position).getAccount_holder_name());
+        holder.tv_gstno.setText(resultArrayList.get(position).getBank_name());
 
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,15 +262,16 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
+        TextView tv_initletter, tv_alias, tv_name, tv_gstno;
         private FrameLayout fl_mainframe;
-        private TextView tv_initletter, tv_bankname, tv_accountno;
         private ImageView imv_more;
 
         public MyViewHolder(View view) {
             super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_bankname = (TextView) view.findViewById(R.id.tv_bankname);
-            tv_accountno = (TextView) view.findViewById(R.id.tv_accountno);
+            tv_initletter = view.findViewById(R.id.tv_initletter);
+            tv_alias = view.findViewById(R.id.tv_alias);
+            tv_name = view.findViewById(R.id.tv_name);
+            tv_gstno = view.findViewById(R.id.tv_gstno);
             imv_more = view.findViewById(R.id.imv_more);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
         }
@@ -310,13 +312,14 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+                        new Received_Bank_Fragment.GetBankList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Bank Details Deleted Successfully");
                         builder.setTitle("Success");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new Received_Bank_Fragment.GetBankList().execute();
                                 removeItem(position);
                             }
                         });

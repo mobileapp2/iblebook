@@ -66,16 +66,17 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.list_row_address, parent, false);
+        View view = inflater.inflate(R.layout.list_row_gst, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
-        holder.tv_addresstype.setText(resultArrayList.get(position).getType());
-        holder.tv_name.setText(resultArrayList.get(position).getName());
+        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getType().charAt(0)));
+        holder.tv_alias.setText(resultArrayList.get(position).getType());
+        holder.tv_name.setText(resultArrayList.get(position).getAlias());
+        holder.tv_gstno.setText(resultArrayList.get(position).getName());
 
         holder.fl_mainframe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,15 +358,16 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_initletter, tv_addresstype, tv_name;
+        TextView tv_initletter, tv_alias, tv_name, tv_gstno;
         private FrameLayout fl_mainframe;
         private ImageView imv_more;
 
         public MyViewHolder(View view) {
             super(view);
-            tv_initletter = (TextView) view.findViewById(R.id.tv_initletter);
-            tv_addresstype = (TextView) view.findViewById(R.id.tv_addresstype);
-            tv_name = (TextView) view.findViewById(R.id.tv_name);
+            tv_initletter = view.findViewById(R.id.tv_initletter);
+            tv_alias = view.findViewById(R.id.tv_alias);
+            tv_name = view.findViewById(R.id.tv_name);
+            tv_gstno = view.findViewById(R.id.tv_gstno);
             imv_more = view.findViewById(R.id.imv_more);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
         }
@@ -406,13 +408,14 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+                        new Offline_Address_Fragment.GetAddressList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("Address Details Deleted Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
+                        builder.setMessage("Address Details Deleted Successfully");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new Offline_Address_Fragment.GetAddressList().execute();
                                 removeItem(position);
                             }
                         });
