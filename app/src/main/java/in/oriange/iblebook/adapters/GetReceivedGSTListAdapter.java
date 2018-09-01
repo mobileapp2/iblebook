@@ -283,7 +283,6 @@ public class GetReceivedGSTListAdapter extends RecyclerView.Adapter<GetReceivedG
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Received_GST_Fragment.GetGSTList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("GST Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -291,6 +290,7 @@ public class GetReceivedGSTListAdapter extends RecyclerView.Adapter<GetReceivedG
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Received_GST_Fragment.GetGSTList().execute();
                                 removeItem(position);
                             }
                         });

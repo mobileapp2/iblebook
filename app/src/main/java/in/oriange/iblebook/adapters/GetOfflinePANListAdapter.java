@@ -300,7 +300,6 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Offline_PAN_Fragment.GetPANList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -308,6 +307,7 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Offline_PAN_Fragment.GetPANList().execute();
                                 removeItem(position);
                             }
                         });

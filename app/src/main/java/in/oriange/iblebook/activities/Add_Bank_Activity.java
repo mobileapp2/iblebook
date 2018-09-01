@@ -60,7 +60,7 @@ public class Add_Bank_Activity extends Activity {
     public Uri photoURI;
     private Context context;
     private UserSessionManager session;
-    private String user_id, photo_url;
+    private String user_id, photo_url = "";
     private EditText edt_name, edt_alias, edt_bank_name, edt_ifsc, edt_account_no;
     private TextView tv_attachfile;
     private Button btn_save;

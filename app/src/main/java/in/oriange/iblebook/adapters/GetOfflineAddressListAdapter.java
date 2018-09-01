@@ -408,7 +408,6 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Offline_Address_Fragment.GetAddressList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
@@ -416,6 +415,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Offline_Address_Fragment.GetAddressList().execute();
                                 removeItem(position);
                             }
                         });

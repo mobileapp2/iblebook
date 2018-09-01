@@ -420,6 +420,8 @@ public class Edit_GST_Activity extends Activity {
                 obj.put("alias", edt_alias.getText().toString().trim());
                 obj.put("gst_number", edt_gst_no.getText().toString().trim());
                 obj.put("gst_document", gst_document);
+                obj.put("pan_number", "");
+                obj.put("pan_document", "");
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("tax_id", tax_id);

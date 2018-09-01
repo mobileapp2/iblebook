@@ -279,7 +279,6 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Received_PAN_Fragment.GetPANList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -287,6 +286,7 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Received_PAN_Fragment.GetPANList().execute();
                                 removeItem(position);
                             }
                         });

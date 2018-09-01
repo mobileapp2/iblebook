@@ -408,7 +408,6 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new My_Address_Fragment.GetAddressList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
@@ -416,6 +415,7 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new My_Address_Fragment.GetAddressList().execute();
                                 removeItem(position);
                             }
                         });

@@ -192,27 +192,6 @@ public class Login_Activity extends Activity {
 
         edt_oldpassword.setVisibility(View.GONE);
 
-        edt_enterpassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!edt_enterpassword.getText().toString().trim().equals(edt_confirmpassword.getText().toString().trim())) {
-                    edt_enterpassword.setError("Passwords does not match");
-                } else {
-                    edt_enterpassword.setError(null);
-                }
-            }
-        });
-
         edt_confirmpassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -283,6 +262,7 @@ public class Login_Activity extends Activity {
             try {
                 obj.put("type", "ForgetPassword");
                 obj.put("mobile", mobileNo);
+                obj.put("email", "");
                 obj.put("otp_type", "send");
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -303,7 +303,6 @@ public class GetOfflineGSTListAdapter extends RecyclerView.Adapter<GetOfflineGST
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Offline_GST_Fragment.GetGSTList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("GST Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -311,6 +310,7 @@ public class GetOfflineGSTListAdapter extends RecyclerView.Adapter<GetOfflineGST
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Offline_GST_Fragment.GetGSTList().execute();
                                 removeItem(position);
                             }
                         });

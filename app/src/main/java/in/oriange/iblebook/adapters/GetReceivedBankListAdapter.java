@@ -312,7 +312,6 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new Received_Bank_Fragment.GetBankList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Bank Details Deleted Successfully");
                         builder.setTitle("Success");
@@ -320,6 +319,7 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                new Received_Bank_Fragment.GetBankList().execute();
                                 removeItem(position);
                             }
                         });

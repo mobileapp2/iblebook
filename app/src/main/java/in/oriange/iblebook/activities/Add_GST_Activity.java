@@ -60,7 +60,7 @@ public class Add_GST_Activity extends Activity {
     public Uri photoURI;
     private Context context;
     private UserSessionManager session;
-    private String user_id, photo_url;
+    private String user_id, photo_url = "";
     private EditText edt_name, edt_alias, edt_gst_no;
     private TextView tv_attachfile;
     private Button btn_save;
@@ -411,6 +411,8 @@ public class Add_GST_Activity extends Activity {
                 obj.put("alias", edt_alias.getText().toString().trim());
                 obj.put("gst_number", edt_gst_no.getText().toString().trim());
                 obj.put("gst_document", photo_url);
+                obj.put("pan_number", "");
+                obj.put("pan_document", "");
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("status", STATUS.toLowerCase());

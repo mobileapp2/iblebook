@@ -59,7 +59,7 @@ public class Add_PAN_Activity extends Activity {
     public Uri photoURI;
     private Context context;
     private UserSessionManager session;
-    private String user_id, photo_url;
+    private String user_id, photo_url = "";
     private EditText edt_name, edt_alias, edt_pan_no;
     private TextView tv_attachfile;
     private Button btn_save;
@@ -412,6 +412,8 @@ public class Add_PAN_Activity extends Activity {
                 obj.put("alias", edt_alias.getText().toString().trim());
                 obj.put("pan_number", edt_pan_no.getText().toString().trim());
                 obj.put("pan_document", photo_url);
+                obj.put("gst_number", "");
+                obj.put("gst_document", "");
                 obj.put("created_by", user_id);
                 obj.put("updated_by", user_id);
                 obj.put("status", STATUS.toLowerCase());
