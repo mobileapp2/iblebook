@@ -61,7 +61,6 @@ public class Contacts_Fragment extends Fragment {
     private String user_id;
 
     @Override
-
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
         init(rootView);
@@ -105,6 +104,21 @@ public class Contacts_Fragment extends Fragment {
     public void refresh() {
         if (contactList.size() == 0)
             setDefault();
+    }
+
+    public class contactList extends AsyncTask<Void, Void, List> {
+
+        @Override
+        protected List doInBackground(Void... voids) {
+            List contactList = getContactList2();
+            return contactList;
+        }
+
+        @Override
+        protected void onPostExecute(List list) {
+            super.onPostExecute(list);
+            bindRecyclerview(list);
+        }
     }
 
     private List getContactList() {
@@ -151,6 +165,31 @@ public class Contacts_Fragment extends Fragment {
         if (cur != null) {
             cur.close();
         }
+        return contactList;
+    }
+
+    private List getContactList2() {
+
+        Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        while (phones.moveToNext()) {
+            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            contactList.add(new ContactListPojo(String.valueOf(name.charAt(0)), name, phoneNumber.replaceAll("\\s+", "")));
+
+        }
+        phones.close();
+
+        Set<ContactListPojo> s = new HashSet<ContactListPojo>();
+        s.addAll(contactList);
+        contactList = new ArrayList<ContactListPojo>();
+        contactList.addAll(s);
+
+        Collections.sort(contactList, new Comparator<ContactListPojo>() {
+            @Override
+            public int compare(ContactListPojo o1, ContactListPojo o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
         return contactList;
     }
 
@@ -401,19 +440,5 @@ public class Contacts_Fragment extends Fragment {
         }
     }
 
-    public class contactList extends AsyncTask<Void, Void, List> {
-
-        @Override
-        protected List doInBackground(Void... voids) {
-            List contactList = getContactList();
-            return contactList;
-        }
-
-        @Override
-        protected void onPostExecute(List list) {
-            super.onPostExecute(list);
-            bindRecyclerview(list);
-        }
-    }
 
 }
