@@ -24,6 +24,8 @@ public class GetTaxListPojo {
 
     private String pan_document;
 
+    private String status;
+
     public String getCreated_by() {
         return created_by;
     }
@@ -112,8 +114,11 @@ public class GetTaxListPojo {
         this.pan_document = pan_document;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [created_by = " + created_by + ", gst_document = " + gst_document + ", updated_at = " + updated_at + ", alias = " + alias + ", name = " + name + ", created_at = " + created_at + ", updated_by = " + updated_by + ", gst_number = " + gst_number + ", tax_id = " + tax_id + ", pan_number = " + pan_number + ", pan_document = " + pan_document + "]";
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

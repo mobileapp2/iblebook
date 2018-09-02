@@ -51,7 +51,6 @@
 
         </FrameLayout>
 
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -60,35 +59,33 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:src="@drawable/ic_camera_white_24dp"
-        app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="end|bottom"
-        app:pressedTranslationZ="12dp" />
+        app:layout_anchorGravity="end|bottom" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="240dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="7dp"
                     android:src="@drawable/icon_name"
                     android:tint="@color/colorPrimaryDark" />
 
@@ -106,7 +103,7 @@
                         android:hint="Name"
                         android:singleLine="true"
                         android:textColor="@color/darkgrey"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -116,36 +113,36 @@
                 android:id="@+id/input_aliasname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp">
 
                 <EditText
                     android:id="@+id/edt_aliasname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="33dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="22dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:hint="Alias Name"
                     android:singleLine="true"
                     android:textColor="@color/darkgrey"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="7dp"
                     android:src="@drawable/icon_mobile"
                     android:tint="@color/colorPrimaryDark" />
 
@@ -164,7 +161,7 @@
                         android:maxLength="13"
                         android:singleLine="true"
                         android:textColor="@color/darkgrey"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
@@ -172,16 +169,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="7dp"
                     android:src="@drawable/icon_email"
                     android:tint="@color/colorPrimaryDark" />
 
@@ -199,7 +196,7 @@
                         android:hint="Email Address"
                         android:singleLine="true"
                         android:textColor="@color/darkgrey"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -210,8 +207,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:src="@drawable/ic_edit_white_24dp"
-                app:fab_size="mini" />
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_edit_white_24dp" />
+
         </LinearLayout>
 
     </ScrollView>

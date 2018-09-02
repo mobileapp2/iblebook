@@ -28,6 +28,7 @@ import in.oriange.iblebook.activities.Add_PAN_Activity;
 import in.oriange.iblebook.adapters.GetOfflinePANListAdapter;
 import in.oriange.iblebook.models.GetTaxListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
@@ -41,36 +42,52 @@ public class Offline_PAN_Fragment extends Fragment {
     private static DataBaseHelper dbHelper;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private FloatingActionButton fab_add_pan;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
 
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetPANList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_panlist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetTaxListPojo> panList = new ArrayList<>();
+        ArrayList<GetTaxListPojo> sortedPanList = new ArrayList<>();
+        panList = constantData.getPanList();
+
+        for (int i = 0; i < panList.size(); i++) {
+            if (panList.get(i).getStatus().equals("offline")) {
+                sortedPanList.add(panList.get(i));
+            }
+        }
+
+        if (sortedPanList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_panlist.setVisibility(View.VISIBLE);
+            rv_panlist.setAdapter(new GetOfflinePANListAdapter(context, sortedPanList, "OFFLINE"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_panlist.setVisibility(View.GONE);
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offline_pan, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
-    }
-
-    public static void setDefault() {
-//        ArrayList<GetTaxListPojo> panList = new ArrayList<GetTaxListPojo>();
-//        panList = dbHelper.getPANListFromDb();
-//        rv_panlist.setAdapter(new GetMyPANListAdapter(context, panList, "OFFLINE"));
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetPANList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_panlist.setVisibility(View.GONE);
-        }
     }
 
     private void getSessionData() {
@@ -94,6 +111,7 @@ public class Offline_PAN_Fragment extends Fragment {
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
         rv_panlist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void setEventHandlers() {
@@ -169,6 +187,7 @@ public class Offline_PAN_Fragment extends Fragment {
                                     summary.setPan_document(jsonObj.getString("pan_document"));
                                     summary.setCreated_by(jsonObj.getString("created_by"));
                                     summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setStatus(jsonObj.getString("status"));
                                     panList.add(summary);
                                 }
                             }

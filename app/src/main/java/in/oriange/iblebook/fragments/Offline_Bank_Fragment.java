@@ -28,6 +28,7 @@ import in.oriange.iblebook.activities.Add_Bank_Activity;
 import in.oriange.iblebook.adapters.GetOfflineBankListAdapter;
 import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
@@ -42,16 +43,50 @@ public class Offline_Bank_Fragment extends Fragment {
     private static DataBaseHelper dbHelper;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetBankList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_banklist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetBankListPojo> bankList = new ArrayList<>();
+        ArrayList<GetBankListPojo> sortedBankList = new ArrayList<>();
+        bankList = constantData.getBankList();
+
+        for (int i = 0; i < bankList.size(); i++) {
+            if (bankList.get(i).getStatus().equals("offline")) {
+                sortedBankList.add(bankList.get(i));
+            }
+        }
+
+        if (sortedBankList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_banklist.setVisibility(View.VISIBLE);
+            rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, sortedBankList, "OFFLINE"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_banklist.setVisibility(View.GONE);
+        }
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offline_bank, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
@@ -67,6 +102,7 @@ public class Offline_Bank_Fragment extends Fragment {
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
         rv_banklist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void getSessionData() {
@@ -78,23 +114,6 @@ public class Offline_Bank_Fragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void setDefault() {
-//        ArrayList<GetBankListPojo> bankList = new ArrayList<GetBankListPojo>();
-//        bankList = dbHelper.getBankListFromDb();
-//        rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "OFFLINE"));
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetBankList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_banklist.setVisibility(View.GONE);
-        }
-
     }
 
     private void setEventHandlers() {

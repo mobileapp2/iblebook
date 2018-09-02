@@ -42,17 +42,6 @@ public class ReceivedRequests_Fragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_received_request, container, false);
-        context = getActivity();
-        init(rootView);
-        setDefault();
-        getSessionData();
-        setEventHandlers();
-        return rootView;
-    }
-
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
             new GetRequestList().execute();
@@ -63,6 +52,17 @@ public class ReceivedRequests_Fragment extends Fragment {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_requestlist.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_received_request, container, false);
+        context = getActivity();
+        init(rootView);
+        setDefault();
+        getSessionData();
+        setEventHandlers();
+        return rootView;
     }
 
     private void getSessionData() {

@@ -42,17 +42,6 @@ public class ReceivedDetails_Fragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_received_details, container, false);
-        context = getActivity();
-        init(rootView);
-        setDefault();
-        getSessionData();
-        setEventHandlers();
-        return rootView;
-    }
-
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
             new GetDetailsList().execute();
@@ -63,6 +52,17 @@ public class ReceivedDetails_Fragment extends Fragment {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_detailslist.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_received_details, container, false);
+        context = getActivity();
+        init(rootView);
+        setDefault();
+        getSessionData();
+        setEventHandlers();
+        return rootView;
     }
 
     private void getSessionData() {

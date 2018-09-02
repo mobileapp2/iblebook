@@ -25,6 +25,7 @@ import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.GetReceivedAddressListAdapter;
 import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -37,28 +38,51 @@ public class Received_Address_Fragment extends Fragment {
     private static String user_id;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetAddressList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_addresslist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetAddressListPojo> addressList = new ArrayList<>();
+        ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
+        addressList = constantData.getAddressList();
+
+        for (int i = 0; i < addressList.size(); i++) {
+            if (addressList.get(i).getStatus().equals("received")) {
+                sortedAddressList.add(addressList.get(i));
+            }
+        }
+
+        if (sortedAddressList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_addresslist.setVisibility(View.VISIBLE);
+            rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, sortedAddressList, "RECEIVED"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_addresslist.setVisibility(View.GONE);
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_received_address, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
-    }
-
-    private void init(View rootView) {
-        session = new UserSessionManager(context);
-        ll_parent = getActivity().findViewById(R.id.drawerlayout);
-        rv_addresslist = rootView.findViewById(R.id.rv_addresslist);
-        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
-        layoutManager = new LinearLayoutManager(context);
-        rv_addresslist.setLayoutManager(layoutManager);
     }
 
     private void getSessionData() {
@@ -72,16 +96,15 @@ public class Received_Address_Fragment extends Fragment {
         }
     }
 
-    private void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetAddressList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_addresslist.setVisibility(View.GONE);
-        }
+    private void init(View rootView) {
+        session = new UserSessionManager(context);
+        ll_parent = getActivity().findViewById(R.id.drawerlayout);
+        rv_addresslist = rootView.findViewById(R.id.rv_addresslist);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        layoutManager = new LinearLayoutManager(context);
+        rv_addresslist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void setEventHandlers() {

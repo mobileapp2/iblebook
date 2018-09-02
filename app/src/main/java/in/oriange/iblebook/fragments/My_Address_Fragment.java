@@ -28,6 +28,7 @@ import in.oriange.iblebook.activities.Add_Address_Activity;
 import in.oriange.iblebook.adapters.GetMyAddressListAdapter;
 import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -39,16 +40,50 @@ public class My_Address_Fragment extends Fragment {
     private static String user_id;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private FloatingActionButton fab_add_address;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetAddressList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_addresslist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetAddressListPojo> addressList = new ArrayList<>();
+        ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
+        addressList = constantData.getAddressList();
+
+        for (int i = 0; i < addressList.size(); i++) {
+            if (addressList.get(i).getStatus().equals("online")) {
+                sortedAddressList.add(addressList.get(i));
+            }
+        }
+
+        if (sortedAddressList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_addresslist.setVisibility(View.VISIBLE);
+            rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_addresslist.setVisibility(View.GONE);
+        }
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_address, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
@@ -63,6 +98,7 @@ public class My_Address_Fragment extends Fragment {
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
         rv_addresslist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void getSessionData() {
@@ -74,19 +110,6 @@ public class My_Address_Fragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetAddressList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_addresslist.setVisibility(View.GONE);
-        }
-
     }
 
     private void setEventHandlers() {

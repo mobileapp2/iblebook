@@ -53,8 +53,11 @@ import static in.oriange.iblebook.utilities.PermissionUtil.doesAppNeedPermission
 
 public class Profile_Activity extends Activity {
 
-    private Context context;
     public static final int CAMERA_REQUEST = 100;
+    public static final int GALLERY_REQUEST = 200;
+    public Uri photoURI;
+    File file, profilPicFolder;
+    private Context context;
     private UserSessionManager session;
     private EditText edt_name, edt_aliasname, edt_mobile, edt_email;
     private String user_id, photo, name, alias, country_code, mobile, email, photo_url, password;
@@ -62,9 +65,6 @@ public class Profile_Activity extends Activity {
     private ProgressDialog pd;
     private ImageView imv_profile, img_finish;
     private CoordinatorLayout ll_parent;
-    public static final int GALLERY_REQUEST = 200;
-    public Uri photoURI;
-    File file, profilPicFolder;
     private FloatingActionButton fab_edt_profilepic, fab_edtprofie;
 
     @Override

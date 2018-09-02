@@ -38,6 +38,7 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Login_Activity extends Activity {
 
+    String user_id, mobileNo;
     private Context context;
     private LinearLayout ll_parent;
     private EditText edt_username, edt_password;
@@ -45,7 +46,6 @@ public class Login_Activity extends Activity {
     private Button btn_login;
     private int i = 0;
     private UserSessionManager session;
-    String user_id, mobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +242,107 @@ public class Login_Activity extends Activity {
         alertD.show();
     }
 
+    private void submitData() {
+        if (edt_username.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Username");
+            return;
+        }
+        if (edt_password.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Password");
+            return;
+        }
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new LoginUser().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
+    }
+
+    private void saveRegistrationID() {
+        String user_id = "", regToken = "";
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
+
+            for (int j = 0; j < user_info.length(); j++) {
+                JSONObject json = user_info.getJSONObject(j);
+                user_id = json.getString("user_id");
+            }
+
+            regToken = session.getAndroidToken().get(ApplicationConstants.KEY_ANDROIDTOKETID);
+
+            if (regToken != null && !regToken.isEmpty() && !regToken.equals("null") && !regToken.equals(""))
+                new SendRegistrationToken().execute(user_id, regToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String totalRAMSize() {
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(memoryInfo);
+        double totalRAM = memoryInfo.totalMem / 1048576.0;
+        return String.valueOf(totalRAM);
+    }
+
+    private void checkPermissions() {
+        if (!PermissionUtil.askPermissions(this)) {
+            // permision not required or already given
+//            startService(new Intent(context, ChecklistSyncServiceHLL.class));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PermissionUtil.PERMISSION_ALL: {
+
+                if (grantResults.length > 0) {
+
+                    List<Integer> indexesOfPermissionsNeededToShow = new ArrayList<>();
+
+                    for (int i = 0; i < permissions.length; ++i) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                            indexesOfPermissionsNeededToShow.add(i);
+                        }
+                    }
+
+                    int size = indexesOfPermissionsNeededToShow.size();
+                    if (size != 0) {
+                        int i = 0;
+                        boolean isPermissionGranted = true;
+
+                        while (i < size && isPermissionGranted) {
+                            isPermissionGranted = grantResults[indexesOfPermissionsNeededToShow.get(i)]
+                                    == PackageManager.PERMISSION_GRANTED;
+                            i++;
+                        }
+
+                        if (!isPermissionGranted) {
+                            new AlertDialog.Builder(this)
+                                    .setTitle("Permissions mandatory")
+                                    .setMessage("All the permissions are required for this app")
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            checkPermissions();
+                                        }
+                                    })
+                                    .setCancelable(false)
+                                    .create()
+                                    .show();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public class SendOTP extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -342,107 +443,6 @@ public class Login_Activity extends Activity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    private void submitData() {
-        if (edt_username.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Username");
-            return;
-        }
-        if (edt_password.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Password");
-            return;
-        }
-
-        if (Utilities.isNetworkAvailable(context)) {
-            new LoginUser().execute();
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-        }
-    }
-
-    private void saveRegistrationID() {
-        String user_id = "", regToken = "";
-        try {
-            JSONArray user_info = new JSONArray(session.getUserDetails().get(
-                    ApplicationConstants.KEY_LOGIN_INFO));
-
-            for (int j = 0; j < user_info.length(); j++) {
-                JSONObject json = user_info.getJSONObject(j);
-                user_id = json.getString("user_id");
-            }
-
-            regToken = session.getAndroidToken().get(ApplicationConstants.KEY_ANDROIDTOKETID);
-
-            if (regToken != null && !regToken.isEmpty() && !regToken.equals("null") && !regToken.equals(""))
-                new SendRegistrationToken().execute(user_id, regToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String totalRAMSize() {
-        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        activityManager.getMemoryInfo(memoryInfo);
-        double totalRAM = memoryInfo.totalMem / 1048576.0;
-        return String.valueOf(totalRAM);
-    }
-
-    private void checkPermissions() {
-        if (!PermissionUtil.askPermissions(this)) {
-            // permision not required or already given
-//            startService(new Intent(context, ChecklistSyncServiceHLL.class));
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtil.PERMISSION_ALL: {
-
-                if (grantResults.length > 0) {
-
-                    List<Integer> indexesOfPermissionsNeededToShow = new ArrayList<>();
-
-                    for (int i = 0; i < permissions.length; ++i) {
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                            indexesOfPermissionsNeededToShow.add(i);
-                        }
-                    }
-
-                    int size = indexesOfPermissionsNeededToShow.size();
-                    if (size != 0) {
-                        int i = 0;
-                        boolean isPermissionGranted = true;
-
-                        while (i < size && isPermissionGranted) {
-                            isPermissionGranted = grantResults[indexesOfPermissionsNeededToShow.get(i)]
-                                    == PackageManager.PERMISSION_GRANTED;
-                            i++;
-                        }
-
-                        if (!isPermissionGranted) {
-                            new AlertDialog.Builder(this)
-                                    .setTitle("Permissions mandatory")
-                                    .setMessage("All the permissions are required for this app")
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            checkPermissions();
-                                        }
-                                    })
-                                    .setCancelable(false)
-                                    .create()
-                                    .show();
-                        }
-                    }
-                }
             }
         }
     }

@@ -26,6 +26,7 @@ import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.GetReceivedGSTListAdapter;
 import in.oriange.iblebook.models.GetTaxListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -37,31 +38,52 @@ public class Received_GST_Fragment extends Fragment {
     private static String user_id;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private FloatingActionButton fab_add_gst;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetGSTList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_gstlist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetTaxListPojo> gstList = new ArrayList<>();
+        ArrayList<GetTaxListPojo> sortedGstList = new ArrayList<>();
+        gstList = constantData.getGstList();
+
+        for (int i = 0; i < gstList.size(); i++) {
+            if (gstList.get(i).getStatus().equals("received")) {
+                sortedGstList.add(gstList.get(i));
+            }
+        }
+
+        if (sortedGstList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_gstlist.setVisibility(View.VISIBLE);
+            rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, sortedGstList, "RECEIVED"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_gstlist.setVisibility(View.GONE);
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_received_gst, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
-    }
-
-    public static void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetGSTList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_gstlist.setVisibility(View.GONE);
-        }
     }
 
     private void getSessionData() {
@@ -84,6 +106,7 @@ public class Received_GST_Fragment extends Fragment {
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
         rv_gstlist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void setEventHandlers() {
@@ -150,6 +173,7 @@ public class Received_GST_Fragment extends Fragment {
                                     summary.setGst_document(jsonObj.getString("gst_document"));
                                     summary.setCreated_by(jsonObj.getString("created_by"));
                                     summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setStatus(jsonObj.getString("status"));
                                     gstList.add(summary);
                                 }
                             }

@@ -26,6 +26,7 @@ import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.GetReceivedBankListAdapter;
 import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -38,16 +39,50 @@ public class Received_Bank_Fragment extends Fragment {
     private static String user_id;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static LinearLayout ll_nothingtoshow;
+    private static ConstantData constantData;
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+
+    public static void setDefault() {
+//        if (Utilities.isNetworkAvailable(context)) {
+//            new GetBankList().execute();
+//            swipeRefreshLayout.setRefreshing(true);
+//        } else {
+//            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//            swipeRefreshLayout.setRefreshing(false);
+//            ll_nothingtoshow.setVisibility(View.VISIBLE);
+//            rv_banklist.setVisibility(View.GONE);
+//        }
+
+        ArrayList<GetBankListPojo> bankList = new ArrayList<>();
+        ArrayList<GetBankListPojo> sortedBankList = new ArrayList<>();
+        bankList = constantData.getBankList();
+
+        for (int i = 0; i < bankList.size(); i++) {
+            if (bankList.get(i).getStatus().equals("received")) {
+                sortedBankList.add(bankList.get(i));
+            }
+        }
+
+        if (sortedBankList.size() != 0) {
+            ll_nothingtoshow.setVisibility(View.GONE);
+            rv_banklist.setVisibility(View.VISIBLE);
+            rv_banklist.setAdapter(new GetReceivedBankListAdapter(context, sortedBankList, "RECEIVED"));
+        } else {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_banklist.setVisibility(View.GONE);
+        }
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_received_bank, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
+//        setDefault();
         getSessionData();
         setEventHandlers();
         return rootView;
@@ -62,6 +97,7 @@ public class Received_Bank_Fragment extends Fragment {
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         layoutManager = new LinearLayoutManager(context);
         rv_banklist.setLayoutManager(layoutManager);
+        constantData = ConstantData.getInstance();
     }
 
     private void getSessionData() {
@@ -73,19 +109,6 @@ public class Received_Bank_Fragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void setDefault() {
-        if (Utilities.isNetworkAvailable(context)) {
-            new GetBankList().execute();
-            swipeRefreshLayout.setRefreshing(true);
-        } else {
-            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            swipeRefreshLayout.setRefreshing(false);
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_banklist.setVisibility(View.GONE);
-        }
-
     }
 
     private void setEventHandlers() {

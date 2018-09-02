@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
-import agency.tango.materialintroscreen.SlideFragmentBuilder;
 import agency.tango.materialintroscreen.animations.IViewTranslation;
-import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.IntroScreen1_Fragment;
 import in.oriange.iblebook.fragments.IntroScreen2_Fragment;
 import in.oriange.iblebook.fragments.IntroScreen3_Fragment;

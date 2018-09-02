@@ -3,10 +3,6 @@ package in.oriange.iblebook;
 import android.app.Application;
 import android.content.Context;
 
-import java.io.File;
-
-import in.oriange.iblebook.utilities.DataBaseHelper;
-
 public class IbleBook extends Application {
 
     private Context context;

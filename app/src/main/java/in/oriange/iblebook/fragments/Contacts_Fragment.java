@@ -106,21 +106,6 @@ public class Contacts_Fragment extends Fragment {
             setDefault();
     }
 
-    public class contactList extends AsyncTask<Void, Void, List> {
-
-        @Override
-        protected List doInBackground(Void... voids) {
-            List contactList = getContactList2();
-            return contactList;
-        }
-
-        @Override
-        protected void onPostExecute(List list) {
-            super.onPostExecute(list);
-            bindRecyclerview(list);
-        }
-    }
-
     private List getContactList() {
         ContentResolver cr = context.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
@@ -344,6 +329,64 @@ public class Contacts_Fragment extends Fragment {
         alert.show();
     }
 
+    private void bindRecyclerview(List<ContactListPojo> contactList) {
+        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
+        alphaAdapter.setDuration(500);
+        alphaAdapter.setInterpolator(new OvershootInterpolator());
+        alphaAdapter.setFirstOnly(false);
+        rv_contacts.setAdapter(alphaAdapter);
+    }
+
+    public void askPermission() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(PERMISSIONS, 1);
+            return;
+        } else {
+            new contactList().execute();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new contactList().execute();
+                } else {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                    builder.setTitle("Alert");
+                    builder.setMessage("Please provide permission to allow Address Book to access your contacts");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.getPackageName(), null)));
+//                            askPermission();
+                        }
+                    });
+                    builder.create();
+                    builder.show();
+                }
+            }
+        }
+    }
+
+    public class contactList extends AsyncTask<Void, Void, List> {
+
+        @Override
+        protected List doInBackground(Void... voids) {
+            List contactList = getContactList2();
+            return contactList;
+        }
+
+        @Override
+        protected void onPostExecute(List list) {
+            super.onPostExecute(list);
+            bindRecyclerview(list);
+        }
+    }
+
     public class SendRequest extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -393,49 +436,6 @@ public class Contacts_Fragment extends Fragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    private void bindRecyclerview(List<ContactListPojo> contactList) {
-        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
-        alphaAdapter.setDuration(500);
-        alphaAdapter.setInterpolator(new OvershootInterpolator());
-        alphaAdapter.setFirstOnly(false);
-        rv_contacts.setAdapter(alphaAdapter);
-    }
-
-    public void askPermission() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(PERMISSIONS, 1);
-            return;
-        } else {
-            new contactList().execute();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new contactList().execute();
-                } else {
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                    builder.setTitle("Alert");
-                    builder.setMessage("Please provide permission to allow Address Book to access your contacts");
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", context.getPackageName(), null)));
-//                            askPermission();
-                        }
-                    });
-                    builder.create();
-                    builder.show();
-                }
             }
         }
     }
