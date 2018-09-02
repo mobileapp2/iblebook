@@ -42,6 +42,7 @@ public class GST_Fragment extends Fragment {
     private TopGSTNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
+    private static ArrayList<GetTaxListPojo> gstList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class GST_Fragment extends Fragment {
         adapter = new TopGSTNavViewPagerAdapter(getChildFragmentManager());
         view_pager.setOffscreenPageLimit(3);
         view_pager.setAdapter(adapter);
+        gstList = new ArrayList<GetTaxListPojo>();
     }
 
     private void getSessionData() {
@@ -82,6 +84,11 @@ public class GST_Fragment extends Fragment {
             new GetGSTList().execute();
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            constantData.setGstList(gstList);
+
+            My_GST_Fragment.setDefault();
+            Received_GST_Fragment.setDefault();
+            Offline_GST_Fragment.setDefault();
         }
     }
 
@@ -124,11 +131,11 @@ public class GST_Fragment extends Fragment {
     }
 
     public static class GetGSTList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetTaxListPojo> gstList;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            gstList = new ArrayList<GetTaxListPojo>();
         }
 
         @Override

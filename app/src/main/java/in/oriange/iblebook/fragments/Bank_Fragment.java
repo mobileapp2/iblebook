@@ -41,6 +41,7 @@ public class Bank_Fragment extends Fragment {
     private TopBankNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
+    private static ArrayList<GetBankListPojo> bankList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class Bank_Fragment extends Fragment {
         adapter = new TopBankNavViewPagerAdapter(getChildFragmentManager());
         view_pager.setOffscreenPageLimit(3);
         view_pager.setAdapter(adapter);
+        bankList = new ArrayList<>();
     }
 
     private void getSessionData() {
@@ -81,6 +83,11 @@ public class Bank_Fragment extends Fragment {
             new GetBankList().execute();
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            constantData.setBankList(bankList);
+
+            My_Bank_Fragment.setDefault();
+            Received_Bank_Fragment.setDefault();
+            Offline_Bank_Fragment.setDefault();
         }
     }
 
@@ -122,11 +129,11 @@ public class Bank_Fragment extends Fragment {
     }
 
     public static class GetBankList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetBankListPojo> bankList;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            bankList = new ArrayList<GetBankListPojo>();
         }
 
         @Override

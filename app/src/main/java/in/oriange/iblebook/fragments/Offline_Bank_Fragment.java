@@ -63,16 +63,22 @@ public class Offline_Bank_Fragment extends Fragment {
         ArrayList<GetBankListPojo> sortedBankList = new ArrayList<>();
         bankList = constantData.getBankList();
 
-        for (int i = 0; i < bankList.size(); i++) {
-            if (bankList.get(i).getStatus().equals("offline")) {
-                sortedBankList.add(bankList.get(i));
-            }
-        }
 
-        if (sortedBankList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_banklist.setVisibility(View.VISIBLE);
-            rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, sortedBankList, "OFFLINE"));
+        if (bankList.size() != 0) {
+            for (int i = 0; i < bankList.size(); i++) {
+                if (bankList.get(i).getStatus().equals("offline")) {
+                    sortedBankList.add(bankList.get(i));
+                }
+            }
+
+            if (sortedBankList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_banklist.setVisibility(View.VISIBLE);
+                rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, sortedBankList, "OFFLINE"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_banklist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_banklist.setVisibility(View.GONE);

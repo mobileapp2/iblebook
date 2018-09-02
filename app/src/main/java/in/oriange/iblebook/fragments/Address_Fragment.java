@@ -42,6 +42,7 @@ public class Address_Fragment extends Fragment {
     private TopAddressNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
+    private static ArrayList<GetAddressListPojo> addressList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class Address_Fragment extends Fragment {
         adapter = new TopAddressNavViewPagerAdapter(getChildFragmentManager());
         view_pager.setOffscreenPageLimit(3);
         view_pager.setAdapter(adapter);
+        addressList = new ArrayList<GetAddressListPojo>();
     }
 
     private void getSessionData() {
@@ -82,6 +84,10 @@ public class Address_Fragment extends Fragment {
             new GetAddressList().execute();
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            constantData.setAddressList(addressList);
+            My_Address_Fragment.setDefault();
+            Received_Address_Fragment.setDefault();
+            Offline_Address_Fragment.setDefault();
         }
     }
 
@@ -123,11 +129,11 @@ public class Address_Fragment extends Fragment {
     }
 
     public static class GetAddressList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetAddressListPojo> addressList;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            addressList = new ArrayList<GetAddressListPojo>();
         }
 
         @Override

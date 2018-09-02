@@ -58,16 +58,21 @@ public class Received_PAN_Fragment extends Fragment {
         ArrayList<GetTaxListPojo> sortedPanList = new ArrayList<>();
         panList = constantData.getPanList();
 
-        for (int i = 0; i < panList.size(); i++) {
-            if (panList.get(i).getStatus().equals("received")) {
-                sortedPanList.add(panList.get(i));
+        if (panList.size() != 0) {
+            for (int i = 0; i < panList.size(); i++) {
+                if (panList.get(i).getStatus().equals("received")) {
+                    sortedPanList.add(panList.get(i));
+                }
             }
-        }
 
-        if (sortedPanList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_panlist.setVisibility(View.VISIBLE);
-            rv_panlist.setAdapter(new GetReceivedPANListAdapter(context, sortedPanList, "RECEIVED"));
+            if (sortedPanList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_panlist.setVisibility(View.VISIBLE);
+                rv_panlist.setAdapter(new GetReceivedPANListAdapter(context, sortedPanList, "RECEIVED"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_panlist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_panlist.setVisibility(View.GONE);

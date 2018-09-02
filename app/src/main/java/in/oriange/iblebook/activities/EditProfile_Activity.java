@@ -26,6 +26,8 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class EditProfile_Activity extends Activity {
 
     private Context context;
@@ -46,6 +48,12 @@ public class EditProfile_Activity extends Activity {
         setDefaults();
         setEventHandler();
         setupToolbar();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(EditProfile_Activity.this);
     }
 
     private void init() {

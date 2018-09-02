@@ -60,16 +60,21 @@ public class Offline_Address_Fragment extends Fragment {
         ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
 
-        for (int i = 0; i < addressList.size(); i++) {
-            if (addressList.get(i).getStatus().equals("offline")) {
-                sortedAddressList.add(addressList.get(i));
+        if (addressList.size() != 0) {
+            for (int i = 0; i < addressList.size(); i++) {
+                if (addressList.get(i).getStatus().equals("offline")) {
+                    sortedAddressList.add(addressList.get(i));
+                }
             }
-        }
 
-        if (sortedAddressList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_addresslist.setVisibility(View.VISIBLE);
-            rv_addresslist.setAdapter(new GetOfflineAddressListAdapter(context, sortedAddressList, "OFFLINE"));
+            if (sortedAddressList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_addresslist.setVisibility(View.VISIBLE);
+                rv_addresslist.setAdapter(new GetOfflineAddressListAdapter(context, sortedAddressList, "OFFLINE"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_addresslist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_addresslist.setVisibility(View.GONE);
@@ -88,17 +93,6 @@ public class Offline_Address_Fragment extends Fragment {
         return rootView;
     }
 
-    private void getSessionData() {
-        try {
-            JSONArray user_info = new JSONArray(session.getUserDetails().get(
-                    ApplicationConstants.KEY_LOGIN_INFO));
-            JSONObject json = user_info.getJSONObject(0);
-            user_id = json.getString("user_id");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void init(View rootView) {
         session = new UserSessionManager(context);
         ll_parent = getActivity().findViewById(R.id.drawerlayout);
@@ -109,6 +103,17 @@ public class Offline_Address_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_addresslist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+    }
+
+    private void getSessionData() {
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
+            JSONObject json = user_info.getJSONObject(0);
+            user_id = json.getString("user_id");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setEventHandlers() {
@@ -225,6 +230,5 @@ public class Offline_Address_Fragment extends Fragment {
             }
         }
     }
-
 
 }

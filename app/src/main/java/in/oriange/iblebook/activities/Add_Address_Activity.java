@@ -60,6 +60,8 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class Add_Address_Activity extends Activity {
 
     public static final int CAMERA_REQUEST = 100;
@@ -93,6 +95,12 @@ public class Add_Address_Activity extends Activity {
         getSessionData();
         setEventHandler();
         setupToolbar();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(Add_Address_Activity.this);
     }
 
     @Override

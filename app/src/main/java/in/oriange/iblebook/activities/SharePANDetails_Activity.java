@@ -34,6 +34,8 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class SharePANDetails_Activity extends Activity {
 
     private static Context context;
@@ -59,6 +61,12 @@ public class SharePANDetails_Activity extends Activity {
         getIntentData();
         setDefaults();
         setEventHandler();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(SharePANDetails_Activity.this);
     }
 
     private void init() {

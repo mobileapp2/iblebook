@@ -66,6 +66,12 @@ public class Login_Activity extends Activity {
         checkPermissions();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        hideSoftKeyboard(Login_Activity.this);
+    }
+
     private void init() {
         ll_parent = findViewById(R.id.ll_parent);
         edt_username = findViewById(R.id.edt_username);

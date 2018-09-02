@@ -34,6 +34,8 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class ShareAddressDetails_Activity extends Activity {
     private static Context context;
     private static RecyclerView rv_addresslist;
@@ -58,6 +60,12 @@ public class ShareAddressDetails_Activity extends Activity {
         getIntentData();
         setDefaults();
         setEventHandler();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(ShareAddressDetails_Activity.this);
     }
 
     private void init() {

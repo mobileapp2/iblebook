@@ -58,16 +58,22 @@ public class Received_GST_Fragment extends Fragment {
         ArrayList<GetTaxListPojo> sortedGstList = new ArrayList<>();
         gstList = constantData.getGstList();
 
-        for (int i = 0; i < gstList.size(); i++) {
-            if (gstList.get(i).getStatus().equals("received")) {
-                sortedGstList.add(gstList.get(i));
-            }
-        }
 
-        if (sortedGstList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_gstlist.setVisibility(View.VISIBLE);
-            rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, sortedGstList, "RECEIVED"));
+        if (gstList.size() != 0) {
+            for (int i = 0; i < gstList.size(); i++) {
+                if (gstList.get(i).getStatus().equals("received")) {
+                    sortedGstList.add(gstList.get(i));
+                }
+            }
+
+            if (sortedGstList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_gstlist.setVisibility(View.VISIBLE);
+                rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, sortedGstList, "RECEIVED"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_gstlist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_gstlist.setVisibility(View.GONE);

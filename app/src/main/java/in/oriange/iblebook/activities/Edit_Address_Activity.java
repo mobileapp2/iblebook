@@ -61,6 +61,8 @@ import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class Edit_Address_Activity extends Activity {
 
     public static final int CAMERA_REQUEST = 100;
@@ -108,6 +110,12 @@ public class Edit_Address_Activity extends Activity {
             tv_pickloc.setText(constantData.getLatitude() + " , " + constantData.getLongitude());
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(Edit_Address_Activity.this);
     }
 
     private void init() {

@@ -42,6 +42,7 @@ public class PAN_Fragment extends Fragment {
     private TopPANNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
+    private static ArrayList<GetTaxListPojo> panList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class PAN_Fragment extends Fragment {
         adapter = new TopPANNavViewPagerAdapter(getChildFragmentManager());
         view_pager.setOffscreenPageLimit(3);
         view_pager.setAdapter(adapter);
+        panList = new ArrayList<GetTaxListPojo>();
     }
 
     private void getSessionData() {
@@ -82,6 +84,11 @@ public class PAN_Fragment extends Fragment {
             new GetPANList().execute();
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+            constantData.setPanList(panList);
+
+            My_PAN_Fragment.setDefault();
+            Received_PAN_Fragment.setDefault();
+            Offline_PAN_Fragment.setDefault();
         }
     }
 
@@ -124,11 +131,11 @@ public class PAN_Fragment extends Fragment {
     }
 
     public static class GetPANList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetTaxListPojo> panList;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            panList = new ArrayList<GetTaxListPojo>();
         }
 
         @Override

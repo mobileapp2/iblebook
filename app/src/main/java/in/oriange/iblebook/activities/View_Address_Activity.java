@@ -379,14 +379,14 @@ public class View_Address_Activity extends Activity {
             cb_maplocation.setVisibility(View.VISIBLE);
         }
 
-        if (edt_visitcard.getText().toString().trim().equals("")) {
+        if (visiting_card.equals("")) {
             cb_visitcard.setVisibility(View.GONE);
             cb_visitcard.setChecked(false);
         } else {
             cb_visitcard.setVisibility(View.VISIBLE);
         }
 
-        if (edt_attachphoto.getText().toString().trim().equals("")) {
+        if (photo.equals("")) {
             cb_photo.setVisibility(View.GONE);
             cb_photo.setChecked(false);
         } else {

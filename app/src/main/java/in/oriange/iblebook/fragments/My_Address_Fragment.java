@@ -60,21 +60,25 @@ public class My_Address_Fragment extends Fragment {
         ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
 
-        for (int i = 0; i < addressList.size(); i++) {
-            if (addressList.get(i).getStatus().equals("online")) {
-                sortedAddressList.add(addressList.get(i));
+        if (addressList.size() != 0) {
+            for (int i = 0; i < addressList.size(); i++) {
+                if (addressList.get(i).getStatus().equals("online")) {
+                    sortedAddressList.add(addressList.get(i));
+                }
             }
-        }
 
-        if (sortedAddressList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_addresslist.setVisibility(View.VISIBLE);
-            rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+            if (sortedAddressList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_addresslist.setVisibility(View.VISIBLE);
+                rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_addresslist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_addresslist.setVisibility(View.GONE);
         }
-
 
     }
 
@@ -134,6 +138,7 @@ public class My_Address_Fragment extends Fragment {
                 }
             }
         });
+
     }
 
     public static class GetAddressList extends AsyncTask<String, Void, String> {

@@ -57,16 +57,21 @@ public class Received_Address_Fragment extends Fragment {
         ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
 
-        for (int i = 0; i < addressList.size(); i++) {
-            if (addressList.get(i).getStatus().equals("received")) {
-                sortedAddressList.add(addressList.get(i));
+        if (addressList.size() != 0) {
+            for (int i = 0; i < addressList.size(); i++) {
+                if (addressList.get(i).getStatus().equals("received")) {
+                    sortedAddressList.add(addressList.get(i));
+                }
             }
-        }
 
-        if (sortedAddressList.size() != 0) {
-            ll_nothingtoshow.setVisibility(View.GONE);
-            rv_addresslist.setVisibility(View.VISIBLE);
-            rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, sortedAddressList, "RECEIVED"));
+            if (sortedAddressList.size() != 0) {
+                ll_nothingtoshow.setVisibility(View.GONE);
+                rv_addresslist.setVisibility(View.VISIBLE);
+                rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, sortedAddressList, "RECEIVED"));
+            } else {
+                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                rv_addresslist.setVisibility(View.GONE);
+            }
         } else {
             ll_nothingtoshow.setVisibility(View.VISIBLE);
             rv_addresslist.setVisibility(View.GONE);

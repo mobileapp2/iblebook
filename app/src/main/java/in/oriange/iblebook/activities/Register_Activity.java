@@ -23,6 +23,8 @@ import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
+import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
+
 public class Register_Activity extends Activity {
     private Context context;
     private LinearLayout ll_parent;
@@ -38,6 +40,12 @@ public class Register_Activity extends Activity {
 
         init();
         setEventHandler();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard(Register_Activity.this);
     }
 
     private void init() {
