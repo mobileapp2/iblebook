@@ -21,8 +21,6 @@ import in.oriange.iblebook.adapters.BotNavViewPagerAdapter;
 import in.oriange.iblebook.fragments.Contacts_Fragment;
 import in.oriange.iblebook.fragments.MenuListFragment;
 
-import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
-
 public class MainDrawer_Activity extends FragmentActivity {
     public static FlowingDrawer mDrawer;
     private Context context;
@@ -47,12 +45,6 @@ public class MainDrawer_Activity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         MenuListFragment.setupHeader();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        hideSoftKeyboard(MainDrawer_Activity.this);
     }
 
     private void init() {

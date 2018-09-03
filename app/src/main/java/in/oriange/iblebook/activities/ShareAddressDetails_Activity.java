@@ -288,9 +288,10 @@ public class ShareAddressDetails_Activity extends Activity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
-            holder.tv_addresstype.setText(resultArrayList.get(position).getType());
-            holder.tv_name.setText(resultArrayList.get(position).getName());
+            holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getType().charAt(0)));
+            holder.tv_alias.setText(resultArrayList.get(position).getType());
+            holder.tv_name.setText(resultArrayList.get(position).getAlias());
+            holder.tv_details.setText(resultArrayList.get(position).getName());
 
             holder.rb_selectone.setChecked(lastSelectedPosition == position);
 
@@ -303,14 +304,15 @@ public class ShareAddressDetails_Activity extends Activity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            private TextView tv_initletter, tv_addresstype, tv_name;
+            private TextView tv_initletter, tv_alias, tv_name, tv_details;
             private RadioButton rb_selectone;
 
             public MyViewHolder(View view) {
                 super(view);
                 tv_initletter = view.findViewById(R.id.tv_initletter);
-                tv_addresstype = view.findViewById(R.id.tv_addresstype);
+                tv_alias = view.findViewById(R.id.tv_alias);
                 tv_name = view.findViewById(R.id.tv_name);
+                tv_details = view.findViewById(R.id.tv_details);
                 rb_selectone = view.findViewById(R.id.rb_selectone);
 
                 rb_selectone.setOnClickListener(new View.OnClickListener() {
