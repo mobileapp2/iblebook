@@ -20,20 +20,6 @@
         android:textColor="@color/black"
         android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/edt_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:hint="Request Message"
-        android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
-        android:maxLength="192"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_requesttype"
@@ -47,6 +33,21 @@
         android:focusable="false"
         android:gravity="center_vertical"
         android:hint="Select Request Type"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/edt_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:hint="Request Message"
+        android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
+        android:maxLength="192"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="16sp" />

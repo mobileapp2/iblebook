@@ -310,7 +310,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 }
 
                 if (cb_maplocation.isChecked()) {
-                    sb.append("Location - " + "http://maps.google.com/maps?q=loc:"
+                    sb.append("Location - " + "https://www.google.com/maps/?q="
                             + resultArrayList.get(position).getMap_location_lattitude()
                             + "," + resultArrayList.get(position).getMap_location_logitude() + "\n");
                 }
@@ -337,7 +337,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 }
 
                 Log.i("SharedAddressDetails", sb.toString());
-                String finalDataShare = name + " shares Address details with you " + "\n" + sb.toString() + "\n" + "Shares via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
+                String finalDataShare = name + " shared address details with you " + "\n\n" + sb.toString() + "\n" + "via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);

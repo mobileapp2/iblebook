@@ -228,7 +228,7 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
                 }
 
                 Log.i("SharedPANDetails", sb.toString());
-                String finalDataShare = name + " shares PAN details with you " + "\n" + sb.toString() + "\n" + "Shares via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
+                String finalDataShare = name + " shared PAN details with you " + "\n\n" + sb.toString() + "\n" + "via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);

@@ -3,7 +3,7 @@ package in.oriange.iblebook.utilities;
 public class ApplicationConstants {
 
 
-    //USER SESSION MANAGER CONSTANTS
+    //USER SESSION MANAGER CONSTANTS DON'T CHANGE THESE CONSTANTS
 
     public static final String PREFER_NAME = "HLL_Connect";
     public static final String KEY_APPOPENEDFORFIRST = "KEY_APPOPENEDFORFIRST";
