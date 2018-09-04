@@ -286,7 +286,7 @@ public class GetMyBankListAdapter extends RecyclerView.Adapter<GetMyBankListAdap
                     sb.append("IFSC Code - " + resultArrayList.get(position).getIfsc_code() + "\n");
                 }
                 if (cb_accno.isChecked()) {
-                    sb.append("Account Number - " + resultArrayList.get(position).getAccount_no() + "\n");
+                    sb.append("A/C No. - " + resultArrayList.get(position).getAccount_no() + "\n");
                 }
                 String url = "";
                 if (cb_file.isChecked()) {
