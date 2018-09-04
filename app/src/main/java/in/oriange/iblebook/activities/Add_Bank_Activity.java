@@ -218,7 +218,7 @@ public class Add_Bank_Activity extends Activity {
         }
 
         if (edt_account_no.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Account Number");
+            Utilities.showSnackBar(ll_parent, "Please Enter A/C No");
             return;
         }
 

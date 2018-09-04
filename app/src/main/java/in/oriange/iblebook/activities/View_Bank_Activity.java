@@ -367,7 +367,7 @@ public class View_Bank_Activity extends Activity {
                     sb.append("IFSC Code - " + edt_ifsc.getText().toString().trim() + "\n");
                 }
                 if (cb_accno.isChecked()) {
-                    sb.append("Account Number - " + edt_account_no.getText().toString().trim() + "\n");
+                    sb.append("A/C No. - " + edt_account_no.getText().toString().trim() + "\n");
                 }
                 if (cb_file.isChecked()) {
                     document = document.replaceAll(" ", "%20");

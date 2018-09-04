@@ -481,10 +481,10 @@ public class View_Address_Activity extends Activity {
 
                 if (cb_address.isChecked()) {
                     sb.append("Address - " + edt_address.getText().toString().trim() + ", " +
-                            edt_district.getText().toString().trim() + ", " +
+                            "Dist - " + edt_district.getText().toString().trim() + ", " +
                             edt_state.getText().toString().trim() + ", " +
                             edt_country.getText().toString().trim() + ", " +
-                            edt_pincode.getText().toString().trim() + "\n");
+                            "Pin Code - " + edt_pincode.getText().toString().trim() + "\n");
                 }
 
                 if (cb_mobile.isChecked()) {

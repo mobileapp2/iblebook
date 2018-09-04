@@ -288,10 +288,10 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
 
                 if (cb_address.isChecked()) {
                     sb.append("Address - " + resultArrayList.get(position).getAddress_line_one() + ", " +
-                            resultArrayList.get(position).getDistrict() + ", " +
+                            "Dist - " + resultArrayList.get(position).getDistrict() + ", " +
                             resultArrayList.get(position).getState() + ", " +
                             resultArrayList.get(position).getCountry() + ", " +
-                            resultArrayList.get(position).getPincode() + "\n");
+                            "Pin Code - " + resultArrayList.get(position).getPincode() + "\n");
                 }
 
                 if (cb_mobile.isChecked()) {

@@ -102,7 +102,7 @@ public class Utilities {
 
     public static boolean isIfscValid(EditText edt) {
         edt.setError(null);
-        String expression = "[A-Z]{4}[0][0-9]{6}$";
+        String expression = "^[A-Za-z]{4}0[A-Z0-9a-z]{6}$";
         CharSequence inputStr = edt.getText().toString().trim();
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(inputStr);
