@@ -2,6 +2,8 @@ package in.oriange.iblebook.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +39,7 @@ import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflineAddressListAdapter.MyViewHolder> {
@@ -307,8 +310,9 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 }
 
                 if (cb_maplocation.isChecked()) {
-                    sb.append("Location - " + resultArrayList.get(position).getMap_location_lattitude()
-                            + ", " + resultArrayList.get(position).getMap_location_logitude() + "\n");
+                    sb.append("Location - " + "http://maps.google.com/maps?q=loc:"
+                            + resultArrayList.get(position).getMap_location_lattitude()
+                            + "," + resultArrayList.get(position).getMap_location_logitude() + "\n");
                 }
 
                 if (cb_visitcard.isChecked()) {
@@ -333,7 +337,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 }
 
                 Log.i("SharedAddressDetails", sb.toString());
-                String finalDataShare = name + " shares Address details with you " + "\n" + sb.toString();
+                String finalDataShare = name + " shares Address details with you " + "\n" + sb.toString() + "\n" + "Shares via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
@@ -345,7 +349,75 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                 dialog.cancel();
             }
         });
+        alertDialogBuilder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                StringBuilder sb = new StringBuilder();
 
+                if (cb_addresstype.isChecked()) {
+                    sb.append("Address Type - " + resultArrayList.get(position).getType() + "\n");
+                }
+
+                if (cb_name.isChecked()) {
+                    sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
+                }
+
+                if (cb_address.isChecked()) {
+                    sb.append("Address - " + resultArrayList.get(position).getAddress_line_one() + ", " +
+                            resultArrayList.get(position).getDistrict() + ", " +
+                            resultArrayList.get(position).getState() + ", " +
+                            resultArrayList.get(position).getCountry() + ", " +
+                            resultArrayList.get(position).getPincode() + "\n");
+                }
+
+                if (cb_mobile.isChecked()) {
+                    sb.append("Mobile No - " + resultArrayList.get(position).getMobile_number() + "\n");
+                }
+
+                if (cb_email.isChecked()) {
+                    sb.append("Email - " + resultArrayList.get(position).getEmail_id() + "\n");
+                }
+
+                if (cb_website.isChecked()) {
+                    sb.append("Website - " + resultArrayList.get(position).getWebsite() + "\n");
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    sb.append("Location - " + "http://maps.google.com/maps?q=loc:"
+                            + resultArrayList.get(position).getMap_location_lattitude()
+                            + "," + resultArrayList.get(position).getMap_location_logitude() + "\n");
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getVisiting_card();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Visiting Card - " + url + "\n");
+                }
+
+                if (cb_photo.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getPhoto();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Photo - " + url + "\n");
+                }
+
+                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
+                        && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
+                        && !cb_photo.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.i("SharedAddressDetails", sb.toString());
+                String finalDataShare = "Address Details" + "\n" + sb.toString();
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", finalDataShare);
+                clipboard.setPrimaryClip(clip);
+                Utilities.showMessageString(context, "Copied to clipboard");
+
+            }
+        });
         alertDialogBuilder.setCancelable(false);
         AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();

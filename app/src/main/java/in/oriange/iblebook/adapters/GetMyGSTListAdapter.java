@@ -2,6 +2,8 @@ package in.oriange.iblebook.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +39,7 @@ import in.oriange.iblebook.models.GetTaxListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapter.MyViewHolder> {
@@ -228,7 +231,7 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                 }
 
                 Log.i("SharedGSTDetails", sb.toString());
-                String finalDataShare = name + " shares GST details with you " + "\n" + sb.toString();
+                String finalDataShare = name + " shares GST details with you " + "\n" + sb.toString() + "\n" + "Shares via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
@@ -240,7 +243,35 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                 dialog.cancel();
             }
         });
+        alertDialogBuilder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
+                }
+                if (cb_gstno.isChecked()) {
+                    sb.append("GST - " + resultArrayList.get(position).getGst_number() + "\n");
+                }
+                String url = "";
+                if (cb_file.isChecked()) {
+                    url = resultArrayList.get(position).getGst_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("File - " + url + "\n");
+                }
 
+                if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.i("SharedGSTDetails", sb.toString());
+                String finalDataShare = "GST Details" + "\n" + sb.toString();
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", finalDataShare);
+                clipboard.setPrimaryClip(clip);
+                Utilities.showMessageString(context, "Copied to clipboard"); }
+        });
         alertDialogBuilder.setCancelable(false);
         android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();

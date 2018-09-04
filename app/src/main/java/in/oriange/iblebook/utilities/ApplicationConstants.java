@@ -11,6 +11,8 @@ public class ApplicationConstants {
     public static final String KEY_LOGIN_INFO = "KEY_LOGIN_INFO";
     public static final String KEY_ANDROIDTOKETID = "KEY_ANDROIDTOKETID";
 
+    public static final String IBLEBOOK_PLAYSTORELINK = "https://play.google.com/store/apps/details?id=in.oriange.iblebook";
+
     //BETA API LINK LIST
 
     public static final String USERAPI = "http://mazalatur.com/AddressBook/Apis/user.php";

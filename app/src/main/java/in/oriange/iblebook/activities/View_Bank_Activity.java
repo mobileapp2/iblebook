@@ -2,6 +2,8 @@ package in.oriange.iblebook.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +45,7 @@ import in.oriange.iblebook.fragments.Received_Bank_Fragment;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_Bank_Activity extends Activity {
@@ -338,7 +341,7 @@ public class View_Bank_Activity extends Activity {
                 }
 
                 Log.i("SharedBankDetails", sb.toString());
-                String finalDataShare = name + " shares bank details with you " + "\n" + sb.toString();
+                String finalDataShare = name + " shares bank details with you " + "\n" + sb.toString() + "\n" + "Shares via Iblebook \n" + "Click Here - " + ApplicationConstants.IBLEBOOK_PLAYSTORELINK;
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalDataShare);
@@ -348,6 +351,41 @@ public class View_Bank_Activity extends Activity {
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int view) {
                 dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    sb.append("Name - " + edt_name.getText().toString().trim() + "\n");
+                }
+                if (cb_bankname.isChecked()) {
+                    sb.append("Bank - " + edt_bank_name.getText().toString().trim() + "\n");
+                }
+                if (cb_ifsccode.isChecked()) {
+                    sb.append("IFSC Code - " + edt_ifsc.getText().toString().trim() + "\n");
+                }
+                if (cb_accno.isChecked()) {
+                    sb.append("Account Number - " + edt_account_no.getText().toString().trim() + "\n");
+                }
+                if (cb_file.isChecked()) {
+                    document = document.replaceAll(" ", "%20");
+                    sb.append("File - " + document + "\n");
+                }
+
+                if (!cb_name.isChecked() && !cb_bankname.isChecked() && !cb_ifsccode.isChecked()
+                        && !cb_accno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.i("SharedBankDetails", sb.toString());
+                String finalDataShare = "Bank Details" + "\n" + sb.toString();
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", finalDataShare);
+                clipboard.setPrimaryClip(clip);
+                Utilities.showMessageString(context, "Copied to clipboard");
             }
         });
 

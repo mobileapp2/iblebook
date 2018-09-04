@@ -269,7 +269,7 @@ public class SharePANDetails_Activity extends Activity {
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.list_row_bankshare, parent, false);
+            View view = inflater.inflate(R.layout.list_row_addressshare, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -277,8 +277,9 @@ public class SharePANDetails_Activity extends Activity {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
-            holder.tv_bankname.setText(resultArrayList.get(position).getName());
-            holder.tv_accountno.setText(resultArrayList.get(position).getPan_number());
+            holder.tv_alias.setText(resultArrayList.get(position).getAlias());
+            holder.tv_name.setText(resultArrayList.get(position).getName());
+            holder.tv_details.setText(resultArrayList.get(position).getPan_number());
 
             holder.rb_selectone.setChecked(lastSelectedPosition == position);
 
@@ -291,14 +292,15 @@ public class SharePANDetails_Activity extends Activity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            private TextView tv_initletter, tv_bankname, tv_accountno;
+            private TextView tv_initletter, tv_alias, tv_name, tv_details;
             private RadioButton rb_selectone;
 
             public MyViewHolder(View view) {
                 super(view);
                 tv_initletter = view.findViewById(R.id.tv_initletter);
-                tv_bankname = view.findViewById(R.id.tv_bankname);
-                tv_accountno = view.findViewById(R.id.tv_accountno);
+                tv_alias = view.findViewById(R.id.tv_alias);
+                tv_name = view.findViewById(R.id.tv_name);
+                tv_details = view.findViewById(R.id.tv_details);
                 rb_selectone = view.findViewById(R.id.rb_selectone);
 
                 rb_selectone.setOnClickListener(new View.OnClickListener() {

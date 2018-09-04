@@ -35,6 +35,7 @@ public class PAN_Fragment extends Fragment {
     public static FlowingDrawer ll_parent;
     private static String user_id;
     private static ConstantData constantData;
+    private static ArrayList<GetTaxListPojo> panList;
     private Context context;
     private AHBottomNavigation topNavigation;
     private AHBottomNavigationItem topMyPAN, topReceivedPAN, topOffinePAN/*, botNavRequests, botNavContacts*/;
@@ -42,7 +43,6 @@ public class PAN_Fragment extends Fragment {
     private TopPANNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
-    private static ArrayList<GetTaxListPojo> panList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

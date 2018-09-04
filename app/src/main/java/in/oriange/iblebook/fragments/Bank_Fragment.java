@@ -34,6 +34,7 @@ public class Bank_Fragment extends Fragment {
     public static FlowingDrawer ll_parent;
     private static String user_id;
     private static ConstantData constantData;
+    private static ArrayList<GetBankListPojo> bankList;
     private Context context;
     private AHBottomNavigation topNavigation;
     private AHBottomNavigationItem topMyBank, topReceivedBank, topOffineBank;
@@ -41,7 +42,6 @@ public class Bank_Fragment extends Fragment {
     private TopBankNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
-    private static ArrayList<GetBankListPojo> bankList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

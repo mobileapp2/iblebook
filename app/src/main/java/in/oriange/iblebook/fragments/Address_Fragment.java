@@ -35,6 +35,7 @@ public class Address_Fragment extends Fragment {
     public static FlowingDrawer ll_parent;
     private static String user_id;
     private static ConstantData constantData;
+    private static ArrayList<GetAddressListPojo> addressList;
     private Context context;
     private AHBottomNavigation topNavigation;
     private AHBottomNavigationItem topMyAddress, topReceivedAddress, topOffineAddress/*, botNavRequests, botNavContacts*/;
@@ -42,7 +43,6 @@ public class Address_Fragment extends Fragment {
     private TopAddressNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
     private UserSessionManager session;
-    private static ArrayList<GetAddressListPojo> addressList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
