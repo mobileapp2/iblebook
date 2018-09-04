@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +33,7 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Received_Address_Fragment extends Fragment {
 
-    public static FlowingDrawer ll_parent;
+    public static DrawerLayout ll_parent;
     private static Context context;
     private static RecyclerView rv_addresslist;
     private static String user_id;

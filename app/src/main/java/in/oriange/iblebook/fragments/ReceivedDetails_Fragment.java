@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +34,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ReceivedDetails_Fragment extends Fragment {
 
-    public static FlowingDrawer ll_parent;
+    public static DrawerLayout ll_parent;
     private static Context context;
     private static RecyclerView rv_detailslist;
     private static SwipeRefreshLayout swipeRefreshLayout;

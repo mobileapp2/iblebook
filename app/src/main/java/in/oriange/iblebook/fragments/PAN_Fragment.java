@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class PAN_Fragment extends Fragment {
 
-    public static FlowingDrawer ll_parent;
+    public static DrawerLayout ll_parent;
     private static String user_id;
     private static ConstantData constantData;
     private static ArrayList<GetTaxListPojo> panList;
