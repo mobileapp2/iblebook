@@ -250,6 +250,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
                         removeItem(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Rejected Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -319,6 +320,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Approved Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

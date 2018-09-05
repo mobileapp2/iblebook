@@ -288,8 +288,8 @@ public class Register_Activity extends Activity {
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage(message);
-                        builder.setTitle("Success");
                         builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

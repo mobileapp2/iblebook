@@ -142,7 +142,9 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -354,8 +356,8 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Bank Details Deleted Successfully");
-                        builder.setTitle("Success");
                         builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -363,7 +365,9 @@ public class GetReceivedBankListAdapter extends RecyclerView.Adapter<GetReceived
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

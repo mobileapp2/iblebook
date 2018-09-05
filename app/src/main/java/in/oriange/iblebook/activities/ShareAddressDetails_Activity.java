@@ -373,6 +373,7 @@ public class ShareAddressDetails_Activity extends Activity {
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Shared Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

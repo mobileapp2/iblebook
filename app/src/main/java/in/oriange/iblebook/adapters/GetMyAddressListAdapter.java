@@ -166,7 +166,9 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -491,7 +493,9 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

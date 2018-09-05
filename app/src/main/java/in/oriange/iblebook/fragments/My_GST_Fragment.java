@@ -35,7 +35,7 @@ import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class My_GST_Fragment extends Fragment {
-    public static DrawerLayout ll_parent;
+    public static FlowingDrawer ll_parent;
     private static Context context;
     private static RecyclerView rv_gstlist;
     private static String user_id;
@@ -57,6 +57,7 @@ public class My_GST_Fragment extends Fragment {
 //            rv_gstlist.setVisibility(View.GONE);
 //        }
 
+        constantData = ConstantData.getInstance();
         ArrayList<GetTaxListPojo> gstList = new ArrayList<>();
         ArrayList<GetTaxListPojo> sortedGstList = new ArrayList<>();
         gstList = constantData.getGstList();
@@ -76,11 +77,7 @@ public class My_GST_Fragment extends Fragment {
                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                 rv_gstlist.setVisibility(View.GONE);
             }
-        } else {
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_gstlist.setVisibility(View.GONE);
         }
-
     }
 
     @Override

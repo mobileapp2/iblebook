@@ -343,7 +343,9 @@ public class Edit_Address_Activity extends Activity {
                     dialog.dismiss();
                 }
             });
-            builder.show();
+            AlertDialog alertD = builder.create();
+            alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+            alertD.show();
         } else if (i == 2) {
             final CharSequence[] options = {"Take a Photo", "Choose from Gallery"};
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -370,7 +372,9 @@ public class Edit_Address_Activity extends Activity {
                     dialog.dismiss();
                 }
             });
-            builder.show();
+            AlertDialog alertD = builder.create();
+            alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+            alertD.show();
         }
     }
 
@@ -818,6 +822,7 @@ public class Edit_Address_Activity extends Activity {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Address Details Uploaded Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -825,7 +830,9 @@ public class Edit_Address_Activity extends Activity {
                                 finish();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

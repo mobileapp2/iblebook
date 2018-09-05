@@ -14,25 +14,60 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.BotNavViewPagerAdapter;
 import in.oriange.iblebook.fragments.Contacts_Fragment;
+import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 
 public class MainNormalDrawer_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Context context;
+    private static Context context;
     private AHBottomNavigation bottomNavigation;
     private AHBottomNavigationItem botNavAddress, botNavTax, botNavBank, botNavRequests, botNavContacts;
     private Fragment currentFragment;
     private BotNavViewPagerAdapter adapter;
     private AHBottomNavigationViewPager view_pager;
-    private UserSessionManager session;
+    private static UserSessionManager session;
+
+    private static TextView tv_name;
+    private static CircleImageView ivMenuUserProfilePhoto;
+    private static String photo;
+    private static String name;
+
+    public static void setupHeader() {
+        getSessionData();
+        Picasso.with(context)
+                .load(photo)
+                .placeholder(R.drawable.icon_userprofile)
+                .into(ivMenuUserProfilePhoto);
+        Picasso.with(context).setLoggingEnabled(true);
+
+        tv_name.setText(name.trim());
+    }
+
+    private static void getSessionData() {
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
+            JSONObject json = user_info.getJSONObject(0);
+            photo = json.getString("photo");
+            name = json.getString("name");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +86,9 @@ public class MainNormalDrawer_Activity extends AppCompatActivity implements Navi
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
+        getSessionData();
         setUpBottomNavigation();
         setupToolbar();
-    }
-
-    private void init() {
-        context = MainNormalDrawer_Activity.this;
-        session = new UserSessionManager(context);
-        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
-        view_pager = findViewById(R.id.view_pager);
-        view_pager.setOffscreenPageLimit(4);
-        adapter = new BotNavViewPagerAdapter(getSupportFragmentManager());
-        view_pager.setAdapter(adapter);
     }
 
     private void setUpBottomNavigation() {
@@ -111,7 +137,26 @@ public class MainNormalDrawer_Activity extends AppCompatActivity implements Navi
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupHeader();
+    }
+
+    private void init() {
+        context = MainNormalDrawer_Activity.this;
+        session = new UserSessionManager(context);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        view_pager = findViewById(R.id.view_pager);
+        tv_name = findViewById(R.id.tv_bankname);
+        ivMenuUserProfilePhoto = findViewById(R.id.ivMenuUserProfilePhoto);
+        view_pager.setOffscreenPageLimit(4);
+        adapter = new BotNavViewPagerAdapter(getSupportFragmentManager());
+        view_pager.setAdapter(adapter);
+    }
+
     private void setupToolbar() {
+
     }
 
     @Override

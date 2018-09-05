@@ -33,7 +33,7 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Received_Address_Fragment extends Fragment {
 
-    public static DrawerLayout ll_parent;
+    public static FlowingDrawer ll_parent;
     private static Context context;
     private static RecyclerView rv_addresslist;
     private static String user_id;
@@ -54,6 +54,7 @@ public class Received_Address_Fragment extends Fragment {
 //            rv_addresslist.setVisibility(View.GONE);
 //        }
 
+        constantData = ConstantData.getInstance();
         ArrayList<GetAddressListPojo> addressList = new ArrayList<>();
         ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
@@ -73,9 +74,6 @@ public class Received_Address_Fragment extends Fragment {
                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                 rv_addresslist.setVisibility(View.GONE);
             }
-        } else {
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_addresslist.setVisibility(View.GONE);
         }
 
     }

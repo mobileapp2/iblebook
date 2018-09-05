@@ -34,7 +34,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ReceivedRequests_Fragment extends Fragment {
 
-    public static DrawerLayout ll_parent;
+    public static FlowingDrawer ll_parent;
     private static Context context;
     private static RecyclerView rv_requestlist;
     private static SwipeRefreshLayout swipeRefreshLayout;

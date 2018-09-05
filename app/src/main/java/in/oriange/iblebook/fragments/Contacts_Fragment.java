@@ -366,7 +366,9 @@ public class Contacts_Fragment extends Fragment {
                         }
                     });
                     builder.create();
-                    builder.show();
+                    AlertDialog alertD = builder.create();
+                    alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                    alertD.show();
                 }
             }
         }

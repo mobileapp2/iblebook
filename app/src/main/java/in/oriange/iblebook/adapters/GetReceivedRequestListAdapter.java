@@ -291,6 +291,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                         removeItem(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Request Dismissed Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

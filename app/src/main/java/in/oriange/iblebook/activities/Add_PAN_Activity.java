@@ -191,7 +191,9 @@ public class Add_PAN_Activity extends Activity {
                 dialog.dismiss();
             }
         });
-        builder.show();
+        AlertDialog alertD = builder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     private void submitData() {
@@ -236,7 +238,7 @@ public class Add_PAN_Activity extends Activity {
 //            if (result != -1) {
 //                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                builder.setMessage("GST Details Uploaded Successfully");
-//                builder.setTitle("Success");
+//                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
 //                builder.setCancelable(false);
 //                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 //                    public void onClick(DialogInterface dialog, int id) {
@@ -244,7 +246,7 @@ public class Add_PAN_Activity extends Activity {
 //                        Offline_PAN_Fragment.setDefault();
 //                    }
 //                });
-//                builder.show();
+//                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
 //            } else {
 //                Utilities.showSnackBar(ll_parent, "PAN Details Did Not Save Properly");
 //            }
@@ -446,6 +448,7 @@ public class Add_PAN_Activity extends Activity {
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Uploaded Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -455,7 +458,9 @@ public class Add_PAN_Activity extends Activity {
                                 new Offline_PAN_Fragment.GetPANList().execute();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

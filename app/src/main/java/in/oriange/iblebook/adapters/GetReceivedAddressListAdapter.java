@@ -163,7 +163,9 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -488,7 +490,9 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

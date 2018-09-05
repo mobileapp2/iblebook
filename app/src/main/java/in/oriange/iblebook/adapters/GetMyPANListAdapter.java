@@ -137,14 +137,14 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
 //                                            if (result != -1) {
 //                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                                                builder.setMessage("PAN Details Deleted Successfully");
-//                                                builder.setTitle("Success");
+//                                                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
 //                                                builder.setCancelable(false);
 //                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 //                                                    public void onClick(DialogInterface dialog, int id) {
 //                                                        Offline_PAN_Fragment.setDefault();
 //                                                    }
 //                                                });
-//                                                builder.show();
+//                                                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
 //                                            }
 //                                        }
                                         new DeletePANDetails().execute(String.valueOf(position));
@@ -156,7 +156,9 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -267,7 +269,8 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", finalDataShare);
                 clipboard.setPrimaryClip(clip);
-                Utilities.showMessageString(context, "Copied to clipboard"); }
+                Utilities.showMessageString(context, "Copied to clipboard");
+            }
         });
         alertDialogBuilder.setCancelable(false);
         android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
@@ -333,8 +336,8 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Deleted Successfully");
-                        builder.setTitle("Success");
                         builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -342,7 +345,9 @@ public class GetMyPANListAdapter extends RecyclerView.Adapter<GetMyPANListAdapte
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

@@ -278,7 +278,9 @@ public class View_Address_Activity extends Activity {
                         dialog.dismiss();
                     }
                 });
-                builder.show();
+                AlertDialog alertD = builder.create();
+                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                alertD.show();
             }
         });
     }
@@ -722,6 +724,7 @@ public class View_Address_Activity extends Activity {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Address Details Deleted Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -729,7 +732,9 @@ public class View_Address_Activity extends Activity {
                                 finish();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

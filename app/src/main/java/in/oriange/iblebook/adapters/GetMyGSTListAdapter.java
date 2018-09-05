@@ -137,14 +137,14 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
 //                                            if (result != -1) {
 //                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                                                builder.setMessage("GST Details Deleted Successfully");
-//                                                builder.setTitle("Success");
+//                                                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
 //                                                builder.setCancelable(false);
 //                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 //                                                    public void onClick(DialogInterface dialog, int id) {
 //                                                        Offline_GST_Fragment.setDefault();
 //                                                    }
 //                                                });
-//                                                builder.show();
+//                                                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
 //                                            }
 //                                        }
                                         new DeleteGSTDetails().execute(String.valueOf(position));
@@ -156,7 +156,9 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -270,7 +272,8 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", finalDataShare);
                 clipboard.setPrimaryClip(clip);
-                Utilities.showMessageString(context, "Copied to clipboard"); }
+                Utilities.showMessageString(context, "Copied to clipboard");
+            }
         });
         alertDialogBuilder.setCancelable(false);
         android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
@@ -336,8 +339,8 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                     if (type.equalsIgnoreCase("success")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("GST Details Deleted Successfully");
-                        builder.setTitle("Success");
                         builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -345,7 +348,9 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

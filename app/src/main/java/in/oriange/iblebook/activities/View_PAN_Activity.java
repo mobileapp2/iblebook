@@ -232,7 +232,7 @@ public class View_PAN_Activity extends Activity {
 //                            if (result != -1) {
 //                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                                builder.setMessage("PAN Details Deleted Successfully");
-//                                builder.setTitle("Success");
+//                                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
 //                                builder.setCancelable(false);
 //                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 //                                    public void onClick(DialogInterface dialog, int id) {
@@ -240,7 +240,7 @@ public class View_PAN_Activity extends Activity {
 //                                        Offline_PAN_Fragment.setDefault();
 //                                    }
 //                                });
-//                                builder.show();
+//                                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
 //                            }
 //                        }
                         new DeletePANDetails().execute();
@@ -252,7 +252,9 @@ public class View_PAN_Activity extends Activity {
                         dialog.dismiss();
                     }
                 });
-                builder.show();
+                AlertDialog alertD = builder.create();
+                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                alertD.show();
             }
         });
     }
@@ -538,6 +540,7 @@ public class View_PAN_Activity extends Activity {
                         new Received_PAN_Fragment.GetPANList().execute();
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("PAN Details Deleted Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -545,7 +548,9 @@ public class View_PAN_Activity extends Activity {
                                 finish();
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

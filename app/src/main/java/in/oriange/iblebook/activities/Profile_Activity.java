@@ -222,7 +222,9 @@ public class Profile_Activity extends Activity {
                 dialog.dismiss();
             }
         });
-        builder.show();
+        AlertDialog alertD = builder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     @Override
@@ -318,7 +320,9 @@ public class Profile_Activity extends Activity {
                         }
                     });
                     builder.create();
-                    builder.show();
+                    AlertDialog alertD = builder.create();
+                    alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                    alertD.show();
                 }
             }
 

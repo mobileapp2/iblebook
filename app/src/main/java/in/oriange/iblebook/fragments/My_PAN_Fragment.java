@@ -35,7 +35,7 @@ import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class My_PAN_Fragment extends Fragment {
-    public static DrawerLayout ll_parent;
+    public static FlowingDrawer ll_parent;
     private static Context context;
     private static RecyclerView rv_panlist;
     private static String user_id;
@@ -57,6 +57,7 @@ public class My_PAN_Fragment extends Fragment {
 //            rv_panlist.setVisibility(View.GONE);
 //        }
 
+        constantData = ConstantData.getInstance();
         ArrayList<GetTaxListPojo> panList = new ArrayList<>();
         ArrayList<GetTaxListPojo> sortedPanList = new ArrayList<>();
         panList = constantData.getPanList();
@@ -76,9 +77,6 @@ public class My_PAN_Fragment extends Fragment {
                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                 rv_panlist.setVisibility(View.GONE);
             }
-        } else {
-            ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_panlist.setVisibility(View.GONE);
         }
 
     }

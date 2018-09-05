@@ -166,7 +166,9 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.show();
+                                AlertDialog alertD = builder.create();
+                                alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD.show();
                                 break;
 
                         }
@@ -491,7 +493,9 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                                 removeItem(position);
                             }
                         });
-                        builder.show();
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
                     } else {
 
                     }

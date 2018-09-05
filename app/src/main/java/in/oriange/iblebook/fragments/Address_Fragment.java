@@ -33,7 +33,7 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class Address_Fragment extends Fragment {
 
-    public static DrawerLayout ll_parent;
+    public static FlowingDrawer ll_parent;
     private static String user_id;
     private static ConstantData constantData;
     private static ArrayList<GetAddressListPojo> addressList;

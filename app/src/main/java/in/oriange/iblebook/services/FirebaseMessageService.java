@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.MainDrawer_Activity;
 import in.oriange.iblebook.activities.MainNormalDrawer_Activity;
 
 
@@ -42,8 +43,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody, String messageTitle) {
-//        Intent intent = new Intent(this, MainDrawer_Activity.class);
-        Intent intent = new Intent(this, MainNormalDrawer_Activity.class);
+        Intent intent = new Intent(this, MainDrawer_Activity.class);
+//        Intent intent = new Intent(this, MainNormalDrawer_Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
