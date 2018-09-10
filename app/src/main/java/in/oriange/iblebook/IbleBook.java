@@ -3,6 +3,8 @@ package in.oriange.iblebook;
 import android.app.Application;
 import android.content.Context;
 
+import in.oriange.iblebook.utilities.TypefaceUtil;
+
 public class IbleBook extends Application {
 
     private Context context;
@@ -13,6 +15,7 @@ public class IbleBook extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Roboto-Medium.ttf"); // font from assets: "assets/fonts/Roboto-Regular.ttf
 
 //        try {
 //            File dbFile = context.getDatabasePath("Database");
