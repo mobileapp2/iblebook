@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:typeface">serif</item>
+        <!--<item name="android:typeface">serif</item>-->
     </style>
 
     <style name="ToolBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -15,13 +15,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:typeface">serif</item>
+        <!--<item name="android:typeface">serif</item>-->
     </style>
 
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:typeface">serif</item>
+        <!--<item name="android:typeface">serif</item>-->
     </style>
 
     <style name="DialogAnimationTheme">

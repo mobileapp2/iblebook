@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -44,6 +44,7 @@ public class Received_Bank_Fragment extends Fragment {
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private SearchView searchView;
 
     public static void setDefault() {
 //        if (Utilities.isNetworkAvailable(context)) {
@@ -99,6 +100,8 @@ public class Received_Bank_Fragment extends Fragment {
         ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
         rv_banklist = rootView.findViewById(R.id.rv_banklist);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
         layoutManager = new LinearLayoutManager(context);
         rv_banklist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();

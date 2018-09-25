@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -24,7 +25,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.adapters.BotNavViewPagerAdapter;
 import in.oriange.iblebook.fragments.Contacts_Fragment;
@@ -42,7 +42,7 @@ public class MainNormalDrawer_Activity extends AppCompatActivity implements Navi
     private static UserSessionManager session;
 
     private static TextView tv_name;
-    private static CircleImageView ivMenuUserProfilePhoto;
+    private static ImageView ivMenuUserProfilePhoto;
     private static String photo;
     private static String name;
 

@@ -186,7 +186,8 @@ public class Contacts_Fragment extends Fragment {
                 searchView.clearFocus();
                 ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
                 for (ContactListPojo contacts : contactList) {
-                    if (contacts.getName() != null && contacts.getName().toLowerCase().contains(query.toLowerCase())) {
+                    String contactToBeSearched = contacts.getName().toLowerCase() + contacts.getPhoneNo().toLowerCase();
+                    if (contactToBeSearched.contains(query.toLowerCase())) {
                         contactsSearchedList.add(contacts);
                     }
                 }
@@ -206,11 +207,14 @@ public class Contacts_Fragment extends Fragment {
                 if (!newText.equals("")) {
                     ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
                     for (ContactListPojo contacts : contactList) {
-                        if (contacts.getName() != null && contacts.getName().toLowerCase().contains(newText.toLowerCase())) {
+                        String contactToBeSearched = contacts.getName().toLowerCase() + contacts.getPhoneNo().toLowerCase();
+                        if (contactToBeSearched.contains(newText.toLowerCase())) {
                             contactsSearchedList.add(contacts);
                         }
                     }
                     if (contactsSearchedList.size() == 0) {
+                        Utilities.showMessageString(context, "No Such Contact Found");
+                        searchView.setQuery("", false);
                         bindRecyclerview(contactList);
                     } else {
                         bindRecyclerview(contactsSearchedList);

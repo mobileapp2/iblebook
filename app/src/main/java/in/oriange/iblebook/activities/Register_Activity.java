@@ -1,10 +1,13 @@
 package in.oriange.iblebook.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -15,11 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
@@ -32,6 +37,7 @@ public class Register_Activity extends Activity {
     private TextInputLayout input_name, input_mobile, input_email, input_password, input_conformpassword;
     private TextView tv_alreadyregister;
     private Button btn_Register;
+    private UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class Register_Activity extends Activity {
 
     private void init() {
         context = Register_Activity.this;
-
+        session = new UserSessionManager(context);
         ll_parent = findViewById(R.id.ll_parent);
 
         edt_name = findViewById(R.id.edt_name);
@@ -107,24 +113,28 @@ public class Register_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
             return;
         }
+
         if (!edt_email.getText().toString().trim().equals("")) {
             if (!Utilities.isEmailValid(edt_email)) {
                 Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
                 return;
             }
         }
+
         if (edt_password.getText().toString().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter Password");
             return;
         }
-        if (edt_conformpassword.getText().toString().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Confirm Password");
-            return;
-        }
-        if (!edt_password.getText().toString().equals(edt_conformpassword.getText().toString())) {
-            Utilities.showSnackBar(ll_parent, "Passwords Did Not Match");
-            return;
-        }
+
+//        if (edt_conformpassword.getText().toString().equals("")) {
+//            Utilities.showSnackBar(ll_parent, "Please Confirm Password");
+//            return;
+//        }
+
+//        if (!edt_password.getText().toString().equals(edt_conformpassword.getText().toString())) {
+//            Utilities.showSnackBar(ll_parent, "Passwords Did Not Match");
+//            return;
+//        }
 
         if (Utilities.isNetworkAvailable(context)) {
             new SendOTP().execute();
@@ -242,6 +252,34 @@ public class Register_Activity extends Activity {
         }
     }
 
+    private String totalRAMSize() {
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(memoryInfo);
+        double totalRAM = memoryInfo.totalMem / 1048576.0;
+        return String.valueOf(totalRAM);
+    }
+
+    private void saveRegistrationID() {
+        String user_id = "", regToken = "";
+        try {
+            JSONArray user_info = new JSONArray(session.getUserDetails().get(
+                    ApplicationConstants.KEY_LOGIN_INFO));
+
+            for (int j = 0; j < user_info.length(); j++) {
+                JSONObject json = user_info.getJSONObject(j);
+                user_id = json.getString("user_id");
+            }
+
+            regToken = session.getAndroidToken().get(ApplicationConstants.KEY_ANDROIDTOKETID);
+
+            if (regToken != null && !regToken.isEmpty() && !regToken.equals("null") && !regToken.equals(""))
+                new SendRegistrationToken().execute(user_id, regToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public class RegisterNewUser extends AsyncTask<String, Void, String> {
 
         ProgressDialog pd;
@@ -293,8 +331,15 @@ public class Register_Activity extends Activity {
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                finish();
-                                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
+//                                finish();
+//                                overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
+
+                                if (Utilities.isNetworkAvailable(context)) {
+                                    new LoginUser().execute();
+                                } else {
+                                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                                }
+
                             }
                         });
                         AlertDialog alertD = builder.create();
@@ -306,8 +351,124 @@ public class Register_Activity extends Activity {
 
                 }
             } catch (Exception e) {
-
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public class LoginUser extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "Login");
+                obj.put("Username", edt_mobile.getText().toString());
+                obj.put("password", edt_password.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.USERAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                session.createUserLoginSession(jsonarr.toString());
+                                saveRegistrationID();
+                            }
+                        }
+                    } else if (type.equalsIgnoreCase("failure")) {
+                        Utilities.showSnackBar(ll_parent, message);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class SendRegistrationToken extends AsyncTask<String, Integer, String> {
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            String s = "";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("device_type", "Android");
+                obj.put("device_id", params[1]);
+                obj.put("ram", totalRAMSize());
+                obj.put("processor", Build.CPU_ABI);
+                obj.put("device_os", Build.VERSION.RELEASE);
+                obj.put("location", "0.0, 0.0");
+                obj.put("device_model", Build.MODEL);
+                obj.put("manufacturer", Build.MANUFACTURER);
+                obj.put("user_id", params[0]);
+                obj.put("type", "registerDevice");
+                s = obj.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.DEVICEREGAPI, s);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pd.dismiss();
+            if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
+                try {
+                    int c = 0;
+                    JSONObject obj1 = new JSONObject(result);
+                    String success = obj1.getString("success");
+                    String message = obj1.getString("message");
+                    if (success.equalsIgnoreCase("1")) {
+                        startActivity(new Intent(context, MainDrawer_Activity.class));
+//                        startActivity(new Intent(context, MainNormalDrawer_Activity.class));
+                        finish();
+                    } else {
+                        Utilities.showAlertDialog(context, "Server Not Responding", "Please Try After Sometime", false);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

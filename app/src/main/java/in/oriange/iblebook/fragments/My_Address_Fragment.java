@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -45,6 +45,9 @@ public class My_Address_Fragment extends Fragment {
     private FloatingActionButton fab_add_address;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetAddressListPojo> addressList;
+    private static ArrayList<GetAddressListPojo> sortedAddressList;
+    private SearchView searchView;
 
     public static void setDefault() {
 //        if (Utilities.isNetworkAvailable(context)) {
@@ -58,8 +61,8 @@ public class My_Address_Fragment extends Fragment {
 //        }
 
         constantData = ConstantData.getInstance();
-        ArrayList<GetAddressListPojo> addressList = new ArrayList<>();
-        ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
+        addressList = new ArrayList<>();
+        sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
 
         if (addressList.size() != 0) {
@@ -99,6 +102,8 @@ public class My_Address_Fragment extends Fragment {
         ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
         rv_addresslist = rootView.findViewById(R.id.rv_addresslist);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
         layoutManager = new LinearLayoutManager(context);
         rv_addresslist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
@@ -137,6 +142,58 @@ public class My_Address_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
+                for (GetAddressListPojo address : sortedAddressList) {
+                    String addressToBeSearched = address.getName().toLowerCase() +
+                            address.getAlias().toLowerCase() +
+                            address.getMobile_number().toLowerCase();
+                    if (addressToBeSearched.contains(query.toLowerCase())) {
+                        addressSearchedList.add(address);
+                    }
+                }
+
+                if (addressSearchedList.size() == 0) {
+                    Utilities.showAlertDialog(context, "Fail", "No Such Address Details Found", false);
+                    searchView.setQuery("", false);
+                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+                } else {
+                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressSearchedList, "ONLINE"));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
+                    for (GetAddressListPojo address : sortedAddressList) {
+                        String addressToBeSearched = address.getName().toLowerCase() +
+                                address.getAlias().toLowerCase() +
+                                address.getMobile_number().toLowerCase();
+                        if (addressToBeSearched.contains(newText.toLowerCase())) {
+                            addressSearchedList.add(address);
+                        }
+                    }
+                    if (addressSearchedList.size() == 0) {
+                        Utilities.showMessageString(context, "No Such Address Details Found");
+                        searchView.setQuery("", false);
+                        rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+                    } else {
+                        rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressSearchedList, "ONLINE"));
+                    }
+                    return true;
+                } else if (newText.equals("")) {
+                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
+                }
+                return true;
+            }
+        });
+
 
     }
 
