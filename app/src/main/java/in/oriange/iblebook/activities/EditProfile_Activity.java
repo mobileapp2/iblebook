@@ -119,10 +119,16 @@ public class EditProfile_Activity extends Activity {
                 }
 
 
-                if (Utilities.isNetworkAvailable(context)) {
-                    new UpdateProfileData().execute();
+                if (!edt_mobile.getText().toString().trim().equals(mobile)) {
+                    new SendOTP().execute(edt_mobile.getText().toString().trim(), "", "mobile");
+                } else if (!edt_email.getText().toString().trim().equals(email)) {
+                    new SendOTP().execute("", edt_email.getText().toString().trim(), "email");
                 } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    if (Utilities.isNetworkAvailable(context)) {
+                        new UpdateProfileData().execute();
+                    } else {
+                        Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    }
                 }
             }
         });
@@ -233,6 +239,111 @@ public class EditProfile_Activity extends Activity {
                 finish();
             }
         });
+    }
+
+    public class SendOTP extends AsyncTask<String, Void, String> {
+        String Type = "";
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            Type = params[2];
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "sendOTP");
+                obj.put("mobile", params[0]);
+                obj.put("email", params[1]);
+                obj.put("otp_type", "send");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.SENDOTPAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        String OTP = mainObj.getString("otp");
+                        createDialogForOTP(OTP, Type);
+                    } else if (type.equalsIgnoreCase("failure")) {
+                        Utilities.showAlertDialog(context, "Alert", message, false);
+                    }
+
+                }
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void createDialogForOTP(final String otp, final String Type) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_enterotp, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle("OTP Verification");
+        alertDialogBuilder.setMessage("Enter OTP Sent on your " + Type);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText edt_enterotp = promptView.findViewById(R.id.edt_enterotp);
+
+        alertDialogBuilder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (otp.equals(edt_enterotp.getText().toString().trim())) {
+                    if (Utilities.isNetworkAvailable(context)) {
+                        new UpdateProfileData().execute();
+                    } else {
+                        Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                    }
+                } else {
+                    Utilities.showMessageString(context, "Please Enter Correct OTP");
+                    createDialogForOTP(otp, Type);
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+//        alertDialogBuilder.setNeutralButton("Resend", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (Utilities.isNetworkAvailable(context)) {
+//                    new SendOTP().execute();
+//                } else {
+//                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+//                }
+//            }
+//        });
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     public class UpdateProfileData extends AsyncTask<String, Void, String> {

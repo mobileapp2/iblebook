@@ -98,7 +98,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Mobile Number"
-                        android:maxLength="13"
+                        android:maxLength="10"
+                        android:inputType="number"
                         android:singleLine="true"
                         android:textColor="@color/darkgrey"
                         android:textSize="14sp" />
