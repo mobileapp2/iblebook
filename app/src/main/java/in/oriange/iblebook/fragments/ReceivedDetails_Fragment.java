@@ -5,15 +5,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -30,7 +29,6 @@ import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ReceivedDetails_Fragment extends Fragment {
 
@@ -42,7 +40,9 @@ public class ReceivedDetails_Fragment extends Fragment {
     private static LinearLayout ll_nothingtoshow;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
-
+    private static ArrayList<GetReceivedDetailsListPojo> detailsList;
+    private SearchView searchView;
+    
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
             new GetDetailsList().execute();
@@ -81,12 +81,14 @@ public class ReceivedDetails_Fragment extends Fragment {
         session = new UserSessionManager(context);
         rv_detailslist = rootView.findViewById(R.id.rv_detailslist);
         ll_parent = getActivity().findViewById(R.id.drawerlayout);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
         ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        detailsList = new ArrayList<GetReceivedDetailsListPojo>();
         layoutManager = new LinearLayoutManager(context);
         rv_detailslist.setLayoutManager(layoutManager);
     }
-
 
     private void setEventHandlers() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,10 +103,49 @@ public class ReceivedDetails_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetReceivedDetailsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetReceivedDetailsListPojo detail : detailsList) {
+                        String destilsToBeSearched = detail.getSender_name().toLowerCase() +
+                                detail.getSender_mobile().toLowerCase();
+                        if (destilsToBeSearched.contains(query.toLowerCase())) {
+                            detailSearchedList.add(detail);
+                        }
+                    }
+                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailSearchedList));
+                } else {
+                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetReceivedDetailsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetReceivedDetailsListPojo detail : detailsList) {
+                        String destilsToBeSearched = detail.getSender_name().toLowerCase() +
+                                detail.getSender_mobile().toLowerCase();
+                        if (destilsToBeSearched.contains(newText.toLowerCase())) {
+                            detailSearchedList.add(detail);
+                        }
+                    }
+                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailSearchedList));
+                } else if (newText.equals("")) {
+                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
+                }
+                return true;
+            }
+        });
+
     }
 
     public static class GetDetailsList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetReceivedDetailsListPojo> detailsList;
 
         @Override
         protected void onPreExecute() {
@@ -137,12 +178,7 @@ public class ReceivedDetails_Fragment extends Fragment {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     detailsList = new ArrayList<GetReceivedDetailsListPojo>();
-
-                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new GetReceivedDetailsListAdapter(context, detailsList)));
-                    alphaAdapter.setDuration(500);
-                    alphaAdapter.setInterpolator(new OvershootInterpolator());
-                    alphaAdapter.setFirstOnly(false);
-                    rv_detailslist.setAdapter(alphaAdapter);
+                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
 
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
@@ -163,11 +199,7 @@ public class ReceivedDetails_Fragment extends Fragment {
                             }
                             rv_detailslist.setVisibility(View.VISIBLE);
                             ll_nothingtoshow.setVisibility(View.GONE);
-                            ScaleInAnimationAdapter alphaAdapter1 = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new GetReceivedDetailsListAdapter(context, detailsList)));
-                            alphaAdapter1.setDuration(500);
-                            alphaAdapter1.setInterpolator(new OvershootInterpolator());
-                            alphaAdapter1.setFirstOnly(false);
-                            rv_detailslist.setAdapter(alphaAdapter1);
+                            rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {

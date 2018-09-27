@@ -48,6 +48,8 @@ public class Offline_Bank_Fragment extends Fragment {
     private FloatingActionButton fab_add_bank;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetBankListPojo> bankList;
+    private static ArrayList<GetBankListPojo> sortedBankList;
     private SearchView searchView;
 
     public static void setDefault() {
@@ -62,8 +64,8 @@ public class Offline_Bank_Fragment extends Fragment {
 //        }
 
         constantData = ConstantData.getInstance();
-        ArrayList<GetBankListPojo> bankList = new ArrayList<>();
-        ArrayList<GetBankListPojo> sortedBankList = new ArrayList<>();
+        bankList = new ArrayList<>();
+        sortedBankList = new ArrayList<>();
         bankList = constantData.getBankList();
 
 
@@ -109,6 +111,12 @@ public class Offline_Bank_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_banklist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+
+        bankList = new ArrayList<>();
+        if (bankList.size() == 0) {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_banklist.setVisibility(View.GONE);
+        }
     }
 
     private void getSessionData() {
@@ -144,6 +152,48 @@ public class Offline_Bank_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetBankListPojo> bankSearchedList = new ArrayList<>();
+                    for (GetBankListPojo bank : sortedBankList) {
+                        String bankToBeSearched = bank.getBank_name().toLowerCase() +
+                                bank.getAlias().toLowerCase() +
+                                bank.getAccount_holder_name().toLowerCase();
+                        if (bankToBeSearched.contains(query.toLowerCase())) {
+                            bankSearchedList.add(bank);
+                        }
+                    }
+                    rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, bankSearchedList, "OFFLINE"));
+                } else {
+                    rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, sortedBankList, "OFFLINE"));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetBankListPojo> bankSearchedList = new ArrayList<>();
+                    for (GetBankListPojo bank : sortedBankList) {
+                        String bankToBeSearched = bank.getBank_name().toLowerCase() +
+                                bank.getAlias().toLowerCase() +
+                                bank.getAccount_holder_name().toLowerCase();
+                        if (bankToBeSearched.contains(newText.toLowerCase())) {
+                            bankSearchedList.add(bank);
+                        }
+                    }
+                    rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, bankSearchedList, "OFFLINE"));
+                } else if (newText.equals("")) {
+                    rv_banklist.setAdapter(new GetOfflineBankListAdapter(context, sortedBankList, "OFFLINE"));
+                }
+                return true;
+            }
+        });
+
     }
 
     public static class GetBankList extends AsyncTask<String, Void, String> {
@@ -201,6 +251,7 @@ public class Offline_Bank_Fragment extends Fragment {
                                     bankList.add(summary);
                                 }
                             }
+                            sortedBankList = bankList;
                             if (bankList.size() == 0) {
                                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                                 rv_banklist.setVisibility(View.GONE);

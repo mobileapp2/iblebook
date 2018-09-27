@@ -43,6 +43,8 @@ public class Received_GST_Fragment extends Fragment {
     private FloatingActionButton fab_add_gst;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetTaxListPojo> gstList;
+    private static ArrayList<GetTaxListPojo> sortedGstList;
     private SearchView searchView;
 
     public static void setDefault() {
@@ -57,8 +59,8 @@ public class Received_GST_Fragment extends Fragment {
 //        }
 
         constantData = ConstantData.getInstance();
-        ArrayList<GetTaxListPojo> gstList = new ArrayList<>();
-        ArrayList<GetTaxListPojo> sortedGstList = new ArrayList<>();
+        gstList = new ArrayList<>();
+        sortedGstList = new ArrayList<>();
         gstList = constantData.getGstList();
 
 
@@ -115,6 +117,12 @@ public class Received_GST_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_gstlist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+
+        gstList = new ArrayList<>();
+        if (gstList.size() == 0) {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_gstlist.setVisibility(View.GONE);
+        }
     }
 
     private void setEventHandlers() {
@@ -130,6 +138,48 @@ public class Received_GST_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetTaxListPojo> gstSearchedList = new ArrayList<>();
+                    for (GetTaxListPojo gst : sortedGstList) {
+                        String gstToBeSearched = gst.getName().toLowerCase() +
+                                gst.getAlias().toLowerCase() +
+                                gst.getGst_number().toLowerCase();
+                        if (gstToBeSearched.contains(query.toLowerCase())) {
+                            gstSearchedList.add(gst);
+                        }
+                    }
+                    rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, gstSearchedList, "RECEIVED"));
+                } else {
+                    rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, sortedGstList, "RECEIVED"));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetTaxListPojo> gstSearchedList = new ArrayList<>();
+                    for (GetTaxListPojo gst : sortedGstList) {
+                        String gstToBeSearched = gst.getName().toLowerCase() +
+                                gst.getAlias().toLowerCase() +
+                                gst.getGst_number().toLowerCase();
+                        if (gstToBeSearched.contains(newText.toLowerCase())) {
+                            gstSearchedList.add(gst);
+                        }
+                    }
+                    rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, gstSearchedList, "RECEIVED"));
+                } else if (newText.equals("")) {
+                    rv_gstlist.setAdapter(new GetReceivedGSTListAdapter(context, sortedGstList, "RECEIVED"));
+                }
+                return true;
+            }
+        });
+
     }
 
     public static class GetGSTList extends AsyncTask<String, Void, String> {
@@ -185,6 +235,7 @@ public class Received_GST_Fragment extends Fragment {
                                     gstList.add(summary);
                                 }
                             }
+                            sortedGstList = gstList;
                             if (gstList.size() == 0) {
                                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                                 rv_gstlist.setVisibility(View.GONE);

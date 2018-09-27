@@ -42,6 +42,8 @@ public class Received_Address_Fragment extends Fragment {
     private static ConstantData constantData;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetAddressListPojo> addressList;
+    private static ArrayList<GetAddressListPojo> sortedAddressList;
     private SearchView searchView;
 
     public static void setDefault() {
@@ -56,8 +58,8 @@ public class Received_Address_Fragment extends Fragment {
 //        }
 
         constantData = ConstantData.getInstance();
-        ArrayList<GetAddressListPojo> addressList = new ArrayList<>();
-        ArrayList<GetAddressListPojo> sortedAddressList = new ArrayList<>();
+        addressList = new ArrayList<>();
+        sortedAddressList = new ArrayList<>();
         addressList = constantData.getAddressList();
 
         if (addressList.size() != 0) {
@@ -112,6 +114,12 @@ public class Received_Address_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_addresslist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+
+        addressList = new ArrayList<>();
+        if (addressList.size() == 0) {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_addresslist.setVisibility(View.GONE);
+        }
     }
 
     private void setEventHandlers() {
@@ -127,6 +135,48 @@ public class Received_Address_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
+                    for (GetAddressListPojo address : sortedAddressList) {
+                        String addressToBeSearched = address.getName().toLowerCase() +
+                                address.getAlias().toLowerCase() +
+                                address.getMobile_number().toLowerCase();
+                        if (addressToBeSearched.contains(query.toLowerCase())) {
+                            addressSearchedList.add(address);
+                        }
+                    }
+                    rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, addressSearchedList, "RECEIVED"));
+                } else {
+                    rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, sortedAddressList, "RECEIVED"));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
+                    for (GetAddressListPojo address : sortedAddressList) {
+                        String addressToBeSearched = address.getName().toLowerCase() +
+                                address.getAlias().toLowerCase() +
+                                address.getMobile_number().toLowerCase();
+                        if (addressToBeSearched.contains(newText.toLowerCase())) {
+                            addressSearchedList.add(address);
+                        }
+                    }
+                    rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, addressSearchedList, "RECEIVED"));
+                } else if (newText.equals("")) {
+                    rv_addresslist.setAdapter(new GetReceivedAddressListAdapter(context, sortedAddressList, "RECEIVED"));
+                }
+                return true;
+            }
+        });
+
 
     }
 
@@ -198,6 +248,7 @@ public class Received_Address_Fragment extends Fragment {
                                     addressList.add(summary);
                                 }
                             }
+                            sortedAddressList = addressList;
                             if (addressList.size() == 0) {
                                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                                 rv_addresslist.setVisibility(View.GONE);

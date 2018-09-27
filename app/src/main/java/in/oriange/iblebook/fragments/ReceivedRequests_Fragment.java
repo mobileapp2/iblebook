@@ -5,15 +5,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
@@ -30,7 +29,6 @@ import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class ReceivedRequests_Fragment extends Fragment {
 
@@ -42,6 +40,8 @@ public class ReceivedRequests_Fragment extends Fragment {
     private static LinearLayout ll_nothingtoshow;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetRequestsListPojo> requestList;
+    private SearchView searchView;
 
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
@@ -82,11 +82,13 @@ public class ReceivedRequests_Fragment extends Fragment {
         rv_requestlist = rootView.findViewById(R.id.rv_requestlist);
         ll_parent = getActivity().findViewById(R.id.drawerlayout);
         ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        requestList = new ArrayList<GetRequestsListPojo>();
         layoutManager = new LinearLayoutManager(context);
         rv_requestlist.setLayoutManager(layoutManager);
     }
-
 
     private void setEventHandlers() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,10 +103,49 @@ public class ReceivedRequests_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetRequestsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetRequestsListPojo request : requestList) {
+                        String requestsToBeSearched = request.getSender_name().toLowerCase() +
+                                request.getSender_mobile().toLowerCase();
+                        if (requestsToBeSearched.contains(query.toLowerCase())) {
+                            detailSearchedList.add(request);
+                        }
+                    }
+                    rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, detailSearchedList));
+                } else {
+                    rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetRequestsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetRequestsListPojo request : requestList) {
+                        String requestsToBeSearched = request.getSender_name().toLowerCase() +
+                                request.getSender_mobile().toLowerCase();
+                        if (requestsToBeSearched.contains(newText.toLowerCase())) {
+                            detailSearchedList.add(request);
+                        }
+                    }
+                    rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, detailSearchedList));
+                } else if (newText.equals("")) {
+                    rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
+                }
+                return true;
+            }
+        });
+
     }
 
     public static class GetRequestList extends AsyncTask<String, Void, String> {
-        private ArrayList<GetRequestsListPojo> requestList;
 
         @Override
         protected void onPreExecute() {
@@ -137,13 +178,7 @@ public class ReceivedRequests_Fragment extends Fragment {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     requestList = new ArrayList<GetRequestsListPojo>();
-
-                    ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new GetReceivedRequestListAdapter(context, requestList)));
-                    alphaAdapter.setDuration(500);
-                    alphaAdapter.setInterpolator(new OvershootInterpolator());
-                    alphaAdapter.setFirstOnly(false);
-                    rv_requestlist.setAdapter(alphaAdapter);
-
+                    rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
                         if (jsonarr.length() > 0) {
@@ -162,11 +197,7 @@ public class ReceivedRequests_Fragment extends Fragment {
                             }
                             rv_requestlist.setVisibility(View.VISIBLE);
                             ll_nothingtoshow.setVisibility(View.GONE);
-                            ScaleInAnimationAdapter alphaAdapter1 = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new GetReceivedRequestListAdapter(context, requestList)));
-                            alphaAdapter1.setDuration(500);
-                            alphaAdapter1.setInterpolator(new OvershootInterpolator());
-                            alphaAdapter1.setFirstOnly(false);
-                            rv_requestlist.setAdapter(alphaAdapter1);
+                            rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {

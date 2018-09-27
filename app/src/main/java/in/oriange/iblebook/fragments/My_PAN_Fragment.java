@@ -45,6 +45,8 @@ public class My_PAN_Fragment extends Fragment {
     private FloatingActionButton fab_add_pan;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
+    private static ArrayList<GetTaxListPojo> panList;
+    private static ArrayList<GetTaxListPojo> sortedPanList;
     private SearchView searchView;
 
     public static void setDefault() {
@@ -59,8 +61,8 @@ public class My_PAN_Fragment extends Fragment {
 //        }
 
         constantData = ConstantData.getInstance();
-        ArrayList<GetTaxListPojo> panList = new ArrayList<>();
-        ArrayList<GetTaxListPojo> sortedPanList = new ArrayList<>();
+        panList = new ArrayList<>();
+        sortedPanList = new ArrayList<>();
         panList = constantData.getPanList();
 
         if (panList.size() != 0) {
@@ -105,6 +107,12 @@ public class My_PAN_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_panlist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+
+        panList = new ArrayList<>();
+        if (panList.size() == 0) {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_panlist.setVisibility(View.GONE);
+        }
     }
 
     private void getSessionData() {
@@ -140,6 +148,48 @@ public class My_PAN_Fragment extends Fragment {
                 }
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<GetTaxListPojo> panSearchedList = new ArrayList<>();
+                    for (GetTaxListPojo pan : sortedPanList) {
+                        String panToBeSearched = pan.getName().toLowerCase() +
+                                pan.getAlias().toLowerCase() +
+                                pan.getPan_number().toLowerCase();
+                        if (panToBeSearched.contains(query.toLowerCase())) {
+                            panSearchedList.add(pan);
+                        }
+                    }
+                    rv_panlist.setAdapter(new GetMyPANListAdapter(context, panSearchedList, "ONLINE"));
+                } else {
+                    rv_panlist.setAdapter(new GetMyPANListAdapter(context, sortedPanList, "ONLINE"));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<GetTaxListPojo> panSearchedList = new ArrayList<>();
+                    for (GetTaxListPojo pan : sortedPanList) {
+                        String panToBeSearched = pan.getName().toLowerCase() +
+                                pan.getAlias().toLowerCase() +
+                                pan.getPan_number().toLowerCase();
+                        if (panToBeSearched.contains(newText.toLowerCase())) {
+                            panSearchedList.add(pan);
+                        }
+                    }
+                    rv_panlist.setAdapter(new GetMyPANListAdapter(context, panSearchedList, "ONLINE"));
+                } else if (newText.equals("")) {
+                    rv_panlist.setAdapter(new GetMyPANListAdapter(context, sortedPanList, "ONLINE"));
+                }
+                return true;
+            }
+        });
+
     }
 
     public static class GetPANList extends AsyncTask<String, Void, String> {
@@ -195,6 +245,7 @@ public class My_PAN_Fragment extends Fragment {
                                     panList.add(summary);
                                 }
                             }
+                            sortedPanList = panList;
                             if (panList.size() == 0) {
                                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                                 rv_panlist.setVisibility(View.GONE);

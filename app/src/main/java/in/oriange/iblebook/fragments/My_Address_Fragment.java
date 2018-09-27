@@ -59,7 +59,6 @@ public class My_Address_Fragment extends Fragment {
 //            ll_nothingtoshow.setVisibility(View.VISIBLE);
 //            rv_addresslist.setVisibility(View.GONE);
 //        }
-
         constantData = ConstantData.getInstance();
         addressList = new ArrayList<>();
         sortedAddressList = new ArrayList<>();
@@ -107,6 +106,12 @@ public class My_Address_Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         rv_addresslist.setLayoutManager(layoutManager);
         constantData = ConstantData.getInstance();
+
+        addressList = new ArrayList<>();
+        if (addressList.size() == 0) {
+            ll_nothingtoshow.setVisibility(View.VISIBLE);
+            rv_addresslist.setVisibility(View.GONE);
+        }
     }
 
     private void getSessionData() {
@@ -147,22 +152,19 @@ public class My_Address_Fragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-                ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
-                for (GetAddressListPojo address : sortedAddressList) {
-                    String addressToBeSearched = address.getName().toLowerCase() +
-                            address.getAlias().toLowerCase() +
-                            address.getMobile_number().toLowerCase();
-                    if (addressToBeSearched.contains(query.toLowerCase())) {
-                        addressSearchedList.add(address);
+                if (!query.equals("")) {
+                    ArrayList<GetAddressListPojo> addressSearchedList = new ArrayList<>();
+                    for (GetAddressListPojo address : sortedAddressList) {
+                        String addressToBeSearched = address.getName().toLowerCase() +
+                                address.getAlias().toLowerCase() +
+                                address.getMobile_number().toLowerCase();
+                        if (addressToBeSearched.contains(query.toLowerCase())) {
+                            addressSearchedList.add(address);
+                        }
                     }
-                }
-
-                if (addressSearchedList.size() == 0) {
-                    Utilities.showAlertDialog(context, "Fail", "No Such Address Details Found", false);
-                    searchView.setQuery("", false);
-                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
-                } else {
                     rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressSearchedList, "ONLINE"));
+                } else {
+                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
                 }
                 return true;
             }
@@ -179,21 +181,13 @@ public class My_Address_Fragment extends Fragment {
                             addressSearchedList.add(address);
                         }
                     }
-                    if (addressSearchedList.size() == 0) {
-                        Utilities.showMessageString(context, "No Such Address Details Found");
-                        searchView.setQuery("", false);
-                        rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
-                    } else {
-                        rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressSearchedList, "ONLINE"));
-                    }
-                    return true;
+                    rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, addressSearchedList, "ONLINE"));
                 } else if (newText.equals("")) {
                     rv_addresslist.setAdapter(new GetMyAddressListAdapter(context, sortedAddressList, "ONLINE"));
                 }
                 return true;
             }
         });
-
 
     }
 
@@ -265,6 +259,7 @@ public class My_Address_Fragment extends Fragment {
                                     addressList.add(summary);
                                 }
                             }
+                            sortedAddressList = addressList;
                             if (addressList.size() == 0) {
                                 ll_nothingtoshow.setVisibility(View.VISIBLE);
                                 rv_addresslist.setVisibility(View.GONE);
