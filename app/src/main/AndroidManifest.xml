@@ -21,7 +21,8 @@
         android:icon="@drawable/icon_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDLPU8PFDrRXLsxV9FXqc-jm0o_8YkT7kA" />

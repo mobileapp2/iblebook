@@ -123,7 +123,7 @@
                     android:layout_marginLeft="22dp"
                     android:clickable="false"
                     android:focusable="false"
-                    android:hint="Alias Name"
+                    android:hint="Display Name"
                     android:singleLine="true"
                     android:textColor="@color/darkgrey"
                     android:textSize="14sp" />
