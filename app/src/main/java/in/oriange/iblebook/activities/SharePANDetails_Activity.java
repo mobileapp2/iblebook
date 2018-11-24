@@ -2,8 +2,11 @@ package in.oriange.iblebook.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,14 +14,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +55,7 @@ public class SharePANDetails_Activity extends Activity {
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile;
     private ImageView img_check;
-
+    private String p_name,alias, pan_no, pan_doc,gst_no,gst_doc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +120,8 @@ public class SharePANDetails_Activity extends Activity {
                 if (lastSelectedPosition == -1) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    createDialogForShare();
+                    setSelectionFilter();
+                    //createDialogForShare();
                 }
             }
         });
@@ -222,15 +229,17 @@ public class SharePANDetails_Activity extends Activity {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetTaxListPojo summary = new GetTaxListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                if (jsonObj.getString("gst_number").equals("")) {
-                                    summary.setTax_id(jsonObj.getString("tax_id"));
-                                    summary.setName(jsonObj.getString("name"));
-                                    summary.setAlias(jsonObj.getString("alias"));
-                                    summary.setPan_number(jsonObj.getString("pan_number"));
-                                    summary.setPan_document(jsonObj.getString("pan_document"));
-                                    summary.setCreated_by(jsonObj.getString("created_by"));
-                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
-                                    panList.add(summary);
+                                if(!jsonObj.getString("status").equals("Duplicate")) {
+                                    if (jsonObj.getString("gst_number").equals("")) {
+                                        summary.setTax_id(jsonObj.getString("tax_id"));
+                                        summary.setName(jsonObj.getString("name"));
+                                        summary.setAlias(jsonObj.getString("alias"));
+                                        summary.setPan_number(jsonObj.getString("pan_number"));
+                                        summary.setPan_document(jsonObj.getString("pan_document"));
+                                        summary.setCreated_by(jsonObj.getString("created_by"));
+                                        summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                        panList.add(summary);
+                                    }
                                 }
                             }
                             rv_panlist.setAdapter(new GetPANForShareAdapter(context, panList));
@@ -339,7 +348,14 @@ public class SharePANDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("receiver_id", sender_id);
                 obj.put("status", "import");
+                obj.put("t_name",p_name);
+                obj.put("t_alias",alias);
+                obj.put("t_pan_number",pan_no);
+                obj.put("t_gst_number",gst_no);
+                obj.put("t_pan_document",pan_doc);
+                obj.put("t_gst_document",gst_doc);
                 s = obj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -379,6 +395,81 @@ public class SharePANDetails_Activity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setSelectionFilter() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharepan, null);
+        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle("Share Filter");
+
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
+        final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
+
+        if (panList.get(lastSelectedPosition).getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (panList.get(lastSelectedPosition).getPan_number().equals("")) {
+            cb_panno.setVisibility(View.GONE);
+        } else {
+            cb_panno.setVisibility(View.VISIBLE);
+        }
+
+        if (panList.get(lastSelectedPosition).getPan_document().equals("")) {
+            cb_file.setVisibility(View.GONE);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    p_name = panList.get(lastSelectedPosition).getName();
+                    alias = panList.get(lastSelectedPosition).getAlias();
+                }
+                else{
+                    p_name = "";
+                    alias = "";
+                }
+                if (cb_panno.isChecked()) {
+                    pan_no = panList.get(lastSelectedPosition).getPan_number();
+                }
+                else{
+                    pan_no = "";
+                }
+
+                if (cb_file.isChecked()) {
+                   pan_doc = panList.get(lastSelectedPosition).getPan_document();
+                }
+                else{
+                    pan_doc = "";
+                }
+                gst_doc = "";
+                gst_no = "";
+
+                if (!cb_name.isChecked() && !cb_panno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+               createDialogForShare();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
 
 

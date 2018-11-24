@@ -13,7 +13,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.MainDrawer_Activity;
-import in.oriange.iblebook.activities.MainNormalDrawer_Activity;
 
 
 public class FirebaseMessageService extends FirebaseMessagingService {

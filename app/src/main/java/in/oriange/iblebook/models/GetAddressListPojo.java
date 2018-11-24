@@ -1,6 +1,8 @@
 package in.oriange.iblebook.models;
 
-public class GetAddressListPojo {
+import java.io.Serializable;
+
+public class GetAddressListPojo implements Serializable {
 
     private String created_by;
 

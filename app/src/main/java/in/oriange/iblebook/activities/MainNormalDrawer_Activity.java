@@ -177,6 +177,10 @@ public class MainNormalDrawer_Activity extends AppCompatActivity implements Navi
 
         if (id == R.id.menu_profile) {
             startActivity(new Intent(context, Profile_Activity.class));
+        } else if (id == R.id.menu_intro) {
+            startActivity(new Intent(context, Intro_Activity.class));
+        } else if (id == R.id.menu_about) {
+            startActivity(new Intent(context, About_Activity.class));
         } else if (id == R.id.menu_logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure you want to log out?");

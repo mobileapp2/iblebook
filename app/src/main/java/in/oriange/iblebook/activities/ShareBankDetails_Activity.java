@@ -14,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +50,7 @@ public class ShareBankDetails_Activity extends Activity {
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile;
     private ImageView img_check;
+    private String holder_name, alias, bank_name, ifsc_code, acc_no, bank_doc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +116,8 @@ public class ShareBankDetails_Activity extends Activity {
                 if (lastSelectedPosition == -1) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    createDialogForShare();
+                    setSelectionFilter();
+                    //createDialogForShare();
                 }
             }
         });
@@ -221,17 +225,19 @@ public class ShareBankDetails_Activity extends Activity {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetBankListPojo summary = new GetBankListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setBank_id(jsonObj.getString("bank_id"));
-                                summary.setAccount_holder_name(jsonObj.getString("account_holder_name"));
-                                summary.setAlias(jsonObj.getString("alias"));
-                                summary.setBank_name(jsonObj.getString("bank_name"));
-                                summary.setIfsc_code(jsonObj.getString("ifsc_code"));
-                                summary.setAccount_no(jsonObj.getString("account_no"));
-                                summary.setDocument(jsonObj.getString("document"));
-                                summary.setCreated_by(jsonObj.getString("created_by"));
-                                summary.setUpdated_by(jsonObj.getString("updated_by"));
-                                summary.setStatus(jsonObj.getString("status"));
-                                bankList.add(summary);
+                                if (!jsonObj.getString("status").equals("Duplicate")) {
+                                    summary.setBank_id(jsonObj.getString("bank_id"));
+                                    summary.setAccount_holder_name(jsonObj.getString("account_holder_name"));
+                                    summary.setAlias(jsonObj.getString("alias"));
+                                    summary.setBank_name(jsonObj.getString("bank_name"));
+                                    summary.setIfsc_code(jsonObj.getString("ifsc_code"));
+                                    summary.setAccount_no(jsonObj.getString("account_no"));
+                                    summary.setDocument(jsonObj.getString("document"));
+                                    summary.setCreated_by(jsonObj.getString("created_by"));
+                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setStatus(jsonObj.getString("status"));
+                                    bankList.add(summary);
+                                }
                             }
                             rv_banklist.setAdapter(new GetBankForShareAdapter(context, bankList));
                         }
@@ -341,7 +347,14 @@ public class ShareBankDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("receiver_id", sender_id);
                 obj.put("status", "import");
+                obj.put("b_account_holder_name", holder_name);
+                obj.put("b_alias", alias);
+                obj.put("b_bank_name", bank_name);
+                obj.put("b_ifsc_code", ifsc_code);
+                obj.put("b_account_no", acc_no);
+                obj.put("b_document", bank_doc);
                 s = obj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -381,6 +394,104 @@ public class ShareBankDetails_Activity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setSelectionFilter() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharebank, null);
+        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle("Share Filter");
+
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
+        final CheckBox cb_ifsccode = promptView.findViewById(R.id.cb_ifsccode);
+        final CheckBox cb_accno = promptView.findViewById(R.id.cb_accno);
+        final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
+
+        if (bankList.get(lastSelectedPosition).getAccount_holder_name().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (bankList.get(lastSelectedPosition).getBank_name().equals("")) {
+            cb_bankname.setVisibility(View.GONE);
+            cb_bankname.setChecked(false);
+        } else {
+            cb_bankname.setVisibility(View.VISIBLE);
+        }
+
+        if (bankList.get(lastSelectedPosition).getIfsc_code().equals("")) {
+            cb_ifsccode.setVisibility(View.GONE);
+            cb_ifsccode.setChecked(false);
+        } else {
+            cb_ifsccode.setVisibility(View.VISIBLE);
+        }
+
+        if (bankList.get(lastSelectedPosition).getAccount_no().equals("")) {
+            cb_accno.setVisibility(View.GONE);
+            cb_accno.setChecked(false);
+        } else {
+            cb_accno.setVisibility(View.VISIBLE);
+        }
+
+        if (bankList.get(lastSelectedPosition).getDocument().equals("")) {
+            cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    holder_name = bankList.get(lastSelectedPosition).getAccount_holder_name();
+                    alias = bankList.get(lastSelectedPosition).getAlias();
+                } else {
+                    holder_name = "";
+                    alias = "";
+                }
+                if (cb_bankname.isChecked()) {
+                    bank_name = bankList.get(lastSelectedPosition).getBank_name();
+                } else {
+                    bank_name = "";
+                }
+                if (cb_ifsccode.isChecked()) {
+                    ifsc_code = bankList.get(lastSelectedPosition).getIfsc_code();
+                } else {
+                    ifsc_code = "";
+                }
+                if (cb_accno.isChecked()) {
+                    acc_no = bankList.get(lastSelectedPosition).getAccount_no();
+                } else {
+                    acc_no = "";
+                }
+                if (cb_file.isChecked()) {
+                    bank_doc = bankList.get(lastSelectedPosition).getDocument();
+                } else {
+                    bank_doc = "";
+                }
+
+                if (!cb_name.isChecked() && !cb_bankname.isChecked() && !cb_ifsccode.isChecked()
+                        && !cb_accno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                createDialogForShare();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
 
 

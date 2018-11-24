@@ -14,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +50,10 @@ public class ShareAddressDetails_Activity extends Activity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile;
+    private static String addresstype, u_name, alias, addresss, country,
+            state, district, pincode, u_mobile, email, website, address_line_1, address_line_2;
+    private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
+    private static String photo, visiting_card, address_id, map_location_lattitude, map_location_logitude, STATUS, type_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +119,9 @@ public class ShareAddressDetails_Activity extends Activity {
                 if (lastSelectedPosition == -1) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    createDialogForShare();
+
+                    setSelectionFilter();
+                    //createDialogForShare();
                 }
             }
         });
@@ -141,6 +149,7 @@ public class ShareAddressDetails_Activity extends Activity {
                 }
 
                 if (Utilities.isNetworkAvailable(context)) {
+
                     new ShareDetails().execute(
                             edt_message.getText().toString().trim(),
                             user_id,
@@ -222,28 +231,32 @@ public class ShareAddressDetails_Activity extends Activity {
 
                                 GetAddressListPojo summary = new GetAddressListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setAddress_id(jsonObj.getString("address_id"));
-                                summary.setType_id(jsonObj.getString("type_id"));
-                                summary.setName(jsonObj.getString("name"));
-                                summary.setAlias(jsonObj.getString("alias"));
-                                summary.setAddress_line_one(jsonObj.getString("address_line_one"));
-                                summary.setAddress_line_two(jsonObj.getString("address_line_two"));
-                                summary.setCountry(jsonObj.getString("country"));
-                                summary.setState(jsonObj.getString("state"));
-                                summary.setDistrict(jsonObj.getString("district"));
-                                summary.setPincode(jsonObj.getString("pincode"));
-                                summary.setEmail_id(jsonObj.getString("email_id"));
-                                summary.setWebsite(jsonObj.getString("website"));
-                                summary.setVisiting_card(jsonObj.getString("visiting_card"));
-                                summary.setMap_location_lattitude(jsonObj.getString("map_location_logitude"));
-                                summary.setMap_location_logitude(jsonObj.getString("map_location_lattitude"));
-                                summary.setPhoto(jsonObj.getString("photo"));
-                                summary.setStatus(jsonObj.getString("status"));
-                                summary.setCreated_by(jsonObj.getString("created_by"));
-                                summary.setUpdated_by(jsonObj.getString("updated_by"));
-                                summary.setType(jsonObj.getString("type"));
-                                summary.setMobile_number(jsonObj.getString("mobile_number"));
-                                addressList.add(summary);
+
+
+                                if (!jsonObj.getString("status").equals("Duplicate")) {
+                                    summary.setAddress_id(jsonObj.getString("address_id"));
+                                    summary.setType_id(jsonObj.getString("type_id"));
+                                    summary.setName(jsonObj.getString("name"));
+                                    summary.setAlias(jsonObj.getString("alias"));
+                                    summary.setAddress_line_one(jsonObj.getString("address_line_one"));
+                                    summary.setAddress_line_two(jsonObj.getString("address_line_two"));
+                                    summary.setCountry(jsonObj.getString("country"));
+                                    summary.setState(jsonObj.getString("state"));
+                                    summary.setDistrict(jsonObj.getString("district"));
+                                    summary.setPincode(jsonObj.getString("pincode"));
+                                    summary.setEmail_id(jsonObj.getString("email_id"));
+                                    summary.setWebsite(jsonObj.getString("website"));
+                                    summary.setVisiting_card(jsonObj.getString("visiting_card"));
+                                    summary.setMap_location_lattitude(jsonObj.getString("map_location_logitude"));
+                                    summary.setMap_location_logitude(jsonObj.getString("map_location_lattitude"));
+                                    summary.setPhoto(jsonObj.getString("photo"));
+                                    summary.setStatus(jsonObj.getString("status"));
+                                    summary.setCreated_by(jsonObj.getString("created_by"));
+                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                    summary.setType(jsonObj.getString("type"));
+                                    summary.setMobile_number(jsonObj.getString("mobile_number"));
+                                    addressList.add(summary);
+                                }
                             }
                             rv_addresslist.setAdapter(new GetAddressForShareAdapter(context, addressList));
                         }
@@ -348,10 +361,28 @@ public class ShareAddressDetails_Activity extends Activity {
                 obj.put("task", "SharedDetails");
                 obj.put("message", params[0]);
                 obj.put("sender_id", params[1]);
+                obj.put("receiver_id", sender_id);
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
                 obj.put("status", "import");
+                obj.put("a_type_id", addresstype);
+                obj.put("a_name", u_name);
+                obj.put("a_alias", alias);
+                obj.put("a_address_line_one", address_line_1);
+                obj.put("a_address_line_two", address_line_2);
+                obj.put("a_country", country);
+                obj.put("a_state", state);
+                obj.put("a_district", district);
+                obj.put("a_pincode", pincode);
+                obj.put("a_email_id", email);
+                obj.put("a_website", website);
+                obj.put("a_visiting_card", visiting_card);
+                obj.put("a_map_location_logitude", map_location_logitude);
+                obj.put("a_map_location_lattitude", map_location_lattitude);
+                obj.put("a_photo", photo);
+                obj.put("a_mobile_number", u_mobile);
+
                 s = obj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -393,4 +424,184 @@ public class ShareAddressDetails_Activity extends Activity {
         }
     }
 
+
+    private void setSelectionFilter() {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_shareaddress, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle("Share Filter");
+
+        final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
+        final CheckBox cb_country = promptView.findViewById(R.id.cb_country);
+        final CheckBox cb_state = promptView.findViewById(R.id.cb_state);
+        final CheckBox cb_district = promptView.findViewById(R.id.cb_district);
+        final CheckBox cb_pincode = promptView.findViewById(R.id.cb_pincode);
+        final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
+        final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
+        final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
+        final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
+        final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
+
+        cb_country.setVisibility(View.GONE);
+        cb_state.setVisibility(View.GONE);
+        cb_district.setVisibility(View.GONE);
+        cb_pincode.setVisibility(View.GONE);
+
+        if (addressList.get(lastSelectedPosition).getType_id().equals("")) {
+            cb_addresstype.setVisibility(View.GONE);
+            cb_addresstype.setChecked(false);
+        } else {
+            cb_addresstype.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getAddress_id().equals("")) {
+            cb_address.setVisibility(View.GONE);
+            cb_address.setChecked(false);
+        } else {
+            cb_address.setVisibility(View.VISIBLE);
+        }
+        if (addressList.get(lastSelectedPosition).getMobile_number().equals("")) {
+            cb_mobile.setVisibility(View.GONE);
+            cb_mobile.setChecked(false);
+        } else {
+            cb_mobile.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getEmail_id().equals("")) {
+            cb_email.setVisibility(View.GONE);
+            cb_email.setChecked(false);
+        } else {
+            cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getWebsite().equals("")) {
+            cb_website.setVisibility(View.GONE);
+            cb_website.setChecked(false);
+        } else {
+            cb_website.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getMap_location_lattitude().equals("") && addressList.get(lastSelectedPosition).getMap_location_logitude().equals("")) {
+            cb_maplocation.setVisibility(View.GONE);
+            cb_maplocation.setChecked(false);
+        } else {
+            cb_maplocation.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getVisiting_card().equals("")) {
+            cb_visitcard.setVisibility(View.GONE);
+            cb_visitcard.setChecked(false);
+        } else {
+            cb_visitcard.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getPhoto().equals("")) {
+            cb_photo.setVisibility(View.GONE);
+            cb_photo.setChecked(false);
+        } else {
+            cb_photo.setVisibility(View.VISIBLE);
+        }
+
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                if (cb_addresstype.isChecked()) {
+                    addresstype = addressList.get(lastSelectedPosition).getType_id();
+                } else {
+                    addresstype = "";
+                }
+
+                if (cb_name.isChecked()) {
+                    u_name = addressList.get(lastSelectedPosition).getName();
+                    alias = addressList.get(lastSelectedPosition).getAlias();
+                } else {
+                    u_name = "";
+                    alias = "";
+                }
+
+                if (cb_address.isChecked()) {
+                    address_line_1 = addressList.get(lastSelectedPosition).getAddress_line_one();
+                    address_line_2 = addressList.get(lastSelectedPosition).getAddress_line_two();
+                    country = addressList.get(lastSelectedPosition).getCountry();
+                    state = addressList.get(lastSelectedPosition).getState();
+                    district = addressList.get(lastSelectedPosition).getDistrict();
+                    pincode = addressList.get(lastSelectedPosition).getPincode();
+
+                } else {
+                    address_line_1 = "";
+                    address_line_2 = "";
+                    country = "";
+                    district = "";
+                    pincode = "";
+                    state = "";
+                }
+
+                if (cb_mobile.isChecked()) {
+                    u_mobile = addressList.get(lastSelectedPosition).getMobile_number();
+                } else {
+                    u_mobile = "";
+                }
+
+                if (cb_email.isChecked()) {
+                    email = addressList.get(lastSelectedPosition).getEmail_id();
+                } else {
+                    email = "";
+                }
+
+                if (cb_website.isChecked()) {
+                    website = addressList.get(lastSelectedPosition).getWebsite();
+                } else {
+                    website = "";
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    map_location_lattitude = addressList.get(lastSelectedPosition).getMap_location_lattitude();
+                    map_location_logitude = addressList.get(lastSelectedPosition).getMap_location_logitude();
+                } else {
+                    map_location_lattitude = "";
+                    map_location_logitude = "";
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    visiting_card = addressList.get(lastSelectedPosition).getVisiting_card();
+                } else {
+                    visiting_card = "";
+                }
+
+                if (cb_photo.isChecked()) {
+                    photo = addressList.get(lastSelectedPosition).getPhoto();
+                } else {
+                    photo = "";
+                }
+
+                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
+                        && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
+                        && !cb_photo.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                createDialogForShare();
+
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
+    }
 }

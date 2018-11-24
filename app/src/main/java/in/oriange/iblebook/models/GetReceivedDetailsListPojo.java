@@ -20,6 +20,16 @@ public class GetReceivedDetailsListPojo {
 
     private String sender_mobile;
 
+    public String getNew_record_id() {
+        return new_record_id;
+    }
+
+    public void setNew_record_id(String new_record_id) {
+        this.new_record_id = new_record_id;
+    }
+
+    private String new_record_id;
+
     public String getStatus() {
         return status;
     }

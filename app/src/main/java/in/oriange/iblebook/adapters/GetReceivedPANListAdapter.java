@@ -72,7 +72,8 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
+        if (!resultArrayList.get(position).getName().equals(""))
+            holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getName().charAt(0)));
         holder.tv_alias.setText(resultArrayList.get(position).getAlias());
         holder.tv_name.setText(resultArrayList.get(position).getName());
         holder.tv_gstno.setText(resultArrayList.get(position).getPan_number());
@@ -138,6 +139,33 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
                                 AlertDialog alertD = builder.create();
                                 alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
                                 alertD.show();
+                                break;
+                            case R.id.menu_move:
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                                builder1.setTitle("Swap");
+                                builder1.setMessage("Where to icon_swap this PAN details?");
+                                builder1.setIcon(R.drawable.icon_swap);
+                                builder1.setCancelable(false);
+                                builder1.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder1.setPositiveButton("My PAN", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        new MoveAddressDetails().execute(String.valueOf(position), "online");
+
+                                    }
+                                });
+                                builder1.setNegativeButton("Offline", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new MoveAddressDetails().execute(String.valueOf(position), "offline");
+                                    }
+                                });
+                                AlertDialog alertD1 = builder1.create();
+                                alertD1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                                alertD1.show();
                                 break;
 
                         }
@@ -322,6 +350,68 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
                             public void onClick(DialogInterface dialog, int id) {
                                 new Received_PAN_Fragment.GetPANList().execute();
                                 removeItem(position);
+                            }
+                        });
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
+                    } else {
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class MoveAddressDetails extends AsyncTask<String, Void, String> {
+        int position;
+        String status;
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            position = Integer.parseInt(params[0]);
+            status = params[1];
+            String res = "[]";
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", "pan");
+            obj.addProperty("record_id", resultArrayList.get(Integer.parseInt(params[0])).getTax_id());
+            obj.addProperty("status", status);
+            res = WebServiceCalls.APICall(ApplicationConstants.MOVEAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
+                        builder.setMessage("PAN details moved successfully.");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
                             }
                         });
                         AlertDialog alertD = builder.create();

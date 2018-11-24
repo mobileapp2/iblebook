@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,37 +10,68 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="horizontal">
 
-        <in.oriange.iblebook.utilities.AutoCompleteLocation
-            android:id="@+id/autocomplete_location"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="0.9"
-            android:gravity="center_vertical" />
+            android:orientation="vertical">
+
+            <in.oriange.iblebook.utilities.AutoCompleteLocation
+                android:id="@+id/autocomplete_location"
+                android:layout_width="280dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:drawableEnd="@drawable/ic_search"
+                android:drawableRight="@drawable/ic_search"
+                android:drawableTint="@color/bg_gray"
+                android:gravity="center_vertical"
+                android:textSize="10sp"
+                app:hint_text="Search Location" />
+
+            <Button
+                android:id="@+id/btn_pick"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:drawableTint="@color/standard_white"
+                android:text="Detect My Current Location"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:layout_marginLeft="5dp"
-            android:layout_weight="0.1"
-            android:background="@drawable/style_button"
-            android:text="Ok"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="Select"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
+
+
     </LinearLayout>
 
 

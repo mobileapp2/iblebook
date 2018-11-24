@@ -14,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +51,7 @@ public class ShareGSTDetails_Activity extends Activity {
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile;
     private ImageView img_check;
+    private String p_name, alias, pan_no, pan_doc, gst_no, gst_doc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +117,8 @@ public class ShareGSTDetails_Activity extends Activity {
                 if (lastSelectedPosition == -1) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    createDialogForShare();
+                    setSelectionFilter();
+                    //createDialogForShare();
                 }
             }
         });
@@ -222,15 +226,17 @@ public class ShareGSTDetails_Activity extends Activity {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetTaxListPojo summary = new GetTaxListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                if (jsonObj.getString("pan_number").equals("")) {
-                                    summary.setTax_id(jsonObj.getString("tax_id"));
-                                    summary.setName(jsonObj.getString("name"));
-                                    summary.setAlias(jsonObj.getString("alias"));
-                                    summary.setGst_number(jsonObj.getString("gst_number"));
-                                    summary.setGst_document(jsonObj.getString("gst_document"));
-                                    summary.setCreated_by(jsonObj.getString("created_by"));
-                                    summary.setUpdated_by(jsonObj.getString("updated_by"));
-                                    gstList.add(summary);
+                                if (!jsonObj.getString("status").equals("Duplicate")) {
+                                    if (jsonObj.getString("pan_number").equals("")) {
+                                        summary.setTax_id(jsonObj.getString("tax_id"));
+                                        summary.setName(jsonObj.getString("name"));
+                                        summary.setAlias(jsonObj.getString("alias"));
+                                        summary.setGst_number(jsonObj.getString("gst_number"));
+                                        summary.setGst_document(jsonObj.getString("gst_document"));
+                                        summary.setCreated_by(jsonObj.getString("created_by"));
+                                        summary.setUpdated_by(jsonObj.getString("updated_by"));
+                                        gstList.add(summary);
+                                    }
                                 }
                             }
                             rv_gstlist.setAdapter(new GetGSTForShareAdapter(context, gstList));
@@ -339,7 +345,15 @@ public class ShareGSTDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("receiver_id", sender_id);
                 obj.put("status", "import");
+                obj.put("t_name", p_name);
+                obj.put("t_alias", alias);
+                obj.put("t_pan_number", pan_no);
+                obj.put("t_gst_number", gst_no);
+                obj.put("t_pan_document", pan_doc);
+                obj.put("t_gst_document", gst_doc);
+
                 s = obj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -379,6 +393,80 @@ public class ShareGSTDetails_Activity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setSelectionFilter() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharepgst, null);
+        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle("Share Filter");
+
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
+        final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
+
+        if (gstList.get(lastSelectedPosition).getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (gstList.get(lastSelectedPosition).getGst_number().equals("")) {
+            cb_gstno.setVisibility(View.GONE);
+            cb_gstno.setChecked(false);
+        } else {
+            cb_gstno.setVisibility(View.VISIBLE);
+        }
+
+        if (gstList.get(lastSelectedPosition).getGst_document().equals("")) {
+            cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    p_name = gstList.get(lastSelectedPosition).getName();
+                    alias = gstList.get(lastSelectedPosition).getAlias();
+                } else {
+                    p_name = "";
+                    alias = "";
+                }
+                if (cb_gstno.isChecked()) {
+                    gst_no = gstList.get(lastSelectedPosition).getGst_number();
+                } else {
+                    gst_no = "";
+                }
+
+                if (cb_file.isChecked()) {
+                    gst_doc = gstList.get(lastSelectedPosition).getGst_document();
+                } else {
+                    gst_doc = "";
+                }
+
+                if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                pan_doc = "";
+                pan_no = "";
+                createDialogForShare();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
 
 

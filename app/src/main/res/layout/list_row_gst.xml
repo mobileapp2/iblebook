@@ -9,10 +9,10 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         card_view:cardBackgroundColor="@color/colorPrimaryVeryLight"
         card_view:cardCornerRadius="4dp"
-        card_view:cardUseCompatPadding="true">
+        android:layout_marginTop="5dp">
 
         <FrameLayout
             android:id="@+id/fl_mainframe"

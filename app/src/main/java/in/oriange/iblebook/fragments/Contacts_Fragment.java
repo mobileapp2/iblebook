@@ -59,6 +59,7 @@ public class Contacts_Fragment extends Fragment {
     private FloatingActionButton fab_request;
     private UserSessionManager session;
     private String user_id;
+    public List<String> mobileNumbers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +82,53 @@ public class Contacts_Fragment extends Fragment {
         rv_contacts.setLayoutManager(new LinearLayoutManager(getContext()));
         searchView = rootView.findViewById(R.id.searchView);
         searchView.setFocusable(false);
+        new getMobileNumbers().execute();
+    }
+
+    public class getMobileNumbers extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", "getAllMobileNumbers");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            res = WebServiceCalls.APICall(ApplicationConstants.USERAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        JSONArray jsonarr = mainObj.getJSONArray("result");
+                        if (jsonarr.length() > 0) {
+                            mobileNumbers = new ArrayList<String>();
+                            for (int i = 0; i < jsonarr.length(); i++) {
+                                JSONObject jsonObj = jsonarr.getJSONObject(i);
+
+                                mobileNumbers.add(jsonObj.getString("mobile"));
+
+                            }
+                        }
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setDefault() {
@@ -102,7 +150,7 @@ public class Contacts_Fragment extends Fragment {
     }
 
     public void refresh() {
-        if (contactList.size() == 0)
+        if (contactList == null || contactList.size() == 0)
             setDefault();
     }
 
@@ -334,7 +382,7 @@ public class Contacts_Fragment extends Fragment {
     }
 
     private void bindRecyclerview(List<ContactListPojo> contactList) {
-        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList)));
+        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(new ScaleInAnimationAdapter(new ContactListRVAapter(context, contactList, mobileNumbers)));
         alphaAdapter.setDuration(500);
         alphaAdapter.setInterpolator(new OvershootInterpolator());
         alphaAdapter.setFirstOnly(false);

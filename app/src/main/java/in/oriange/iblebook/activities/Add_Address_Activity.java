@@ -52,8 +52,8 @@ import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_Address_Fragment;
 import in.oriange.iblebook.fragments.Offline_Address_Fragment;
 import in.oriange.iblebook.models.AddressTypePojo;
+import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
-import in.oriange.iblebook.utilities.ConstantData;
 import in.oriange.iblebook.utilities.DataBaseHelper;
 import in.oriange.iblebook.utilities.MultipartUtility;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -84,7 +84,7 @@ public class Add_Address_Activity extends Activity {
     private LinearLayout ll_mobilelayout;
     private String STATUS, latitude = "", longitude = "";
     private DataBaseHelper dbHelper;
-    private ConstantData constantData;
+//    private ConstantData constantData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,23 +103,11 @@ public class Add_Address_Activity extends Activity {
         hideSoftKeyboard(Add_Address_Activity.this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (constantData.getLatitude().equals("") || constantData.getLongitude().equals("")) {
-            tv_pickloc.setText("");
-        } else {
-            tv_pickloc.setText(constantData.getLatitude() + " , " + constantData.getLongitude());
-        }
-
-    }
-
     private void init() {
         context = Add_Address_Activity.this;
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
-        constantData = ConstantData.getInstance();
+//        constantData = ConstantData.getInstance();
         dbHelper = new DataBaseHelper(context);
         addressTypeList = new ArrayList<AddressTypePojo>();
         ll_parent = findViewById(R.id.ll_parent);
@@ -139,8 +127,9 @@ public class Add_Address_Activity extends Activity {
         edt_website = findViewById(R.id.edt_website);
         btn_save = findViewById(R.id.btn_save);
 
-        constantData.setLatitude("");
-        constantData.setLongitude("");
+//        constantData.setLatitude("");
+//        constantData.setLongitude("");
+//        constantData.setAddressListPojo(null);
 
         imv_add_mobno = findViewById(R.id.imv_add_mobno);
         ll_mobilelayout = findViewById(R.id.ll_mobilelayout);
@@ -225,7 +214,8 @@ public class Add_Address_Activity extends Activity {
         tv_pickloc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, PickMapLoaction_Activity.class));
+                Intent intent = new Intent(context, PickMapLoaction_Activity.class);
+                startActivityForResult(intent, 10001);
             }
         });
 
@@ -412,7 +402,7 @@ public class Add_Address_Activity extends Activity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
@@ -433,6 +423,44 @@ public class Add_Address_Activity extends Activity {
                     photoToBeUploaded = new File(filePath.get(0));
                     tv_attachphoto.setText(filePath.get(0));
                 }
+            }
+
+            if (requestCode == 10001) {
+                latitude = data.getStringExtra("latitude");
+                longitude = data.getStringExtra("longitude");
+                tv_pickloc.setText(data.getStringExtra("latitude") + " , " + data.getStringExtra("longitude"));
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                builder1.setTitle("Autofill");
+                builder1.setMessage("Auto fill address details ? ");
+                //builder1.setIcon(R.drawable.icon_swap);
+                builder1.setCancelable(false);
+                builder1.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+//                        constantData.setAddressListPojo(null);
+                        edt_address.setText("");
+                        edt_country.setText("");
+                        edt_state.setText("");
+                        edt_district.setText("");
+                        edt_pincode.setText("");
+                        dialog.dismiss();
+                    }
+                });
+                builder1.setPositiveButton("Autofill", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        GetAddressListPojo address = (GetAddressListPojo) data.getSerializableExtra("mapAddressDetails");
+                        edt_address.setText(address.getAddress_line_one());
+                        edt_country.setText(address.getCountry());
+                        edt_state.setText(address.getState());
+                        edt_district.setText(address.getDistrict());
+                        edt_pincode.setText(address.getPincode());
+//                    constantData.setAddressListPojo(null);
+
+                    }
+                });
+                AlertDialog alertD1 = builder1.create();
+                alertD1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                alertD1.show();
             }
         }
 
@@ -767,8 +795,8 @@ public class Add_Address_Activity extends Activity {
             obj.addProperty("email_id", edt_email.getText().toString().trim());
             obj.addProperty("website", edt_website.getText().toString().trim());
             obj.addProperty("visiting_card", visitCardUrl);
-            obj.addProperty("map_location_logitude", constantData.getLongitude());
-            obj.addProperty("map_location_lattitude", constantData.getLatitude());
+            obj.addProperty("map_location_logitude", longitude);
+            obj.addProperty("map_location_lattitude", latitude);
             obj.addProperty("photo", photoUrl);
             obj.addProperty("status", STATUS.toLowerCase());
             obj.add("mobile_number", array);

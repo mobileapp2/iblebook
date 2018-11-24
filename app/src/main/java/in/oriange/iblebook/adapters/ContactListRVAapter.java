@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,10 +34,13 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
     private List<ContactListPojo> contactList;
     private UserSessionManager session;
     private String user_id;
+    private List<String> mobileNumbers;
+    private static JSONArray MobileNumbers;
 
-    public ContactListRVAapter(Context context, List<ContactListPojo> contactList) {
+    public ContactListRVAapter(Context context, List<ContactListPojo> contactList, List<String> mobileNumbers) {
         this.context = context;
         this.contactList = contactList;
+        this.mobileNumbers = mobileNumbers;
         session = new UserSessionManager(context);
         try {
             JSONArray user_info = new JSONArray(session.getUserDetails().get(
@@ -61,13 +65,32 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
         holder.tv_initletter.setText(contactList.get(position).getInitLetter());
         holder.tv_name.setText(contactList.get(position).getName());
         holder.tv_phoneno.setText(contactList.get(position).getPhoneNo());
-
+        if (checkMobile(contactList.get(position).getPhoneNo())) {
+            holder.tv_img.setVisibility(View.VISIBLE);
+        } else {
+            holder.tv_img.setVisibility(View.INVISIBLE);
+        }
         holder.rl_mainlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createRequestAlert(contactList, position);
             }
         });
+    }
+
+    public boolean checkMobile(String mobile) {
+        try {
+            for (String m : mobileNumbers) {
+                if (mobile.equals(m) || mobile.equals("+91".concat(m)) || mobile.equals("0".concat(m))) {
+                    return true;
+                }
+
+            }
+        } catch (Exception e) {
+
+        }
+
+        return false;
     }
 
     @Override
@@ -176,6 +199,7 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
 
         private RelativeLayout rl_mainlayout;
         private TextView tv_initletter, tv_name, tv_phoneno;
+        private ImageView tv_img;
 
 
         public MyViewHolder(View view) {
@@ -184,6 +208,7 @@ public class ContactListRVAapter extends RecyclerView.Adapter<ContactListRVAapte
             tv_name = (TextView) view.findViewById(R.id.tv_bankname);
             tv_phoneno = (TextView) view.findViewById(R.id.tv_accountno);
             rl_mainlayout = view.findViewById(R.id.rl_mainlayout);
+            tv_img = view.findViewById(R.id.ic_image);
         }
     }
 

@@ -231,6 +231,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
             JsonObject obj = new JsonObject();
             obj.addProperty("type", "rejectSharedRecord");
             obj.addProperty("shared_details_id", resultArrayList.get(Integer.parseInt(params[0])).getShared_details_id());
+            obj.addProperty("new_record_id", resultArrayList.get(Integer.parseInt(params[0])).getNew_record_id());
             res = WebServiceCalls.APICall(ApplicationConstants.REJECTREQUESTAPI, obj.toString());
             return res;
         }
@@ -292,6 +293,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
             JsonObject obj = new JsonObject();
             obj.addProperty("type", "importSharedRecord");
             obj.addProperty("user_id", user_id);
+            obj.addProperty("new_record_id", resultArrayList.get(Integer.parseInt(params[0])).getNew_record_id());
             obj.addProperty("shared_details_id", resultArrayList.get(Integer.parseInt(params[0])).getShared_details_id());
             res = WebServiceCalls.APICall(ApplicationConstants.APPROVEREQUESTAPI, obj.toString());
             return res;

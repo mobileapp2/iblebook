@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/colorPrimaryVeryLight"
         card_view:cardCornerRadius="4dp"
-        card_view:cardUseCompatPadding="true">
+        android:layout_marginTop="5dp">
 
         <FrameLayout
             android:id="@+id/fl_mainframe"

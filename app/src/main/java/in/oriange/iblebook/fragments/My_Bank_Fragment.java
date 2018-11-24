@@ -224,7 +224,7 @@ public class My_Bank_Fragment extends Fragment {
                     JSONObject mainObj = new JSONObject(result);
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
-                    bankList = new ArrayList<GetBankListPojo>();
+                    bankList = new ArrayList<>();
                     rv_banklist.setAdapter(new GetMyBankListAdapter(context, bankList, "ONLINE"));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");

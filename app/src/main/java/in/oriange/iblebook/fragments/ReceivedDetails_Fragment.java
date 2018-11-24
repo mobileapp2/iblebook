@@ -42,7 +42,7 @@ public class ReceivedDetails_Fragment extends Fragment {
     private UserSessionManager session;
     private static ArrayList<GetReceivedDetailsListPojo> detailsList;
     private SearchView searchView;
-    
+
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
             new GetDetailsList().execute();
@@ -163,7 +163,7 @@ public class ReceivedDetails_Fragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            res = WebServiceCalls.APICall(ApplicationConstants.GETREQDETAILSSAPI, obj.toString());
+            res = WebServiceCalls.APICall(ApplicationConstants.GETREQDETAILSCSAPI, obj.toString());
             return res;
         }
 
@@ -195,6 +195,8 @@ public class ReceivedDetails_Fragment extends Fragment {
                                 summary.setStatus(jsonObj.getString("status"));
                                 summary.setSender_name(jsonObj.getString("sender_name"));
                                 summary.setSender_mobile(jsonObj.getString("sender_mobile"));
+                                summary.setNew_record_id(jsonObj.getString("new_record_id"));
+
                                 detailsList.add(summary);
                             }
                             rv_detailslist.setVisibility(View.VISIBLE);

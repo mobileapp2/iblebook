@@ -16,7 +16,9 @@
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:drawableEnd="@drawable/ic_search"
+            android:drawableRight="@drawable/ic_search"
             android:iconifiedByDefault="false"
             android:inputType="textCapWords"
             android:queryBackground="@android:color/transparent"

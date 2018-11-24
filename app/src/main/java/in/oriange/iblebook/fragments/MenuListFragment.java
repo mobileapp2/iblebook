@@ -38,6 +38,9 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import in.oriange.iblebook.R;
+import in.oriange.iblebook.activities.About_Activity;
+import in.oriange.iblebook.activities.FAQ_Activity;
+import in.oriange.iblebook.activities.Intro_Activity;
 import in.oriange.iblebook.activities.MainDrawer_Activity;
 import in.oriange.iblebook.activities.Profile_Activity;
 import in.oriange.iblebook.utilities.ApplicationConstants;
@@ -214,6 +217,15 @@ public class MenuListFragment extends Fragment {
                 if (menuItem.getItemId() == R.id.menu_profile) {
                     MainDrawer_Activity.mDrawer.closeMenu();
                     startActivity(new Intent(context, Profile_Activity.class));
+                } else if (menuItem.getItemId() == R.id.menu_intro) {
+                    MainDrawer_Activity.mDrawer.closeMenu();
+                    startActivity(new Intent(context, Intro_Activity.class));
+                } else if (menuItem.getItemId() == R.id.menu_about) {
+                    MainDrawer_Activity.mDrawer.closeMenu();
+                    startActivity(new Intent(context, About_Activity.class));
+                } else if (menuItem.getItemId() == R.id.menu_faq) {
+                    MainDrawer_Activity.mDrawer.closeMenu();
+                    startActivity(new Intent(context, FAQ_Activity.class));
                 }
                 if (menuItem.getItemId() == R.id.menu_logout) {
                     MainDrawer_Activity.mDrawer.closeMenu();

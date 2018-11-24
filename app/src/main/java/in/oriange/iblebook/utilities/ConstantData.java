@@ -16,6 +16,9 @@ public class ConstantData {
     private ArrayList<GetTaxListPojo> gstList;
     private ArrayList<GetTaxListPojo> panList;
 
+
+    private GetAddressListPojo addressListPojo;
+
     private ConstantData() {
     }
 
@@ -81,4 +84,13 @@ public class ConstantData {
     public void setPanList(ArrayList<GetTaxListPojo> panList) {
         this.panList = panList;
     }
+
+    public GetAddressListPojo getAddressListPojo() {
+        return addressListPojo;
+    }
+
+    public void setAddressListPojo(GetAddressListPojo addressListPojo) {
+        this.addressListPojo = addressListPojo;
+    }
+
 }
