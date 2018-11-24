@@ -43,7 +43,6 @@ public class SplashScreen_Activity extends Activity {
             public void run() {
                 if (session.isUserLoggedIn()) {
                     startActivity(new Intent(context, MainDrawer_Activity.class));
-//                    startActivity(new Intent(context, MainNormalDrawer_Activity.class));
                 } else {
                     startActivity(new Intent(context, Login_Activity.class));
                 }

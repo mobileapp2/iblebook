@@ -461,7 +461,6 @@ public class Register_Activity extends Activity {
                     String message = obj1.getString("message");
                     if (success.equalsIgnoreCase("1")) {
                         startActivity(new Intent(context, MainDrawer_Activity.class));
-//                        startActivity(new Intent(context, MainNormalDrawer_Activity.class));
                         finish();
                     } else {
                         Utilities.showAlertDialog(context, "Server Not Responding", "Please Try After Sometime", false);

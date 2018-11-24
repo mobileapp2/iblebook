@@ -166,11 +166,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.MainNormalDrawer_Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".activities.About_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
