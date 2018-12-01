@@ -62,15 +62,15 @@ public class Intro_Activity extends MaterialIntroActivity {
         addSlide(new IntroScreen4_Fragment());
     }
 
-    @Override
-    public void onFinish() {
-        super.onFinish();
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        System.exit(0);
-    }
+//    @Override
+//    public void onFinish() {
+//        super.onFinish();
+//        finish();
+//    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        System.exit(0);
+//    }
 }
