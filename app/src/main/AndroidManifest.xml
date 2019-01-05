@@ -23,9 +23,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!--<meta-data-->
-            <!--android:name="com.google.android.geo.API_KEY"-->
-            <!--android:value="AIzaSyDLPU8PFDrRXLsxV9FXqc-jm0o_8YkT7kA" />-->
+
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.geo.API_KEY" -->
+        <!-- android:value="AIzaSyDLPU8PFDrRXLsxV9FXqc-jm0o_8YkT7kA" /> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDhtPVZM4-TPRF4KxU0SHp7pvqnAYmO7J8" />
@@ -175,6 +176,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.FAQ_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.FAQNew_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />

@@ -1,5 +1,10 @@
 package in.oriange.iblebook.utilities;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import in.oriange.iblebook.models.ParamsPojo;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -63,6 +68,36 @@ public class WebServiceCalls {
 //        e.printStackTrace();
 //    }
 //        return serverResponse;
+    }
+
+    public static String FORMDATAAPICall(String urlString, List<ParamsPojo> list) {
+        String serverResponse = "[]";
+        try {
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(urlString).newBuilder();
+
+            for (int i = 0; i < list.size(); i++)
+                urlBuilder.addQueryParameter(list.get(i).getParam_Key(),
+                        list.get(i).getParam_Value());
+
+            String url = urlBuilder.build().toString();
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(5, TimeUnit.MINUTES)
+                    .writeTimeout(5, TimeUnit.MINUTES)
+                    .readTimeout(5, TimeUnit.MINUTES)
+                    .build();
+
+            ;
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            serverResponse = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return serverResponse;
     }
 
 

@@ -30,6 +30,8 @@ public class ApplicationConstants {
 //    public static final String APPROVEREQUESTAPI = "http://mazalatur.com/AddressBook/Apis/SharedRecordAction.php";
 //    public static final String DISMISSREQUESTSAPI = "http://mazalatur.com/AddressBook/Apis/RequestRecordAction.php";
 //    public static final String SHAREDETAILSAPI = "http://mazalatur.com/AddressBook/Apis/sharedata.php";
+//    public static final String MOVEAPI = "http://mazalatur.com/AddressBook/Apis/changeStatus.php";
+//    public static final String FAQAPI = "https://iblebook.com/admin/Apis/faq.php";
 
     //LIVE API LINK LIST
 
@@ -49,4 +51,5 @@ public class ApplicationConstants {
     public static final String DISMISSREQUESTSAPI = "https://gstkhata.com/AddressBook_v2/Apis/RequestRecordAction.php";
     public static final String SHAREDETAILSAPI = "https://gstkhata.com/AddressBook_v2/Apis/sharedata.php";
     public static final String MOVEAPI = "https://gstkhata.com/AddressBook_v2/Apis/changeStatus.php";
+    public static final String FAQAPI = "https://iblebook.com/admin/Apis/faq.php";
 }

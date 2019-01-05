@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="?attr/colorPrimary"-->
+    <!--android:minHeight="?attr/actionBarSize"-->
+    <!--app:titleTextColor="@color/white" />-->
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ss.com.bannerslider.Slider
+                android:id="@+id/banner_slider"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                app:slider_animateIndicators="true"
+                app:slider_indicatorSize="10dp"
+                app:slider_interval="0"
+                app:slider_loopSlides="false"
+                app:slider_selectedSlideIndicator="@drawable/circle_selected"
+                app:slider_unselectedSlideIndicator="@drawable/circle_unselected" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab_next"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:src="@drawable/cast_ic_notification_skip_next" />-->
+
+                <Button
+                    android:id="@+id/btn_next"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="NEXT" />
+
+                <LinearLayout
+                    android:id="@+id/ll_dots"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@id/btn_next"
+                    android:layout_toRightOf="@id/btn_back"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
+
+                <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab_previous"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:src="@drawable/cast_ic_notification_skip_prev" />-->
+
+                <Button
+                    android:id="@+id/btn_back"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="PREVIOUS" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

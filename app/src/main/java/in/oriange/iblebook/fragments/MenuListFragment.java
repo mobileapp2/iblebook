@@ -39,6 +39,7 @@ import java.io.IOException;
 import de.hdodenhof.circleimageview.CircleImageView;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.About_Activity;
+import in.oriange.iblebook.activities.FAQNew_Activity;
 import in.oriange.iblebook.activities.FAQ_Activity;
 import in.oriange.iblebook.activities.Intro_Activity;
 import in.oriange.iblebook.activities.MainDrawer_Activity;
@@ -225,7 +226,7 @@ public class MenuListFragment extends Fragment {
                     startActivity(new Intent(context, About_Activity.class));
                 } else if (menuItem.getItemId() == R.id.menu_faq) {
                     MainDrawer_Activity.mDrawer.closeMenu();
-                    startActivity(new Intent(context, FAQ_Activity.class));
+                    startActivity(new Intent(context, FAQNew_Activity.class));
                 }
                 if (menuItem.getItemId() == R.id.menu_logout) {
                     MainDrawer_Activity.mDrawer.closeMenu();
