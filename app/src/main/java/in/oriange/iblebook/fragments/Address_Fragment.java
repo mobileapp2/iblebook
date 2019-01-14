@@ -92,9 +92,9 @@ public class Address_Fragment extends Fragment {
     }
 
     private void setUpTopNavigation() { // Create items
-        topMyAddress = new AHBottomNavigationItem("My Addresses", R.drawable.icon_my_address, R.color.colorPrimaryDark);
+        topMyAddress = new AHBottomNavigationItem("Personal", R.drawable.icon_my_address, R.color.colorPrimaryDark);
         topReceivedAddress = new AHBottomNavigationItem("Received", R.drawable.icon_received_address, R.color.colorPrimaryDark);
-        topOffineAddress = new AHBottomNavigationItem("Offline", R.drawable.icon_offline, R.color.colorPrimaryDark);
+        topOffineAddress = new AHBottomNavigationItem("Others", R.drawable.icon_others, R.color.colorPrimaryDark);
 
         // Add items
         topNavigation.addItem(topMyAddress);

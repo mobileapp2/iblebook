@@ -92,9 +92,9 @@ public class Bank_Fragment extends Fragment {
     }
 
     private void setUpTopNavigation() { // Create items
-        topMyBank = new AHBottomNavigationItem("My Bank", R.drawable.icon_my_bank, R.color.colorPrimaryDark);
+        topMyBank = new AHBottomNavigationItem("Personal", R.drawable.icon_my_bank, R.color.colorPrimaryDark);
         topReceivedBank = new AHBottomNavigationItem("Received", R.drawable.icon_received_address, R.color.colorPrimaryDark);
-        topOffineBank = new AHBottomNavigationItem("Offline", R.drawable.icon_offline, R.color.colorPrimaryDark);
+        topOffineBank = new AHBottomNavigationItem("Others", R.drawable.icon_others, R.color.colorPrimaryDark);
 
         // Add items
         topNavigation.addItem(topMyBank);

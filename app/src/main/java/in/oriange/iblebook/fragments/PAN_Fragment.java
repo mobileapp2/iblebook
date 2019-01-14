@@ -93,9 +93,9 @@ public class PAN_Fragment extends Fragment {
     }
 
     private void setUpTopNavigation() { // Create items
-        topMyPAN = new AHBottomNavigationItem("My PAN", R.drawable.icon_my_address, R.color.colorPrimaryDark);
+        topMyPAN = new AHBottomNavigationItem("Personal", R.drawable.icon_my_address, R.color.colorPrimaryDark);
         topReceivedPAN = new AHBottomNavigationItem("Received", R.drawable.icon_received_address, R.color.colorPrimaryDark);
-        topOffinePAN = new AHBottomNavigationItem("Offline", R.drawable.icon_offline, R.color.colorPrimaryDark);
+        topOffinePAN = new AHBottomNavigationItem("Others", R.drawable.icon_others, R.color.colorPrimaryDark);
 
         // Add items
         topNavigation.addItem(topMyPAN);

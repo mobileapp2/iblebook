@@ -93,9 +93,9 @@ public class GST_Fragment extends Fragment {
     }
 
     private void setUpTopNavigation() { // Create items
-        topMyGST = new AHBottomNavigationItem("My GST", R.drawable.icon_my_address, R.color.colorPrimaryDark);
+        topMyGST = new AHBottomNavigationItem("Personal", R.drawable.icon_my_address, R.color.colorPrimaryDark);
         topReceivedGST = new AHBottomNavigationItem("Received", R.drawable.icon_received_address, R.color.colorPrimaryDark);
-        topOffineGST = new AHBottomNavigationItem("Offline", R.drawable.icon_offline, R.color.colorPrimaryDark);
+        topOffineGST = new AHBottomNavigationItem("Others", R.drawable.icon_others, R.color.colorPrimaryDark);
 
         // Add items
         topNavigation.addItem(topMyGST);
