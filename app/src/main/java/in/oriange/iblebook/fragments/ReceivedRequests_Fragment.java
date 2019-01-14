@@ -60,8 +60,8 @@ public class ReceivedRequests_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_received_request, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
         getSessionData();
+        setDefault();
         setEventHandlers();
         return rootView;
     }

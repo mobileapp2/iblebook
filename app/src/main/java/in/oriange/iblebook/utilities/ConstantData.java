@@ -2,6 +2,7 @@ package in.oriange.iblebook.utilities;
 
 import java.util.ArrayList;
 
+import in.oriange.iblebook.models.AllInOneModel;
 import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.models.GetBankListPojo;
 import in.oriange.iblebook.models.GetTaxListPojo;
@@ -15,7 +16,7 @@ public class ConstantData {
     private ArrayList<GetBankListPojo> bankList;
     private ArrayList<GetTaxListPojo> gstList;
     private ArrayList<GetTaxListPojo> panList;
-
+    private ArrayList<AllInOneModel> allInOneList;
 
     private GetAddressListPojo addressListPojo;
 
@@ -93,4 +94,11 @@ public class ConstantData {
         this.addressListPojo = addressListPojo;
     }
 
+    public ArrayList<AllInOneModel> getAllInOneList() {
+        return allInOneList;
+    }
+
+    public void setAllInOneList(ArrayList<AllInOneModel> allInOneList) {
+        this.allInOneList = allInOneList;
+    }
 }

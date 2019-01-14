@@ -52,4 +52,6 @@ public class ApplicationConstants {
     public static final String SHAREDETAILSAPI = "https://gstkhata.com/AddressBook_v2/Apis/sharedata.php";
     public static final String MOVEAPI = "https://gstkhata.com/AddressBook_v2/Apis/changeStatus.php";
     public static final String FAQAPI = "https://iblebook.com/admin/Apis/faq.php";
+
+    public static final String ALLINONEAPI = "https://gstkhata.com/QA/AddressBook_v2/Apis/allinone.php";
 }

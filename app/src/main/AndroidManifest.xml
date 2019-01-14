@@ -184,6 +184,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.Requests_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".services.FirebaseTokenIdService">
             <intent-filter>

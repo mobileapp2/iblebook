@@ -2,32 +2,27 @@ package in.oriange.iblebook.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import in.oriange.iblebook.fragments.Address_Fragment;
-import in.oriange.iblebook.fragments.AllInOne_Fragment;
-import in.oriange.iblebook.fragments.Bank_Fragment;
-import in.oriange.iblebook.fragments.Contacts_Fragment;
-import in.oriange.iblebook.fragments.Requests_Fragment;
-import in.oriange.iblebook.fragments.Tax_Fragment;
+import in.oriange.iblebook.fragments.My_AllInOne_Fragment;
+import in.oriange.iblebook.fragments.Offline_AllInOne_Fragment;
+import in.oriange.iblebook.fragments.Received_AllInOne_Fragment;
 
-public class BotNavViewPagerAdapter extends FragmentPagerAdapter {
+public class TopAllInOneNavViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private Fragment currentFragment;
 
-    public BotNavViewPagerAdapter(FragmentManager fm) {
+    public TopAllInOneNavViewPagerAdapter(FragmentManager fm) {
         super(fm);
 
         fragments.clear();
-        fragments.add(new Address_Fragment());
-        fragments.add(new Tax_Fragment());
-        fragments.add(new Bank_Fragment());
-        fragments.add(new AllInOne_Fragment());
-        fragments.add(new Contacts_Fragment());
+        fragments.add(new My_AllInOne_Fragment());
+        fragments.add(new Received_AllInOne_Fragment());
+        fragments.add(new Offline_AllInOne_Fragment());
     }
 
     @Override
