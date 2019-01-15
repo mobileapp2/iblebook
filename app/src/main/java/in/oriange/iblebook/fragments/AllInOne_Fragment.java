@@ -87,7 +87,7 @@ public class AllInOne_Fragment extends Fragment {
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             constantData.setAllInOneList(allInOneList);
-//            My_AllInOne_Fragment.setDefault();
+            My_AllInOne_Fragment.setDefault();
 //            Received_AllInOne_Fragment.setDefault();
 //            Offline_AllInOne_Fragment.setDefault();
         }
@@ -165,23 +165,23 @@ public class AllInOne_Fragment extends Fragment {
                     if (type.equalsIgnoreCase("success")) {
                         allInOneList = pojoDetails.getResult();
                         constantData.setAllInOneList(allInOneList);
-                        My_Address_Fragment.setDefault();
+                        My_AllInOne_Fragment.setDefault();
                         Received_Address_Fragment.setDefault();
-                        Offline_Address_Fragment.setDefault();
+                        Offline_AllInOne_Fragment.setDefault();
                     } else {
                         constantData.setAllInOneList(allInOneList);
-                        My_Address_Fragment.setDefault();
+                        My_AllInOne_Fragment.setDefault();
                         Received_Address_Fragment.setDefault();
-                        Offline_Address_Fragment.setDefault();
+                        Offline_AllInOne_Fragment.setDefault();
                     }
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
                 constantData.setAllInOneList(allInOneList);
-                My_Address_Fragment.setDefault();
+                My_AllInOne_Fragment.setDefault();
                 Received_Address_Fragment.setDefault();
-                Offline_Address_Fragment.setDefault();
+                Offline_AllInOne_Fragment.setDefault();
             }
         }
     }
