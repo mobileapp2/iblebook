@@ -252,7 +252,7 @@ public class Edit_Address_Activity extends Activity {
             @Override
             public void onClick(View v) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View rowView = inflater.inflate(R.layout.edit_addmobile, null);
+                View rowView = inflater.inflate(R.layout.add_mobile, null);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
