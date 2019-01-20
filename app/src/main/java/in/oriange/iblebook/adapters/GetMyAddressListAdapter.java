@@ -174,7 +174,7 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                             case R.id.menu_move:
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                                 builder1.setTitle("Swap");
-                                builder1.setMessage("Where to icon_swap this address?");
+                                builder1.setMessage("Where to swap this address?");
                                 builder1.setIcon(R.drawable.icon_swap);
                                 builder1.setCancelable(false);
                                 builder1.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {

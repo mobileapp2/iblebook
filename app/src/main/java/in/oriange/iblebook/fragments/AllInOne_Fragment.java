@@ -88,8 +88,8 @@ public class AllInOne_Fragment extends Fragment {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             constantData.setAllInOneList(allInOneList);
             My_AllInOne_Fragment.setDefault();
-//            Received_AllInOne_Fragment.setDefault();
-//            Offline_AllInOne_Fragment.setDefault();
+            Received_AllInOne_Fragment.setDefault();
+            Offline_AllInOne_Fragment.setDefault();
         }
     }
 
@@ -144,7 +144,7 @@ public class AllInOne_Fragment extends Fragment {
             JSONObject obj = new JSONObject();
             try {
                 obj.put("type", "getAllInOne");
-                obj.put("user_id", user_id);
+                obj.put("user_id", "1");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
