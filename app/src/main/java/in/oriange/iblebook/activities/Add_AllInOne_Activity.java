@@ -27,6 +27,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -46,9 +49,12 @@ import java.util.List;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.My_AllInOne_Fragment;
+import in.oriange.iblebook.fragments.Offline_AllInOne_Fragment;
 import in.oriange.iblebook.models.AddressTypePojo;
 import in.oriange.iblebook.models.GetAddressListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
+import in.oriange.iblebook.utilities.MultipartUtility;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
@@ -73,13 +79,14 @@ public class Add_AllInOne_Activity extends Activity {
     private String STATUS, latitude = "", longitude = "";
 
     private List<AddressTypePojo> addressTypeList;
-    private File file, allInOneDocFolder, visitCardToBeUploaded, photoToBeUploaded;
+    private File file, allInOneDocFolder;
 
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
-    private String user_id, visitCardUrl = "", photoUrl = "", type_id;
-    public Uri photoURI;
+    private String user_id, photoUrl = "", type_id;
+    private Uri photoURI;
     private int j = 0;
+    private List<LinearLayout> mobileDetailsLayouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +158,7 @@ public class Add_AllInOne_Activity extends Activity {
         STATUS = getIntent().getStringExtra("STATUS");
 
         addressTypeList = new ArrayList<AddressTypePojo>();
+        mobileDetailsLayouts = new ArrayList<>();
 
     }
 
@@ -203,7 +211,7 @@ public class Add_AllInOne_Activity extends Activity {
         tv_visitcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(1);
+                selectDocument();
                 j = 1;
             }
         });
@@ -211,7 +219,7 @@ public class Add_AllInOne_Activity extends Activity {
         tv_attachphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(2);
+                selectDocument();
                 j = 2;
             }
         });
@@ -219,7 +227,7 @@ public class Add_AllInOne_Activity extends Activity {
         tv_bankattachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(3);
+                selectDocument();
                 j = 3;
             }
         });
@@ -227,7 +235,7 @@ public class Add_AllInOne_Activity extends Activity {
         tv_panattachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(4);
+                selectDocument();
                 j = 4;
             }
         });
@@ -235,7 +243,7 @@ public class Add_AllInOne_Activity extends Activity {
         tv_gstattachfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(5);
+                selectDocument();
                 j = 5;
             }
         });
@@ -258,6 +266,8 @@ public class Add_AllInOne_Activity extends Activity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
                 params.setMargins(0, 0, 0, 0);
+                LinearLayout ll = (LinearLayout) rowView;
+                mobileDetailsLayouts.add(ll);
                 rowView.setLayoutParams(params);
                 ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
             }
@@ -273,46 +283,52 @@ public class Add_AllInOne_Activity extends Activity {
 
     public void removeField(View view) {
         ll_mobilelayout.removeView((View) view.getParent());
+        mobileDetailsLayouts.remove(view.getParent());
     }
 
-    private void selectDocument(int i) {
+    private void selectDocument() {
 
-        if (i == 1) {
-            final CharSequence[] options = {"Take a Photo", "Choose from Gallery", "Choose a Document"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            builder.setItems(options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (options[item].equals("Take a Photo")) {
-                        file = new File(allInOneDocFolder, "doc_image.png");
-                        photoURI = Uri.fromFile(file);
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(intent, CAMERA_REQUEST);
-                    } else if (options[item].equals("Choose from Gallery")) {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_REQUEST);
-                    } else if (options[item].equals("Choose a Document")) {
-                        FilePickerBuilder.getInstance().setMaxCount(1)
-                                .pickFile((Activity) context);
-                    }
+        final CharSequence[] options = {"Take a Photo", "Choose from Gallery", "Choose a Document"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take a Photo")) {
+                    file = new File(allInOneDocFolder, "doc_image.png");
+                    photoURI = Uri.fromFile(file);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(intent, CAMERA_REQUEST);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, GALLERY_REQUEST);
+                } else if (options[item].equals("Choose a Document")) {
+                    FilePickerBuilder.getInstance().setMaxCount(1)
+                            .pickFile((Activity) context);
                 }
-            });
-            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertD = builder.create();
-            alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-            alertD.show();
-        }
+            }
+        });
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertD = builder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
+
     }
 
     private void submitData() {
+
+        if (Utilities.isNetworkAvailable(context)) {
+            new UploadAllInOneDetails().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+        }
 
     }
 
@@ -331,13 +347,8 @@ public class Add_AllInOne_Activity extends Activity {
 
             if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
                 ArrayList<String> filePath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
-                if (j == 1) {
-                    visitCardToBeUploaded = new File(filePath.get(0));
-                    tv_visitcard.setText(filePath.get(0));
-                } else if (j == 2) {
-                    photoToBeUploaded = new File(filePath.get(0));
-                    tv_attachphoto.setText(filePath.get(0));
-                }
+                file = new File(filePath.get(0));
+                new UploadFile().execute(file);
             }
 
             if (requestCode == 10001) {
@@ -418,13 +429,9 @@ public class Add_AllInOne_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-        if (j == 1) {
-            tv_visitcard.setText(destinationFilename);
-            visitCardToBeUploaded = new File(destinationFilename);
-        } else if (j == 2) {
-            tv_attachphoto.setText(destinationFilename);
-            photoToBeUploaded = new File(destinationFilename);
-        }
+
+        file = new File(destinationFilename);
+        new UploadFile().execute(file);
     }
 
     public class GetAddressType extends AsyncTask<String, Void, String> {
@@ -518,9 +525,177 @@ public class Add_AllInOne_Activity extends Activity {
         builderSingle.show();
     }
 
+    private class UploadFile extends AsyncTask<File, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(File... params) {
+            String res = "";
+            try {
+                MultipartUtility multipart = new MultipartUtility(ApplicationConstants.UPLOADFILEAPI, "UTF-8");
+
+                multipart.addFormField("request_type", "uploadFile");
+                multipart.addFormField("user_id", user_id);
+                multipart.addFilePart("document", params[0]);
+
+                List<String> response = multipart.finish();
+                for (String line : response) {
+                    res = res + line;
+                }
+                return res;
+            } catch (IOException ex) {
+                return ex.toString();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                pd.dismiss();
+                if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    String type = mainObj.getString("type");
+                    String message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("Success")) {
+                        JSONObject Obj1 = mainObj.getJSONObject("result");
+                        photoUrl = Obj1.getString("document_url");
+                        if (j == 1) {
+                            tv_visitcard.setText(photoUrl);
+                        } else if (j == 2) {
+                            tv_attachphoto.setText(photoUrl);
+                        } else if (j == 3) {
+                            tv_bankattachfile.setText(photoUrl);
+                        } else if (j == 4) {
+                            tv_panattachfile.setText(photoUrl);
+                        } else if (j == 5) {
+                            tv_gstattachfile.setText(photoUrl);
+                        }
+
+                    } else {
+                        Utilities.showSnackBar(ll_parent, message);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class UploadAllInOneDetails extends AsyncTask<String, Void, String> {
+
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "[]";
+            JsonObject obj = new JsonObject();
+
+            JsonArray array = new JsonArray();
+            array.add(new JsonPrimitive(edt_mobile1.getText().toString().trim()));
+
+            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+
+                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
+                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
+                }
+
+            }
+
+            obj.addProperty("type", "add");
+            obj.addProperty("address_type_id", type_id);
+            obj.addProperty("name", edt_name.getText().toString().trim());
+            obj.addProperty("alias", edt_alias.getText().toString().trim());
+            obj.addProperty("landline_number", edt_landline.getText().toString().trim());
+            obj.addProperty("contact_person_name", edt_contactperson.getText().toString().trim());
+            obj.addProperty("contact_person_mobile", edt_contactpersonmobile.getText().toString().trim());
+            obj.addProperty("address_line_one", edt_address.getText().toString().trim());
+            obj.addProperty("address_line_two", "");
+            obj.addProperty("country", edt_country.getText().toString().trim());
+            obj.addProperty("state", edt_state.getText().toString().trim());
+            obj.addProperty("district", edt_district.getText().toString().trim());
+            obj.addProperty("pincode", edt_pincode.getText().toString().trim());
+            obj.addProperty("email_id", edt_email.getText().toString().trim());
+            obj.addProperty("website", edt_website.getText().toString().trim());
+            obj.addProperty("visiting_card", tv_visitcard.getText().toString().trim());
+            obj.addProperty("map_location_logitude", longitude);
+            obj.addProperty("map_location_latitude", latitude);
+            obj.addProperty("photo", tv_attachphoto.getText().toString().trim());
+            obj.addProperty("account_holder_name", edt_bank_name.getText().toString().trim());
+            obj.addProperty("account_holder_alias", edt_bankalias.getText().toString().trim());
+            obj.addProperty("bank_name", edt_bankname.getText().toString().trim());
+            obj.addProperty("ifsc_code", edt_ifsc.getText().toString().trim());
+            obj.addProperty("account_number", edt_account_no.getText().toString().trim());
+            obj.addProperty("bank_document", tv_bankattachfile.getText().toString().trim());
+            obj.addProperty("pan_number", edt_pan_no.getText().toString().trim());
+            obj.addProperty("gst_number", edt_gst_no.getText().toString().trim());
+            obj.addProperty("pan_document", tv_panattachfile.getText().toString().trim());
+            obj.addProperty("gst_document", tv_gstattachfile.getText().toString().trim());
+            obj.addProperty("status", STATUS.toLowerCase());
+            obj.addProperty("created_by", user_id);
+            obj.addProperty("updated_by", user_id);
+            obj.add("mobile_number", array);
+
+            res = WebServiceCalls.APICall(ApplicationConstants.ALLINONEAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Details Uploaded Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                                new My_AllInOne_Fragment.GetAllInOneList().execute();
+                                new Offline_AllInOne_Fragment.GetAllInOneList().execute();
+                            }
+                        });
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
+                    } else {
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     protected void setupToolbar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("All in One");
+        mToolbar.setTitle("Add All in One Details");
         mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

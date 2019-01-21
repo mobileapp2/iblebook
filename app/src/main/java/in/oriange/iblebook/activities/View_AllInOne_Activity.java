@@ -67,7 +67,7 @@ public class View_AllInOne_Activity extends Activity {
     private File downloadedDocsfolder, file;
     private AllInOneModel allInOneDetails;
     private List<String> mobileNoList;
-    private List<LinearLayout> familyDetailsLayouts;
+    private List<LinearLayout> mobileDetailsLayouts;
 
 
     @Override
@@ -136,7 +136,7 @@ public class View_AllInOne_Activity extends Activity {
             builder.detectFileUriExposure();
         }
 
-        familyDetailsLayouts = new ArrayList<>();
+        mobileDetailsLayouts = new ArrayList<>();
         mobileNoList = new ArrayList<>();
     }
 
@@ -236,10 +236,10 @@ public class View_AllInOne_Activity extends Activity {
             for (int i = 1; i < mobileNoList.size(); i++) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View rowView = inflater.inflate(R.layout.view_mobile, null);
-                familyDetailsLayouts.add((LinearLayout) rowView);
+                mobileDetailsLayouts.add((LinearLayout) rowView);
                 ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
 
-                ((EditText) familyDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
+                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
             }
         }
 
@@ -316,6 +316,9 @@ public class View_AllInOne_Activity extends Activity {
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                context.startActivity(new Intent(context, Edit_AllInOne_Activity.class)
+                        .putExtra("allInOneDetails", allInOneDetails)
+                        .putExtra("STATUS", STATUS));
                 finish();
             }
         });
@@ -664,7 +667,7 @@ public class View_AllInOne_Activity extends Activity {
 
     protected void setupToolbar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("All In One Details");
+        mToolbar.setTitle("View All In One Details");
         mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

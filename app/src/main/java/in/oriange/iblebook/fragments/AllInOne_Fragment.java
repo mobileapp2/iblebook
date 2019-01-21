@@ -144,7 +144,7 @@ public class AllInOne_Fragment extends Fragment {
             JSONObject obj = new JSONObject();
             try {
                 obj.put("type", "getAllInOne");
-                obj.put("user_id", "1");
+                obj.put("user_id", user_id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
