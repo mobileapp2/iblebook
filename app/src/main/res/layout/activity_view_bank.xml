@@ -237,7 +237,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:singleLine="true"
-                        android:text="Download Attachnemt"
+                        android:text="Download Attachment"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

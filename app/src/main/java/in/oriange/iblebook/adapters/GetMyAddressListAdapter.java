@@ -108,6 +108,9 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                 intent.putExtra("updated_by", resultArrayList.get(position).getUpdated_by());
                 intent.putExtra("type", resultArrayList.get(position).getType());
                 intent.putExtra("mobile_number", resultArrayList.get(position).getMobile_number());
+                intent.putExtra("landline_number", resultArrayList.get(position).getLandline_number());
+                intent.putExtra("contact_person_name", resultArrayList.get(position).getContact_person_name());
+                intent.putExtra("contact_person_mobile", resultArrayList.get(position).getContact_person_mobile());
                 intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }
@@ -147,6 +150,9 @@ public class GetMyAddressListAdapter extends RecyclerView.Adapter<GetMyAddressLi
                                 intent.putExtra("created_by", resultArrayList.get(position).getCreated_by());
                                 intent.putExtra("type", resultArrayList.get(position).getType());
                                 intent.putExtra("mobile_number", resultArrayList.get(position).getMobile_number());
+                                intent.putExtra("landline_number", resultArrayList.get(position).getLandline_number());
+                                intent.putExtra("contact_person_name", resultArrayList.get(position).getContact_person_name());
+                                intent.putExtra("contact_person_mobile", resultArrayList.get(position).getContact_person_mobile());
                                 intent.putExtra("STATUS", STATUS);
                                 context.startActivity(intent);
                                 break;

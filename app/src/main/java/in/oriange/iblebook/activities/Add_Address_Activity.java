@@ -64,27 +64,26 @@ import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
 
 public class Add_Address_Activity extends Activity {
 
-    public static final int CAMERA_REQUEST = 100;
-    public static final int GALLERY_REQUEST = 200;
-    public Uri photoURI;
-    int j = 0;
-    List<AddressTypePojo> addressTypeList;
+    public final int CAMERA_REQUEST = 100;
+    public final int GALLERY_REQUEST = 200;
     private Context context;
-    private LinearLayout ll_parent;
-    private TextView tv_addresstype, tv_visitcard, tv_attachphoto, tv_pickloc;
-    private EditText edt_name, edt_alias, edt_address, edt_country,
-            edt_state, edt_district, edt_pincode, edt_mobile1, edt_email, edt_website;
-    private Button btn_save;
-    private String user_id, visitCardUrl = "", photoUrl = "", type_id;
-    private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
-    private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
     private UserSessionManager session;
+    private LinearLayout ll_parent, ll_mobilelayout;
+    private TextView tv_addresstype, tv_visitcard, tv_attachphoto, tv_pickloc;
+    private EditText edt_name, edt_alias, edt_address, edt_country, edt_state, edt_district, edt_pincode, edt_mobile1,
+            edt_landline, edt_contactperson, edt_contactpersonmobile, edt_email, edt_website;
     private ImageView imv_add_mobno;
-    private LinearLayout ll_mobilelayout;
-    private String STATUS, latitude = "", longitude = "";
-    private DataBaseHelper dbHelper;
-//    private ConstantData constantData;
+    private Button btn_save;
+    private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
+
+    private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
+
+    private String user_id, visitCardUrl = "", photoUrl = "", type_id, STATUS, latitude = "", longitude = "";
+    private Uri photoURI;
+    private int j = 0;
+    private List<AddressTypePojo> addressTypeList;
+    private List<LinearLayout> mobileDetailsLayouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +106,6 @@ public class Add_Address_Activity extends Activity {
         context = Add_Address_Activity.this;
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
-//        constantData = ConstantData.getInstance();
-        dbHelper = new DataBaseHelper(context);
-        addressTypeList = new ArrayList<AddressTypePojo>();
         ll_parent = findViewById(R.id.ll_parent);
         tv_addresstype = findViewById(R.id.tv_addresstype);
         tv_visitcard = findViewById(R.id.tv_visitcard);
@@ -123,13 +119,12 @@ public class Add_Address_Activity extends Activity {
         edt_district = findViewById(R.id.edt_district);
         edt_pincode = findViewById(R.id.edt_pincode);
         edt_mobile1 = findViewById(R.id.edt_mobile1);
+        edt_landline = findViewById(R.id.edt_landline);
+        edt_contactperson = findViewById(R.id.edt_contactperson);
+        edt_contactpersonmobile = findViewById(R.id.edt_contactpersonmobile);
         edt_email = findViewById(R.id.edt_email);
         edt_website = findViewById(R.id.edt_website);
         btn_save = findViewById(R.id.btn_save);
-
-//        constantData.setLatitude("");
-//        constantData.setLongitude("");
-//        constantData.setAddressListPojo(null);
 
         imv_add_mobno = findViewById(R.id.imv_add_mobno);
         ll_mobilelayout = findViewById(R.id.ll_mobilelayout);
@@ -144,6 +139,10 @@ public class Add_Address_Activity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             builder.detectFileUriExposure();
         }
+
+
+        addressTypeList = new ArrayList<>();
+        mobileDetailsLayouts = new ArrayList<>();
 
         STATUS = getIntent().getStringExtra("STATUS");
     }
@@ -236,6 +235,8 @@ public class Add_Address_Activity extends Activity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
                 params.setMargins(0, 0, 0, 0);
+                LinearLayout ll = (LinearLayout) rowView;
+                mobileDetailsLayouts.add(ll);
                 rowView.setLayoutParams(params);
                 ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
             }
@@ -244,6 +245,7 @@ public class Add_Address_Activity extends Activity {
 
     public void removeField(View view) {
         ll_mobilelayout.removeView((View) view.getParent());
+        mobileDetailsLayouts.remove(view.getParent());
     }
 
     private void selectDocument(int i) {
@@ -351,28 +353,34 @@ public class Add_Address_Activity extends Activity {
                 return;
             }
         }
+
+        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
+        }
+
         if (!edt_email.getText().toString().equals("")) {
             if (!Utilities.isEmailValid(edt_email)) {
                 Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
                 return;
             }
         }
-//        if (edt_website.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Enter Website");
-//            return;
-//        }
-//        if (tv_pickloc.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Pick Location");
-//            return;
-//        }
-//        if (tv_visitcard.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Attach Visiting Card");
-//            return;
-//        }
-//        if (tv_attachphoto.getText().toString().trim().equals("")) {
-//            Utilities.showSnackBar(ll_parent, "Please Attach Photo");
-//            return;
-//        }
+
+        if (!edt_landline.getText().toString().equals("")) {
+            if (!Utilities.isLandlineValid(edt_landline)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Landline Number");
+                return;
+            }
+        }
+
+        if (!edt_contactpersonmobile.getText().toString().equals("")) {
+            if (!Utilities.isEmailValid(edt_contactpersonmobile)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
+        }
 
         if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
@@ -782,6 +790,12 @@ public class Add_Address_Activity extends Activity {
             JsonArray array = new JsonArray();
             array.add(new JsonPrimitive(edt_mobile1.getText().toString().trim()));
 
+            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
+                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
+                }
+            }
+
             obj.addProperty("type", "add");
             obj.addProperty("type_id", type_id);
             obj.addProperty("name", edt_name.getText().toString().trim());
@@ -794,6 +808,9 @@ public class Add_Address_Activity extends Activity {
             obj.addProperty("pincode", edt_pincode.getText().toString().trim());
             obj.addProperty("email_id", edt_email.getText().toString().trim());
             obj.addProperty("website", edt_website.getText().toString().trim());
+            obj.addProperty("landline_number", edt_landline.getText().toString().trim());
+            obj.addProperty("contact_person_name", edt_contactperson.getText().toString().trim());
+            obj.addProperty("contact_person_mobile", edt_contactpersonmobile.getText().toString().trim());
             obj.addProperty("visiting_card", visitCardUrl);
             obj.addProperty("map_location_logitude", longitude);
             obj.addProperty("map_location_lattitude", latitude);

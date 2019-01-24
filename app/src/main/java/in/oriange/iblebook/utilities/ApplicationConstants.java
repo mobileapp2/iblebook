@@ -38,14 +38,14 @@ public class ApplicationConstants {
     public static final String USERAPI = "https://gstkhata.com/AddressBook_v2/Apis/user.php";
     public static final String SENDOTPAPI = "https://gstkhata.com/AddressBook_v2/Apis/otp_api.php";
     public static final String DEVICEREGAPI = "https://gstkhata.com/AddressBook_v2/Apis/profile.php";
-    public static final String ADDRESSAPI = "https://gstkhata.com/AddressBook_v2/Apis/address.php";
+//    public static final String ADDRESSAPI = "https://gstkhata.com/AddressBook_v2/Apis/address.php";
     public static final String ADDRESSTYPEAPI = "https://gstkhata.com/AddressBook_v2/Apis/addresstype.php";
     public static final String BANKAPI = "https://gstkhata.com/AddressBook_v2/Apis/bank.php";
     public static final String TAXAPI = "https://gstkhata.com/AddressBook_v2/Apis/tax.php";
     public static final String UPLOADFILEAPI = "https://gstkhata.com/AddressBook_v2/Apis/upload.php";
     public static final String SENDREQUESTAPI = "https://gstkhata.com/AddressBook_v2/Apis/reqdata.php";
     public static final String GETREQUESTSAPI = "https://gstkhata.com/AddressBook_v2/Apis/getreqdata.php";
-    public static final String GETREQDETAILSCSAPI = "https://gstkhata.com/AddressBook_v2/Apis/getshareddata.php";
+    public static final String GETREQDETAILSSAPI = "https://gstkhata.com/AddressBook_v2/Apis/getshareddata.php";
     public static final String REJECTREQUESTAPI = "https://gstkhata.com/AddressBook_v2/Apis/SharedRecordAction.php";
     public static final String APPROVEREQUESTAPI = "https://gstkhata.com/AddressBook_v2/Apis/SharedRecordAction.php";
     public static final String DISMISSREQUESTSAPI = "https://gstkhata.com/AddressBook_v2/Apis/RequestRecordAction.php";
@@ -53,5 +53,7 @@ public class ApplicationConstants {
     public static final String MOVEAPI = "https://gstkhata.com/AddressBook_v2/Apis/changeStatus.php";
     public static final String FAQAPI = "https://iblebook.com/admin/Apis/faq.php";
 
+
+    public static final String ADDRESSAPI = "https://gstkhata.com/QA/AddressBook_v2/Apis/address.php";
     public static final String ALLINONEAPI = "https://gstkhata.com/QA/AddressBook_v2/Apis/allinone.php";
 }

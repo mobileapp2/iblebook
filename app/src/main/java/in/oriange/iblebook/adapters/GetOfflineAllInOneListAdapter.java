@@ -433,7 +433,7 @@ public class GetOfflineAllInOneListAdapter extends RecyclerView.Adapter<GetOffli
                     String url = "";
                     url = resultArrayList.get(position).getBank_document();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("Back Document - " + url + "\n");
+                    sb.append("Bank Document - " + url + "\n");
                 }
 
                 if (cb_panno.isChecked()) {

@@ -258,6 +258,9 @@ public class Offline_Address_Fragment extends Fragment {
                                     summary.setUpdated_by(jsonObj.getString("updated_by"));
                                     summary.setType(jsonObj.getString("type"));
                                     summary.setMobile_number(jsonObj.getString("mobile_number"));
+                                    summary.setLandline_number(jsonObj.getString("landline_number"));
+                                    summary.setContact_person_name(jsonObj.getString("contact_person_name"));
+                                    summary.setContact_person_mobile(jsonObj.getString("contact_person_mobile"));
                                     addressList.add(summary);
                                 }
                             }

@@ -435,7 +435,7 @@ public class GetMyAllInOneListAdapter extends RecyclerView.Adapter<GetMyAllInOne
                     String url = "";
                     url = resultArrayList.get(position).getBank_document();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("Back Document - " + url + "\n");
+                    sb.append("Bank Document - " + url + "\n");
                 }
 
                 if (cb_panno.isChecked()) {

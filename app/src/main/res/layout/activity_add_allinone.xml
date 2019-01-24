@@ -401,8 +401,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="7dp"
                             android:src="@drawable/icon_address_email"
@@ -489,7 +489,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="8dp"
                                 android:gravity="center_vertical"
-                                android:hint="Contact Persone Name"
+                                android:hint="Contact Person Name"
                                 android:inputType="textEmailAddress"
                                 android:padding="10dp"
                                 android:singleLine="true"
@@ -521,16 +521,16 @@
                                 android:id="@+id/edt_contactpersonmobile"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:gravity="center_vertical"
-                                android:hint="Contact Person Mobile"
-                                android:inputType="textEmailAddress"
+                                android:hint="Contact Person Mobile No."
+                                android:inputType="number"
+                                android:maxLength="10"
                                 android:padding="10dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
-
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -593,8 +593,8 @@
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="Attach Visit Card"
-                            android:singleLine="true"
                             android:padding="10dp"
+                            android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -623,8 +623,8 @@
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="Attach Photo"
-                            android:singleLine="true"
                             android:padding="10dp"
+                            android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -649,7 +649,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Back Details"
+                        android:text="Bank Details"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -854,7 +854,7 @@
                             android:background="?attr/editTextBackground"
                             android:focusable="false"
                             android:gravity="center_vertical"
-                            android:hint="Attact Bank Document"
+                            android:hint="Attach Bank Document"
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
@@ -953,7 +953,7 @@
                             android:background="?attr/editTextBackground"
                             android:focusable="false"
                             android:gravity="center_vertical"
-                            android:hint="Attact Pan Document"
+                            android:hint="Attach PAN Document"
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"

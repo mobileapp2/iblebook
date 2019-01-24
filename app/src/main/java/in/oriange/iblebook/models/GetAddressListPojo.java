@@ -50,6 +50,12 @@ public class GetAddressListPojo implements Serializable {
 
     private String email_id;
 
+    private String landline_number;
+
+    private String contact_person_name;
+
+    private String contact_person_mobile;
+
     public String getCreated_by() {
         return created_by;
     }
@@ -234,8 +240,27 @@ public class GetAddressListPojo implements Serializable {
         this.email_id = email_id;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [created_by = " + created_by + ", status = " + status + ", alias = " + alias + ", website = " + website + ", address_line_one = " + address_line_one + ", state = " + state + ", type = " + type + ", address_line_two = " + address_line_two + ", photo = " + photo + ", type_id = " + type_id + ", country = " + country + ", pincode = " + pincode + ", updated_at = " + updated_at + ", visiting_card = " + visiting_card + ", mobile_number = " + mobile_number + ", map_location_logitude = " + map_location_logitude + ", address_id = " + address_id + ", map_location_lattitude = " + map_location_lattitude + ", name = " + name + ", created_at = " + created_at + ", updated_by = " + updated_by + ", district = " + district + ", email_id = " + email_id + "]";
+    public String getLandline_number() {
+        return landline_number;
+    }
+
+    public void setLandline_number(String landline_number) {
+        this.landline_number = landline_number;
+    }
+
+    public String getContact_person_name() {
+        return contact_person_name;
+    }
+
+    public void setContact_person_name(String contact_person_name) {
+        this.contact_person_name = contact_person_name;
+    }
+
+    public String getContact_person_mobile() {
+        return contact_person_mobile;
+    }
+
+    public void setContact_person_mobile(String contact_person_mobile) {
+        this.contact_person_mobile = contact_person_mobile;
     }
 }

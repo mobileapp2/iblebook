@@ -163,7 +163,7 @@ public class ReceivedDetails_Fragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            res = WebServiceCalls.APICall(ApplicationConstants.GETREQDETAILSCSAPI, obj.toString());
+            res = WebServiceCalls.APICall(ApplicationConstants.GETREQDETAILSSAPI, obj.toString());
             return res;
         }
 

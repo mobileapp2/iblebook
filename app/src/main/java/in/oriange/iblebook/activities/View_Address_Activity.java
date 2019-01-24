@@ -37,11 +37,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.My_Address_Fragment;
 import in.oriange.iblebook.fragments.Offline_Address_Fragment;
 import in.oriange.iblebook.fragments.Received_Address_Fragment;
+import in.oriange.iblebook.models.AllInOneModel;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
@@ -49,15 +53,18 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_Address_Activity extends Activity {
     private Context context;
-    private LinearLayout ll_parent;
-    private EditText edt_addresstype, edt_name, edt_alias, edt_address, edt_country,
-            edt_state, edt_district, edt_pincode, edt_mobile, edt_email, edt_website;
-    private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
     private ProgressDialog pd;
+    private LinearLayout ll_parent, ll_mobilelayout;
+    private EditText edt_addresstype, edt_name, edt_alias, edt_address, edt_country,
+            edt_state, edt_district, edt_pincode, edt_mobile, edt_email, edt_landline, edt_contactperson, edt_contactpersonmobile, edt_website;
+    private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
     private String photo, visiting_card, address_id, map_location_lattitude, map_location_logitude, user_id, STATUS, name, type_id;
-    private File downloadedDocsfolder, file;
     private FloatingActionButton fab_share, fab_edit, fab_delete;
     private UserSessionManager session;
+
+    private File downloadedDocsfolder, file;
+    private List<String> mobileNoList;
+    private List<LinearLayout> mobileDetailsLayouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +84,7 @@ public class View_Address_Activity extends Activity {
         session = new UserSessionManager(context);
         pd = new ProgressDialog(context);
         ll_parent = findViewById(R.id.ll_parent);
+        ll_mobilelayout = findViewById(R.id.ll_mobilelayout);
         edt_addresstype = findViewById(R.id.edt_addresstype);
         edt_name = findViewById(R.id.edt_name);
         edt_alias = findViewById(R.id.edt_alias);
@@ -87,8 +95,10 @@ public class View_Address_Activity extends Activity {
         edt_pincode = findViewById(R.id.edt_pincode);
         edt_mobile = findViewById(R.id.edt_mobile);
         edt_email = findViewById(R.id.edt_email);
+        edt_landline = findViewById(R.id.edt_landline);
+        edt_contactperson = findViewById(R.id.edt_contactperson);
+        edt_contactpersonmobile = findViewById(R.id.edt_contactpersonmobile);
         edt_website = findViewById(R.id.edt_website);
-
         edt_viewloc = findViewById(R.id.edt_viewloc);
         edt_attachphoto = findViewById(R.id.edt_attachphoto);
         edt_visitcard = findViewById(R.id.edt_visitcard);
@@ -106,6 +116,9 @@ public class View_Address_Activity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             builder.detectFileUriExposure();
         }
+
+        mobileNoList = new ArrayList<>();
+        mobileDetailsLayouts = new ArrayList<>();
     }
 
     private void getSessionData() {
@@ -133,8 +146,27 @@ public class View_Address_Activity extends Activity {
         edt_district.setText(getIntent().getStringExtra("district"));
         edt_pincode.setText(getIntent().getStringExtra("pincode"));
         edt_email.setText(getIntent().getStringExtra("email_id"));
-        edt_mobile.setText(getIntent().getStringExtra("mobile_number"));
         edt_website.setText(getIntent().getStringExtra("website"));
+        edt_landline.setText(getIntent().getStringExtra("landline_number"));
+        edt_contactperson.setText(getIntent().getStringExtra("contact_person_name"));
+        edt_contactpersonmobile.setText(getIntent().getStringExtra("contact_person_mobile"));
+
+        mobileNoList = Arrays.asList(getIntent().getStringExtra("mobile_number").split("\\s*,\\s*"));
+
+
+        edt_mobile.setText(mobileNoList.get(0));
+
+        if (mobileNoList.size() > 1) {
+            for (int i = 1; i < mobileNoList.size(); i++) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View rowView = inflater.inflate(R.layout.view_mobile, null);
+                mobileDetailsLayouts.add((LinearLayout) rowView);
+                ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
+
+                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
+            }
+        }
+
         visiting_card = getIntent().getStringExtra("visiting_card");
         map_location_lattitude = getIntent().getStringExtra("map_location_lattitude");
         map_location_logitude = getIntent().getStringExtra("map_location_logitude");
@@ -254,6 +286,9 @@ public class View_Address_Activity extends Activity {
                 intent.putExtra("created_by", user_id);
                 intent.putExtra("type", getIntent().getStringExtra("type"));
                 intent.putExtra("mobile_number", getIntent().getStringExtra("mobile_number"));
+                intent.putExtra("landline_number", getIntent().getStringExtra("landline_number"));
+                intent.putExtra("contact_person_name", getIntent().getStringExtra("contact_person_name"));
+                intent.putExtra("contact_person_mobile", getIntent().getStringExtra("contact_person_mobile"));
                 intent.putExtra("STATUS", STATUS);
                 context.startActivity(intent);
             }

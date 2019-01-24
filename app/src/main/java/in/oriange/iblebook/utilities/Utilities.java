@@ -100,6 +100,19 @@ public class Utilities {
         }
     }
 
+    public static boolean isLandlineValid(EditText edt) {
+        edt.setError(null);
+        String expression = "((\\+*)((0[ -]+)*|(91 )*)(\\d{12}+|\\d{10}+))|\\d{5}([- ]*)\\d{6}";
+        CharSequence inputStr = edt.getText().toString().trim();
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isIfscValid(EditText edt) {
         edt.setError(null);
         String expression = "^[A-Za-z]{4}0[A-Z0-9a-z]{6}$";

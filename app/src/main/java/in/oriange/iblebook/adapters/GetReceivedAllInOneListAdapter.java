@@ -174,7 +174,12 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
 
     @Override
     public int getItemCount() {
-        return resultArrayList.size();
+
+        if (resultArrayList == null) {
+            return 0;
+        } else {
+            return resultArrayList.size();
+        }
     }
 
     private void setSelectionFilter(final int position) {
@@ -433,7 +438,7 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
                     String url = "";
                     url = resultArrayList.get(position).getBank_document();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("Back Document - " + url + "\n");
+                    sb.append("Bank Document - " + url + "\n");
                 }
 
                 if (cb_panno.isChecked()) {

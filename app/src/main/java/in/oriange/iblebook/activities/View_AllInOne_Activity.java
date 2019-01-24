@@ -605,7 +605,7 @@ public class View_AllInOne_Activity extends Activity {
                     String url = "";
                     url = allInOneDetails.getBank_document();
                     url = url.replaceAll(" ", "%20");
-                    sb.append("Back Document - " + url + "\n");
+                    sb.append("Bank Document - " + url + "\n");
                 }
 
                 if (cb_panno.isChecked()) {

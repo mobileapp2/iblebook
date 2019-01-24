@@ -311,40 +311,50 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_mobilelayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="7dp"
-                        android:src="@drawable/icon_address_mobile"
-                        android:tint="@color/colorPrimaryDark" />
-
-                    <android.support.design.widget.TextInputLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                        <EditText
-                            android:id="@+id/edt_mobile"
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="7dp"
+                            android:src="@drawable/icon_address_mobile"
+                            android:tint="@color/colorPrimaryDark" />
+
+                        <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:gravity="center_vertical"
-                            android:hint="Mobile Number"
-                            android:inputType="number"
-                            android:maxLength="10"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_height="wrap_content">
 
+                            <EditText
+                                android:id="@+id/edt_mobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:gravity="center_vertical"
+                                android:hint="Mobile Number"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLength="10"
+                                android:padding="10dp"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -376,10 +386,125 @@
                             android:gravity="center_vertical"
                             android:hint="Email Address"
                             android:inputType="textEmailAddress"
+                            android:longClickable="false"
                             android:padding="10dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/icon_landline"
+                        android:tint="@color/colorPrimaryDark" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt_landline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="Landline"
+                            android:inputType="textEmailAddress"
+                            android:longClickable="false"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/icon_name"
+                        android:tint="@color/colorPrimaryDark" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt_contactperson"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="Contact Person Name"
+                            android:inputType="textEmailAddress"
+                            android:longClickable="false"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/icon_mobile"
+                        android:tint="@color/colorPrimaryDark" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt_contactpersonmobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="Contact Person Mobile"
+                            android:inputType="textEmailAddress"
+                            android:longClickable="false"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
