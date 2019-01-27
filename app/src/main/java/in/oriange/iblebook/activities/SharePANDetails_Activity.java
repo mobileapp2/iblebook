@@ -53,9 +53,10 @@ public class SharePANDetails_Activity extends Activity {
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private String mobile, type, name, sender_id, sender_mobile;
+    private String mobile, type, name, sender_id, sender_mobile, request_id;
     private ImageView img_check;
-    private String p_name,alias, pan_no, pan_doc,gst_no,gst_doc;
+    private String p_name, alias, pan_no, pan_doc, gst_no, gst_doc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +104,7 @@ public class SharePANDetails_Activity extends Activity {
         type = getIntent().getStringExtra("type");
         sender_id = getIntent().getStringExtra("sender_id");
         sender_mobile = getIntent().getStringExtra("mobile");
+        request_id = getIntent().getStringExtra("request_id");
     }
 
     private void setDefaults() {
@@ -229,7 +231,7 @@ public class SharePANDetails_Activity extends Activity {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetTaxListPojo summary = new GetTaxListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                if(!jsonObj.getString("status").equals("Duplicate")) {
+                                if (!jsonObj.getString("status").equals("Duplicate")) {
                                     if (jsonObj.getString("gst_number").equals("")) {
                                         summary.setTax_id(jsonObj.getString("tax_id"));
                                         summary.setName(jsonObj.getString("name"));
@@ -348,14 +350,15 @@ public class SharePANDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("request_id", request_id);
                 obj.put("receiver_id", sender_id);
                 obj.put("status", "import");
-                obj.put("t_name",p_name);
-                obj.put("t_alias",alias);
-                obj.put("t_pan_number",pan_no);
-                obj.put("t_gst_number",gst_no);
-                obj.put("t_pan_document",pan_doc);
-                obj.put("t_gst_document",gst_doc);
+                obj.put("t_name", p_name);
+                obj.put("t_alias", alias);
+                obj.put("t_pan_number", pan_no);
+                obj.put("t_gst_number", gst_no);
+                obj.put("t_pan_document", pan_doc);
+                obj.put("t_gst_document", gst_doc);
                 s = obj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -433,22 +436,19 @@ public class SharePANDetails_Activity extends Activity {
                 if (cb_name.isChecked()) {
                     p_name = panList.get(lastSelectedPosition).getName();
                     alias = panList.get(lastSelectedPosition).getAlias();
-                }
-                else{
+                } else {
                     p_name = "";
                     alias = "";
                 }
                 if (cb_panno.isChecked()) {
                     pan_no = panList.get(lastSelectedPosition).getPan_number();
-                }
-                else{
+                } else {
                     pan_no = "";
                 }
 
                 if (cb_file.isChecked()) {
-                   pan_doc = panList.get(lastSelectedPosition).getPan_document();
-                }
-                else{
+                    pan_doc = panList.get(lastSelectedPosition).getPan_document();
+                } else {
                     pan_doc = "";
                 }
                 gst_doc = "";
@@ -459,7 +459,7 @@ public class SharePANDetails_Activity extends Activity {
                     return;
                 }
 
-               createDialogForShare();
+                createDialogForShare();
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

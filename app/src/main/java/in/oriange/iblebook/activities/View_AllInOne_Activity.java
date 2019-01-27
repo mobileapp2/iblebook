@@ -2,6 +2,8 @@ package in.oriange.iblebook.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +49,7 @@ import in.oriange.iblebook.fragments.Received_AllInOne_Fragment;
 import in.oriange.iblebook.models.AllInOneModel;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
+import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
 public class View_AllInOne_Activity extends Activity {
@@ -656,7 +659,122 @@ public class View_AllInOne_Activity extends Activity {
         alertDialogBuilder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                StringBuilder sb = new StringBuilder();
 
+                if (cb_addresstype.isChecked()) {
+                    sb.append("Address Type - " + allInOneDetails.getAddress_type() + "\n");
+                }
+
+                if (cb_name.isChecked()) {
+                    sb.append("Name - " + allInOneDetails.getName() + "\n");
+                }
+
+                if (cb_address.isChecked()) {
+                    sb.append("Address - " + allInOneDetails.getAddress_line_one() + ", " +
+                            "Dist - " + allInOneDetails.getDistrict() + ", " +
+                            allInOneDetails.getState() + ", " +
+                            allInOneDetails.getCountry() + ", " +
+                            "Pin Code - " + allInOneDetails.getPincode() + "\n");
+                }
+
+                if (cb_mobile.isChecked()) {
+                    sb.append("Mobile No - " + allInOneDetails.getMobile_number() + "\n");
+                }
+
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + allInOneDetails.getLandline_number() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + allInOneDetails.getContact_person_name() + ", " +
+                            allInOneDetails.getContact_person_mobile() + "\n");
+                }
+
+                if (cb_email.isChecked()) {
+                    sb.append("Email - " + allInOneDetails.getEmail_id() + "\n");
+                }
+
+                if (cb_website.isChecked()) {
+                    sb.append("Website - " + allInOneDetails.getWebsite() + "\n");
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    sb.append("Location - " + "https://www.google.com/maps/?q="
+                            + allInOneDetails.getMap_location_latitude()
+                            + "," + allInOneDetails.getMap_location_longitude() + "\n");
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    String url = "";
+                    url = allInOneDetails.getVisiting_card();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Visiting Card - " + url + "\n");
+                }
+
+                if (cb_photo.isChecked()) {
+                    String url = "";
+                    url = allInOneDetails.getPhoto();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Photo - " + url + "\n");
+                }
+
+                if (cb_bank_name.isChecked()) {
+                    sb.append("Name - " + allInOneDetails.getAccount_holder_name() + "\n");
+                }
+
+                if (cb_bankname.isChecked()) {
+                    sb.append("Bank - " + allInOneDetails.getBank_name() + "\n");
+                }
+
+                if (cb_ifsccode.isChecked()) {
+                    sb.append("IFSC Code - " + allInOneDetails.getIfsc_code() + "\n");
+                }
+
+                if (cb_accno.isChecked()) {
+                    sb.append("A/C No. - " + allInOneDetails.getAccount_number() + "\n");
+                }
+
+                if (cb_bankfile.isChecked()) {
+                    String url = "";
+                    url = allInOneDetails.getBank_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Bank Document - " + url + "\n");
+                }
+
+                if (cb_panno.isChecked()) {
+                    sb.append("PAN - " + allInOneDetails.getPan_number() + "\n");
+                }
+
+                if (cb_panfile.isChecked()) {
+                    String url = "";
+                    url = allInOneDetails.getPan_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("PAN Document - " + url + "\n");
+                }
+
+                if (cb_gstno.isChecked()) {
+                    sb.append("GST - " + allInOneDetails.getGst_number() + "\n");
+                }
+
+                if (cb_gstfile.isChecked()) {
+                    String url = "";
+                    url = allInOneDetails.getGst_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("GST Document - " + url + "\n");
+                }
+
+                if (sb.toString().isEmpty()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Log.i("SharedAllInOneDetails", sb.toString());
+                String finalDataShare = "All in One Details" + "\n" + sb.toString();
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", finalDataShare);
+                clipboard.setPrimaryClip(clip);
+                Utilities.showMessageString(context, "Copied to clipboard");
             }
         });
 

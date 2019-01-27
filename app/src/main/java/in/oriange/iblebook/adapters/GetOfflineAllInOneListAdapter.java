@@ -2,6 +2,8 @@ package in.oriange.iblebook.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -237,6 +239,13 @@ public class GetOfflineAllInOneListAdapter extends RecyclerView.Adapter<GetOffli
             cb_mobile.setVisibility(View.VISIBLE);
         }
 
+        if (resultArrayList.get(position).getEmail_id().trim().equals("")) {
+            cb_email.setVisibility(View.GONE);
+            cb_email.setChecked(false);
+        } else {
+            cb_email.setVisibility(View.VISIBLE);
+        }
+
         if (resultArrayList.get(position).getLandline_number().trim().equals("")) {
             cb_landline.setVisibility(View.GONE);
             cb_landline.setChecked(false);
@@ -250,13 +259,6 @@ public class GetOfflineAllInOneListAdapter extends RecyclerView.Adapter<GetOffli
             cb_contactperson.setChecked(false);
         } else {
             cb_contactperson.setVisibility(View.VISIBLE);
-        }
-
-        if (resultArrayList.get(position).getEmail_id().trim().equals("")) {
-            cb_email.setVisibility(View.GONE);
-            cb_email.setChecked(false);
-        } else {
-            cb_email.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getWebsite().trim().equals("")) {
@@ -484,7 +486,122 @@ public class GetOfflineAllInOneListAdapter extends RecyclerView.Adapter<GetOffli
         alertDialogBuilder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                StringBuilder sb = new StringBuilder();
 
+                if (cb_addresstype.isChecked()) {
+                    sb.append("Address Type - " + resultArrayList.get(position).getAddress_type() + "\n");
+                }
+
+                if (cb_name.isChecked()) {
+                    sb.append("Name - " + resultArrayList.get(position).getName() + "\n");
+                }
+
+                if (cb_address.isChecked()) {
+                    sb.append("Address - " + resultArrayList.get(position).getAddress_line_one() + ", " +
+                            "Dist - " + resultArrayList.get(position).getDistrict() + ", " +
+                            resultArrayList.get(position).getState() + ", " +
+                            resultArrayList.get(position).getCountry() + ", " +
+                            "Pin Code - " + resultArrayList.get(position).getPincode() + "\n");
+                }
+
+                if (cb_mobile.isChecked()) {
+                    sb.append("Mobile No - " + resultArrayList.get(position).getMobile_number() + "\n");
+                }
+
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + resultArrayList.get(position).getLandline_number() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + resultArrayList.get(position).getContact_person_name() + ", " +
+                            resultArrayList.get(position).getContact_person_mobile() + "\n");
+                }
+
+                if (cb_email.isChecked()) {
+                    sb.append("Email - " + resultArrayList.get(position).getEmail_id() + "\n");
+                }
+
+                if (cb_website.isChecked()) {
+                    sb.append("Website - " + resultArrayList.get(position).getWebsite() + "\n");
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    sb.append("Location - " + "https://www.google.com/maps/?q="
+                            + resultArrayList.get(position).getMap_location_latitude()
+                            + "," + resultArrayList.get(position).getMap_location_longitude() + "\n");
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getVisiting_card();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Visiting Card - " + url + "\n");
+                }
+
+                if (cb_photo.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getPhoto();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Photo - " + url + "\n");
+                }
+
+                if (cb_bank_name.isChecked()) {
+                    sb.append("Name - " + resultArrayList.get(position).getAccount_holder_name() + "\n");
+                }
+
+                if (cb_bankname.isChecked()) {
+                    sb.append("Bank - " + resultArrayList.get(position).getBank_name() + "\n");
+                }
+
+                if (cb_ifsccode.isChecked()) {
+                    sb.append("IFSC Code - " + resultArrayList.get(position).getIfsc_code() + "\n");
+                }
+
+                if (cb_accno.isChecked()) {
+                    sb.append("A/C No. - " + resultArrayList.get(position).getAccount_number() + "\n");
+                }
+
+                if (cb_bankfile.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getBank_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("Bank Document - " + url + "\n");
+                }
+
+                if (cb_panno.isChecked()) {
+                    sb.append("PAN - " + resultArrayList.get(position).getPan_number() + "\n");
+                }
+
+                if (cb_panfile.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getPan_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("PAN Document - " + url + "\n");
+                }
+
+                if (cb_gstno.isChecked()) {
+                    sb.append("GST - " + resultArrayList.get(position).getGst_number() + "\n");
+                }
+
+                if (cb_gstfile.isChecked()) {
+                    String url = "";
+                    url = resultArrayList.get(position).getGst_document();
+                    url = url.replaceAll(" ", "%20");
+                    sb.append("GST Document - " + url + "\n");
+                }
+
+                if (sb.toString().isEmpty()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Log.i("SharedAllInOneDetails", sb.toString());
+                String finalDataShare = "All in One Details" + "\n" + sb.toString();
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", finalDataShare);
+                clipboard.setPrimaryClip(clip);
+                Utilities.showMessageString(context, "Copied to clipboard");
             }
         });
 

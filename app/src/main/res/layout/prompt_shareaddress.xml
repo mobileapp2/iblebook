@@ -18,22 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_addresstype"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Address Type"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
             <CheckBox
                 android:id="@+id/cb_addresstype"
                 android:layout_width="match_parent"
@@ -42,24 +26,6 @@
                 android:checked="true"
                 android:text="Address Type"
                 android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_name"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Name"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
 
             <CheckBox
                 android:id="@+id/cb_name"
@@ -70,24 +36,6 @@
                 android:text="Name"
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_address"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Address"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
             <CheckBox
                 android:id="@+id/cb_address"
                 android:layout_width="match_parent"
@@ -96,132 +44,6 @@
                 android:checked="true"
                 android:text="Address"
                 android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_country"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Country"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
-            <CheckBox
-                android:id="@+id/cb_country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="true"
-                android:text="Country"
-                android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_state"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="State"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
-            <CheckBox
-                android:id="@+id/cb_state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="true"
-                android:text="State"
-                android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_district"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="District"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
-            <CheckBox
-                android:id="@+id/cb_district"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="true"
-                android:text="District"
-                android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_pincode"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Pincode"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
-            <CheckBox
-                android:id="@+id/cb_pincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="true"
-                android:text="Pincode"
-                android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_mobile"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Mobile Number"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
 
             <CheckBox
                 android:id="@+id/cb_mobile"
@@ -232,24 +54,6 @@
                 android:text="Mobile No"
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_email"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Email Address"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
             <CheckBox
                 android:id="@+id/cb_email"
                 android:layout_width="match_parent"
@@ -259,23 +63,24 @@
                 android:text="Email "
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
+            <CheckBox
+                android:id="@+id/cb_landline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="Landline"
+                android:textSize="16sp" />
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
+            <CheckBox
+                android:id="@+id/cb_contactperson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="Contact Person Details"
+                android:textSize="16sp" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/tv_website"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Website"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
 
             <CheckBox
                 android:id="@+id/cb_website"
@@ -286,24 +91,6 @@
                 android:text="Website"
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_maplocation"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Map Location"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
             <CheckBox
                 android:id="@+id/cb_maplocation"
                 android:layout_width="match_parent"
@@ -312,24 +99,6 @@
                 android:checked="true"
                 android:text="Location"
                 android:textSize="16sp" />
-
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_visitcard"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Visit Card Photo"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
 
             <CheckBox
                 android:id="@+id/cb_visitcard"
@@ -340,24 +109,6 @@
                 android:text="Visiting Card"
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:weightSum="1">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_photo"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="0.9"-->
-            <!--android:text="Photo"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="16sp" />-->
-
             <CheckBox
                 android:id="@+id/cb_photo"
                 android:layout_width="match_parent"
@@ -367,10 +118,8 @@
                 android:text="Photo"
                 android:textSize="16sp" />
 
-            <!--</LinearLayout>-->
-
-
         </LinearLayout>
+
     </ScrollView>
 
 

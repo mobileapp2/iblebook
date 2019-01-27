@@ -49,9 +49,9 @@ public class ShareAddressDetails_Activity extends Activity {
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private String mobile, type, name, sender_id, sender_mobile;
+    private String mobile, type, name, sender_id, sender_mobile, request_id;
     private static String addresstype, u_name, alias, addresss, country,
-            state, district, pincode, u_mobile, email, website, address_line_1, address_line_2;
+            state, district, pincode, u_mobile, email, landline, contactPersonName, contactPersonMobile, website, address_line_1, address_line_2;
     private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
     private static String photo, visiting_card, address_id, map_location_lattitude, map_location_logitude, STATUS, type_id;
 
@@ -102,6 +102,7 @@ public class ShareAddressDetails_Activity extends Activity {
         type = getIntent().getStringExtra("type");
         sender_id = getIntent().getStringExtra("sender_id");
         sender_mobile = getIntent().getStringExtra("mobile");
+        request_id = getIntent().getStringExtra("request_id");
     }
 
     private void setDefaults() {
@@ -232,7 +233,6 @@ public class ShareAddressDetails_Activity extends Activity {
                                 GetAddressListPojo summary = new GetAddressListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
 
-
                                 if (!jsonObj.getString("status").equals("Duplicate")) {
                                     summary.setAddress_id(jsonObj.getString("address_id"));
                                     summary.setType_id(jsonObj.getString("type_id"));
@@ -255,6 +255,9 @@ public class ShareAddressDetails_Activity extends Activity {
                                     summary.setUpdated_by(jsonObj.getString("updated_by"));
                                     summary.setType(jsonObj.getString("type"));
                                     summary.setMobile_number(jsonObj.getString("mobile_number"));
+                                    summary.setLandline_number(jsonObj.getString("landline_number"));
+                                    summary.setContact_person_name(jsonObj.getString("contact_person_name"));
+                                    summary.setContact_person_mobile(jsonObj.getString("contact_person_mobile"));
                                     addressList.add(summary);
                                 }
                             }
@@ -365,6 +368,7 @@ public class ShareAddressDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("request_id", request_id);
                 obj.put("status", "import");
                 obj.put("a_type_id", addresstype);
                 obj.put("a_name", u_name);
@@ -382,6 +386,9 @@ public class ShareAddressDetails_Activity extends Activity {
                 obj.put("a_map_location_lattitude", map_location_lattitude);
                 obj.put("a_photo", photo);
                 obj.put("a_mobile_number", u_mobile);
+                obj.put("a_landline_number", landline);
+                obj.put("a_contact_person_name", contactPersonName);
+                obj.put("a_contact_person_mobile", contactPersonMobile);
 
                 s = obj.toString();
             } catch (JSONException e) {
@@ -424,7 +431,6 @@ public class ShareAddressDetails_Activity extends Activity {
         }
     }
 
-
     private void setSelectionFilter() {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptView = layoutInflater.inflate(R.layout.prompt_shareaddress, null);
@@ -435,21 +441,14 @@ public class ShareAddressDetails_Activity extends Activity {
         final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
-        final CheckBox cb_country = promptView.findViewById(R.id.cb_country);
-        final CheckBox cb_state = promptView.findViewById(R.id.cb_state);
-        final CheckBox cb_district = promptView.findViewById(R.id.cb_district);
-        final CheckBox cb_pincode = promptView.findViewById(R.id.cb_pincode);
         final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
         final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
+        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
         final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
         final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
         final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
         final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
-
-        cb_country.setVisibility(View.GONE);
-        cb_state.setVisibility(View.GONE);
-        cb_district.setVisibility(View.GONE);
-        cb_pincode.setVisibility(View.GONE);
 
         if (addressList.get(lastSelectedPosition).getType_id().equals("")) {
             cb_addresstype.setVisibility(View.GONE);
@@ -483,6 +482,21 @@ public class ShareAddressDetails_Activity extends Activity {
             cb_email.setChecked(false);
         } else {
             cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getLandline_number().trim().equals("")) {
+            cb_landline.setVisibility(View.GONE);
+            cb_landline.setChecked(false);
+        } else {
+            cb_landline.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getContact_person_name().trim().equals("") &&
+                addressList.get(lastSelectedPosition).getContact_person_mobile().trim().equals("")) {
+            cb_contactperson.setVisibility(View.GONE);
+            cb_contactperson.setChecked(false);
+        } else {
+            cb_contactperson.setVisibility(View.VISIBLE);
         }
 
         if (addressList.get(lastSelectedPosition).getWebsite().equals("")) {
@@ -559,6 +573,20 @@ public class ShareAddressDetails_Activity extends Activity {
                     email = "";
                 }
 
+                if (cb_landline.isChecked()) {
+                    landline = addressList.get(lastSelectedPosition).getLandline_number();
+                } else {
+                    landline = "";
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    contactPersonName = addressList.get(lastSelectedPosition).getContact_person_name();
+                    contactPersonMobile = addressList.get(lastSelectedPosition).getContact_person_mobile();
+                } else {
+                    contactPersonName = "";
+                    contactPersonMobile = "";
+                }
+
                 if (cb_website.isChecked()) {
                     website = addressList.get(lastSelectedPosition).getWebsite();
                 } else {
@@ -587,7 +615,7 @@ public class ShareAddressDetails_Activity extends Activity {
 
                 if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
                         && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
-                        && !cb_photo.isChecked()) {
+                        && !cb_photo.isChecked() && !cb_landline.isChecked() && !cb_contactperson.isChecked()) {
                     Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
                     return;
                 }

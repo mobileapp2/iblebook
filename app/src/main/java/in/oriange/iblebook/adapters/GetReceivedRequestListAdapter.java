@@ -173,6 +173,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
                     intent.putExtra("type", resultArrayList.get(position).getType());
+                    intent.putExtra("request_id", resultArrayList.get(position).getRequest_id());
                     context.startActivity(intent);
                 } else if (resultArrayList.get(position).getType().equals("pan")) {
                     Intent intent = new Intent(context, SharePANDetails_Activity.class);
@@ -180,6 +181,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
                     intent.putExtra("type", resultArrayList.get(position).getType());
+                    intent.putExtra("request_id", resultArrayList.get(position).getRequest_id());
                     context.startActivity(intent);
                 } else if (resultArrayList.get(position).getType().equals("gst")) {
                     Intent intent = new Intent(context, ShareGSTDetails_Activity.class);
@@ -187,6 +189,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
                     intent.putExtra("type", resultArrayList.get(position).getType());
+                    intent.putExtra("request_id", resultArrayList.get(position).getRequest_id());
                     context.startActivity(intent);
                 } else if (resultArrayList.get(position).getType().equals("bank")) {
                     Intent intent = new Intent(context, ShareBankDetails_Activity.class);
@@ -194,6 +197,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
                     intent.putExtra("type", resultArrayList.get(position).getType());
+                    intent.putExtra("request_id", resultArrayList.get(position).getRequest_id());
                     context.startActivity(intent);
                 }
             }

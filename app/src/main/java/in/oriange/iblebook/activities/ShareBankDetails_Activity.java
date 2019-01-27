@@ -48,7 +48,7 @@ public class ShareBankDetails_Activity extends Activity {
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private String mobile, type, name, sender_id, sender_mobile;
+    private String mobile, type, name, sender_id, sender_mobile, request_id;
     private ImageView img_check;
     private String holder_name, alias, bank_name, ifsc_code, acc_no, bank_doc;
 
@@ -99,6 +99,7 @@ public class ShareBankDetails_Activity extends Activity {
         type = getIntent().getStringExtra("type");
         sender_id = getIntent().getStringExtra("sender_id");
         sender_mobile = getIntent().getStringExtra("mobile");
+        request_id = getIntent().getStringExtra("request_id");
     }
 
     private void setDefaults() {
@@ -347,6 +348,7 @@ public class ShareBankDetails_Activity extends Activity {
                 obj.put("mobile", params[2]);
                 obj.put("type", params[3]);
                 obj.put("record_id", params[4]);
+                obj.put("request_id", request_id);
                 obj.put("receiver_id", sender_id);
                 obj.put("status", "import");
                 obj.put("b_account_holder_name", holder_name);

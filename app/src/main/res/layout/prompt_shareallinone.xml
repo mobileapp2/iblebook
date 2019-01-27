@@ -60,15 +60,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Landline"
+                android:text="Email"
                 android:textSize="16sp" />
+
             <CheckBox
                 android:id="@+id/cb_landline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:checked="true"
-                android:text="Email"
+                android:text="Landline"
                 android:textSize="16sp" />
 
             <CheckBox

@@ -323,6 +323,110 @@ public class Add_AllInOne_Activity extends Activity {
     }
 
     private void submitData() {
+        if (tv_addresstype.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Select Address Type");
+            return;
+        }
+        if (edt_name.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            return;
+        }
+        if (edt_alias.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            return;
+        }
+        if (edt_address.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Address");
+            return;
+        }
+        if (edt_country.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Country");
+            return;
+        }
+        if (edt_state.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter State");
+            return;
+        }
+        if (edt_district.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter District");
+            return;
+        }
+        if (!Utilities.isPinCode(edt_pincode)) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Valid Pin Code");
+            return;
+        }
+        if (!edt_mobile1.getText().toString().equals("")) {
+            if (!Utilities.isMobileNo(edt_mobile1)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
+        }
+
+        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
+        }
+
+        if (!edt_email.getText().toString().equals("")) {
+            if (!Utilities.isEmailValid(edt_email)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                return;
+            }
+        }
+
+        if (!edt_landline.getText().toString().equals("")) {
+            if (!Utilities.isLandlineValid(edt_landline)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Landline Number");
+                return;
+            }
+        }
+
+        if (!edt_contactpersonmobile.getText().toString().equals("")) {
+            if (!Utilities.isMobileNo(edt_contactpersonmobile)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                return;
+            }
+        }
+
+        if (edt_bankname.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            return;
+        }
+
+        if (edt_bankalias.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            return;
+        }
+
+        if (edt_bank_name.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Bank Name");
+            return;
+        }
+
+        if (!edt_ifsc.getText().toString().trim().equals("")) {
+            if (!Utilities.isIfscValid(edt_ifsc)) {
+                Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
+                return;
+            }
+        }
+
+        if (edt_account_no.getText().toString().trim().equals("")) {
+            Utilities.showSnackBar(ll_parent, "Please Enter A/C No");
+            return;
+        }
+
+
+        if (!Utilities.isPanNum(edt_pan_no)) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Valid PAN Number");
+            return;
+        }
+
+        if (!Utilities.isGSTValid(edt_gst_no)) {
+            Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
+            return;
+        }
 
         if (Utilities.isNetworkAvailable(context)) {
             new UploadAllInOneDetails().execute();

@@ -230,21 +230,14 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
         final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
-        final CheckBox cb_country = promptView.findViewById(R.id.cb_country);
-        final CheckBox cb_state = promptView.findViewById(R.id.cb_state);
-        final CheckBox cb_district = promptView.findViewById(R.id.cb_district);
-        final CheckBox cb_pincode = promptView.findViewById(R.id.cb_pincode);
         final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
         final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
+        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
         final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
         final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
         final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
         final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
-
-        cb_country.setVisibility(View.GONE);
-        cb_state.setVisibility(View.GONE);
-        cb_district.setVisibility(View.GONE);
-        cb_pincode.setVisibility(View.GONE);
 
         if (resultArrayList.get(position).getType().trim().equals("")) {
             cb_addresstype.setVisibility(View.GONE);
@@ -279,6 +272,21 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
             cb_email.setChecked(false);
         } else {
             cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getLandline_number().trim().equals("")) {
+            cb_landline.setVisibility(View.GONE);
+            cb_landline.setChecked(false);
+        } else {
+            cb_landline.setVisibility(View.VISIBLE);
+        }
+
+        if (resultArrayList.get(position).getContact_person_name().trim().equals("") &&
+                resultArrayList.get(position).getContact_person_mobile().trim().equals("")) {
+            cb_contactperson.setVisibility(View.GONE);
+            cb_contactperson.setChecked(false);
+        } else {
+            cb_contactperson.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getWebsite().trim().equals("")) {
@@ -338,6 +346,15 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
                     sb.append("Email - " + resultArrayList.get(position).getEmail_id() + "\n");
                 }
 
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + resultArrayList.get(position).getLandline_number() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + resultArrayList.get(position).getContact_person_name() + ", " +
+                            resultArrayList.get(position).getContact_person_mobile() + "\n");
+                }
+
                 if (cb_website.isChecked()) {
                     sb.append("Website - " + resultArrayList.get(position).getWebsite() + "\n");
                 }
@@ -364,7 +381,7 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
 
                 if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
                         && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
-                        && !cb_photo.isChecked()) {
+                        && !cb_photo.isChecked() && !cb_landline.isChecked() && !cb_contactperson.isChecked()) {
                     Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -411,6 +428,14 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
                     sb.append("Email - " + resultArrayList.get(position).getEmail_id() + "\n");
                 }
 
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + resultArrayList.get(position).getLandline_number() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + resultArrayList.get(position).getContact_person_name() + ", " +
+                            resultArrayList.get(position).getContact_person_mobile() + "\n");
+                }
                 if (cb_website.isChecked()) {
                     sb.append("Website - " + resultArrayList.get(position).getWebsite() + "\n");
                 }
@@ -437,7 +462,7 @@ public class GetReceivedAddressListAdapter extends RecyclerView.Adapter<GetRecei
 
                 if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
                         && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
-                        && !cb_photo.isChecked()) {
+                        && !cb_photo.isChecked() && !cb_landline.isChecked() && !cb_contactperson.isChecked()) {
                     Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
                     return;
                 }

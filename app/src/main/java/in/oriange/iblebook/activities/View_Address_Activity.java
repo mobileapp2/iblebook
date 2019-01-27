@@ -330,21 +330,15 @@ public class View_Address_Activity extends Activity {
         final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
         final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
         final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
-        final CheckBox cb_country = promptView.findViewById(R.id.cb_country);
-        final CheckBox cb_state = promptView.findViewById(R.id.cb_state);
-        final CheckBox cb_district = promptView.findViewById(R.id.cb_district);
-        final CheckBox cb_pincode = promptView.findViewById(R.id.cb_pincode);
         final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
         final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
+        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
         final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
         final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
         final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
         final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
 
-        cb_country.setVisibility(View.GONE);
-        cb_state.setVisibility(View.GONE);
-        cb_district.setVisibility(View.GONE);
-        cb_pincode.setVisibility(View.GONE);
 
         if (edt_addresstype.getText().toString().trim().equals("")) {
             cb_addresstype.setVisibility(View.GONE);
@@ -367,30 +361,6 @@ public class View_Address_Activity extends Activity {
             cb_address.setVisibility(View.VISIBLE);
         }
 
-//        if (edt_country.getText().toString().trim().equals("")) {
-//            cb_country.setVisibility(View.GONE);
-//        } else {
-//            cb_country.setVisibility(View.VISIBLE);
-//        }
-//
-//        if (edt_state.getText().toString().trim().equals("")) {
-//            cb_state.setVisibility(View.GONE);
-//        } else {
-//            cb_state.setVisibility(View.VISIBLE);
-//        }
-//
-//        if (edt_district.getText().toString().trim().equals("")) {
-//            cb_district.setVisibility(View.GONE);
-//        } else {
-//            cb_district.setVisibility(View.VISIBLE);
-//        }
-//
-//        if (edt_pincode.getText().toString().trim().equals("")) {
-//            cb_pincode.setVisibility(View.GONE);
-//        } else {
-//            cb_pincode.setVisibility(View.VISIBLE);
-//        }
-
         if (edt_mobile.getText().toString().trim().equals("")) {
             cb_mobile.setVisibility(View.GONE);
             cb_mobile.setChecked(false);
@@ -403,6 +373,21 @@ public class View_Address_Activity extends Activity {
             cb_email.setChecked(false);
         } else {
             cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (edt_landline.getText().toString().trim().equals("")) {
+            cb_landline.setVisibility(View.GONE);
+            cb_landline.setChecked(false);
+        } else {
+            cb_landline.setVisibility(View.VISIBLE);
+        }
+
+        if (edt_contactperson.getText().toString().trim().equals("")&&
+                edt_contactpersonmobile.getText().toString().trim().equals("")) {
+            cb_contactperson.setVisibility(View.GONE);
+            cb_contactperson.setChecked(false);
+        } else {
+            cb_contactperson.setVisibility(View.VISIBLE);
         }
 
         if (edt_website.getText().toString().trim().equals("")) {
@@ -461,6 +446,14 @@ public class View_Address_Activity extends Activity {
                     sb.append("Email - " + edt_email.getText().toString().trim() + "\n");
                 }
 
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + edt_landline.getText().toString().trim() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim()+ ", " +
+                            edt_contactpersonmobile.getText().toString().trim()+ "\n");
+                }
                 if (cb_website.isChecked()) {
                     sb.append("Website - " + edt_website.getText().toString().trim() + "\n");
                 }
@@ -530,6 +523,15 @@ public class View_Address_Activity extends Activity {
 
                 if (cb_email.isChecked()) {
                     sb.append("Email - " + edt_email.getText().toString().trim() + "\n");
+                }
+
+                if (cb_landline.isChecked()) {
+                    sb.append("Landline - " + edt_landline.getText().toString().trim() + "\n");
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim()+ ", " +
+                            edt_contactpersonmobile.getText().toString().trim()+ "\n");
                 }
 
                 if (cb_website.isChecked()) {

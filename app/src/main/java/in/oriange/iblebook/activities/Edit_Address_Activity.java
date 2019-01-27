@@ -458,7 +458,7 @@ public class Edit_Address_Activity extends Activity {
         }
 
         if (!edt_contactpersonmobile.getText().toString().equals("")) {
-            if (!Utilities.isEmailValid(edt_contactpersonmobile)) {
+            if (!Utilities.isMobileNo(edt_contactpersonmobile)) {
                 Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
                 return;
             }
