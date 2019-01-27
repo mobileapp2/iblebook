@@ -30,6 +30,7 @@ import java.util.List;
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.fragments.ReceivedDetails_Fragment;
 import in.oriange.iblebook.fragments.Received_Address_Fragment;
+import in.oriange.iblebook.fragments.Received_AllInOne_Fragment;
 import in.oriange.iblebook.fragments.Received_Bank_Fragment;
 import in.oriange.iblebook.fragments.Received_GST_Fragment;
 import in.oriange.iblebook.fragments.Received_PAN_Fragment;
@@ -80,6 +81,8 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
             holder.tv_type.setText("Shared GST Details");
         } else if (resultArrayList.get(position).getType().equals("bank")) {
             holder.tv_type.setText("Shared Bank Details");
+        } else if (resultArrayList.get(position).getType().equals("allinone")) {
+            holder.tv_type.setText("Shared All in One Details");
         }
 
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
@@ -119,6 +122,8 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
             tv_type.setText("GST Details Shared By");
         } else if (resultArrayList.get(position).getType().equals("bank")) {
             tv_type.setText("Bank Details Shared By");
+        } else if (resultArrayList.get(position).getType().equals("allinone")) {
+            tv_type.setText("Shared All in One Details");
         }
 
         tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
@@ -319,6 +324,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
                         new Received_Bank_Fragment.GetBankList().execute();
                         new Received_GST_Fragment.GetGSTList().execute();
                         new Received_PAN_Fragment.GetPANList().execute();
+                        new Received_AllInOne_Fragment.GetAllInOneList().execute();
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Approved Successfully");

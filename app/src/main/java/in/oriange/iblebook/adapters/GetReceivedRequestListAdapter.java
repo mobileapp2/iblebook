@@ -29,6 +29,7 @@ import java.util.List;
 
 import in.oriange.iblebook.R;
 import in.oriange.iblebook.activities.ShareAddressDetails_Activity;
+import in.oriange.iblebook.activities.ShareAllInOneDetails_Activity;
 import in.oriange.iblebook.activities.ShareBankDetails_Activity;
 import in.oriange.iblebook.activities.ShareGSTDetails_Activity;
 import in.oriange.iblebook.activities.SharePANDetails_Activity;
@@ -79,6 +80,8 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             holder.tv_type.setText("Requested For GST Details");
         } else if (resultArrayList.get(position).getType().equals("bank")) {
             holder.tv_type.setText("Requested For Bank Details");
+        } else if (resultArrayList.get(position).getType().equals("allinone")) {
+            holder.tv_type.setText("Requested For All in One Details");
         }
 
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
@@ -118,7 +121,10 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             tv_type.setText("GST Details Requested By");
         } else if (resultArrayList.get(position).getType().equals("bank")) {
             tv_type.setText("Bank Details Requested By");
+        } else if (resultArrayList.get(position).getType().equals("allinone")) {
+            tv_type.setText("Requested For All in One Details");
         }
+
 
         tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         tv_name.setText(resultArrayList.get(position).getSender_name());
@@ -193,6 +199,14 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
                     context.startActivity(intent);
                 } else if (resultArrayList.get(position).getType().equals("bank")) {
                     Intent intent = new Intent(context, ShareBankDetails_Activity.class);
+                    intent.putExtra("name", resultArrayList.get(position).getSender_name());
+                    intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
+                    intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());
+                    intent.putExtra("type", resultArrayList.get(position).getType());
+                    intent.putExtra("request_id", resultArrayList.get(position).getRequest_id());
+                    context.startActivity(intent);
+                } else if (resultArrayList.get(position).getType().equals("allinone")) {
+                    Intent intent = new Intent(context, ShareAllInOneDetails_Activity.class);
                     intent.putExtra("name", resultArrayList.get(position).getSender_name());
                     intent.putExtra("mobile", resultArrayList.get(position).getSender_mobile());
                     intent.putExtra("sender_id", resultArrayList.get(position).getSender_id());

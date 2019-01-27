@@ -87,7 +87,6 @@ public class Contacts_Fragment extends Fragment {
 
     public class getMobileNumbers extends AsyncTask<String, Void, String> {
 
-
         @Override
         protected String doInBackground(String... params) {
             String res = "[]";
@@ -152,53 +151,6 @@ public class Contacts_Fragment extends Fragment {
     public void refresh() {
         if (contactList == null || contactList.size() == 0)
             setDefault();
-    }
-
-    private List getContactList() {
-        ContentResolver cr = context.getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-
-        if ((cur != null ? cur.getCount() : 0) > 0) {
-            while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME));
-
-                if (cur.getInt(cur.getColumnIndex(
-                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        contactList.add(new ContactListPojo(String.valueOf(name.charAt(0)), name, phoneNo.replaceAll("\\s+", "")));
-                    }
-
-                    Set<ContactListPojo> s = new HashSet<ContactListPojo>();
-                    s.addAll(contactList);
-                    contactList = new ArrayList<ContactListPojo>();
-                    contactList.addAll(s);
-
-                    Collections.sort(contactList, new Comparator<ContactListPojo>() {
-                        @Override
-                        public int compare(ContactListPojo o1, ContactListPojo o2) {
-                            return o1.getName().compareTo(o2.getName());
-                        }
-                    });
-
-                    pCur.close();
-                }
-            }
-        }
-        if (cur != null) {
-            cur.close();
-        }
-        return contactList;
     }
 
     private List getContactList2() {
@@ -298,7 +250,7 @@ public class Contacts_Fragment extends Fragment {
         tv_requesttype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] remarkName = {"Address Detail", "PAN Detail", "GST Detail", "Bank Detail"};
+                final String[] remarkName = {"Address Detail", "PAN Detail", "GST Detail", "Bank Detail", "All in One Details"};
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
                 builderSingle.setTitle("Select Type");
@@ -356,6 +308,8 @@ public class Contacts_Fragment extends Fragment {
                     type = "gst";
                 else if (tv_requesttype.getText().toString().trim().equals("Bank Detail"))
                     type = "bank";
+                else if (tv_requesttype.getText().toString().trim().equals("All in One Details"))
+                    type = "allinone";
 
                 if (Utilities.isNetworkAvailable(context)) {
                     new SendRequest().execute(

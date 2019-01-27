@@ -199,7 +199,7 @@ public class GetMyAllInOneListAdapter extends RecyclerView.Adapter<GetMyAllInOne
         final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
         final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
 
-        final CheckBox cb_bank_name = promptView.findViewById(R.id.cb_bank_name);
+        final CheckBox cb_accountholdername = promptView.findViewById(R.id.cb_accountholdername);
         final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
         final CheckBox cb_ifsccode = promptView.findViewById(R.id.cb_ifsccode);
         final CheckBox cb_accno = promptView.findViewById(R.id.cb_accno);
@@ -291,10 +291,10 @@ public class GetMyAllInOneListAdapter extends RecyclerView.Adapter<GetMyAllInOne
         }
 
         if (resultArrayList.get(position).getAccount_holder_name().equals("")) {
-            cb_bank_name.setVisibility(View.GONE);
-            cb_bank_name.setChecked(false);
+            cb_accountholdername.setVisibility(View.GONE);
+            cb_accountholdername.setChecked(false);
         } else {
-            cb_bank_name.setVisibility(View.VISIBLE);
+            cb_accountholdername.setVisibility(View.VISIBLE);
         }
 
         if (resultArrayList.get(position).getBank_name().equals("")) {
@@ -415,7 +415,7 @@ public class GetMyAllInOneListAdapter extends RecyclerView.Adapter<GetMyAllInOne
                     sb.append("Photo - " + url + "\n");
                 }
 
-                if (cb_bank_name.isChecked()) {
+                if (cb_accountholdername.isChecked()) {
                     sb.append("Name - " + resultArrayList.get(position).getAccount_holder_name() + "\n");
                 }
 
@@ -545,7 +545,7 @@ public class GetMyAllInOneListAdapter extends RecyclerView.Adapter<GetMyAllInOne
                     sb.append("Photo - " + url + "\n");
                 }
 
-                if (cb_bank_name.isChecked()) {
+                if (cb_accountholdername.isChecked()) {
                     sb.append("Name - " + resultArrayList.get(position).getAccount_holder_name() + "\n");
                 }
 
