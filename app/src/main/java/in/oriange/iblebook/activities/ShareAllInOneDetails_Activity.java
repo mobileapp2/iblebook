@@ -659,7 +659,7 @@ public class ShareAllInOneDetails_Activity extends Activity {
                 obj.put("o_website", website);
                 obj.put("o_visiting_card", visiting_card);
                 obj.put("o_map_location_logitude", map_location_logitude);
-                obj.put("o_map_location_lattitude", map_location_lattitude);
+                obj.put("o_map_location_latitude", map_location_lattitude);
                 obj.put("o_photo", photo);
                 obj.put("o_mobile_number", u_mobile);
                 obj.put("o_account_holder_name", holder_name);
