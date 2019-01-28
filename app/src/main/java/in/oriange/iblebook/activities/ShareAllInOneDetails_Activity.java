@@ -529,10 +529,17 @@ public class ShareAllInOneDetails_Activity extends Activity {
                     message = pojoDetails.getMessage();
                     if (type.equalsIgnoreCase("success")) {
                         allInOneList = pojoDetails.getResult();
+                        ArrayList<AllInOneModel> sortedAllInOneList = new ArrayList<>();
+
+                        for (int i = 0; i < allInOneList.size(); i++) {
+                            if (!allInOneList.get(i).getStatus().equalsIgnoreCase("Duplicate")) {
+                                sortedAllInOneList.add(allInOneList.get(i));
+                            }
+                        }
+                        allInOneList = sortedAllInOneList;
                         rv_allinonelist.setAdapter(new GetAllInOneForShareAdapter(context, allInOneList));
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
