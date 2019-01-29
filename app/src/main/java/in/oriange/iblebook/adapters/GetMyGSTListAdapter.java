@@ -177,7 +177,7 @@ public class GetMyGSTListAdapter extends RecyclerView.Adapter<GetMyGSTListAdapte
 
                                     }
                                 });
-                                builder1.setNegativeButton("Offline", new DialogInterface.OnClickListener() {
+                                builder1.setNegativeButton("Others", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "offline");

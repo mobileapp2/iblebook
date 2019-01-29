@@ -183,7 +183,7 @@ public class GetMyBankListAdapter extends RecyclerView.Adapter<GetMyBankListAdap
 
                                     }
                                 });
-                                builder1.setNegativeButton("Offline", new DialogInterface.OnClickListener() {
+                                builder1.setNegativeButton("Others", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "offline");

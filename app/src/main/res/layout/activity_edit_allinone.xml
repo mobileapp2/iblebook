@@ -361,12 +361,18 @@
                                 android:src="@drawable/icon_address_mobile"
                                 android:tint="@color/colorPrimaryDark" />
 
-                            <android.support.design.widget.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.97">
+                            <!--<android.support.design.widget.TextInputLayout-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="0.97">-->
 
-                                <EditText
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+
+                            <EditText
                                     android:id="@+id/edt_mobile1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -389,6 +395,7 @@
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="7dp"
+                                android:visibility="gone"
                                 android:src="@drawable/ic_add_black" />
 
                         </LinearLayout>

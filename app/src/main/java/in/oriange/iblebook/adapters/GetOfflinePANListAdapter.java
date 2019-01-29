@@ -171,16 +171,16 @@ public class GetOfflinePANListAdapter extends RecyclerView.Adapter<GetOfflinePAN
                                         dialog.dismiss();
                                     }
                                 });
+                                builder1.setNegativeButton("Personal", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new MoveAddressDetails().execute(String.valueOf(position), "online");
+                                    }
+                                });
                                 builder1.setPositiveButton("Received", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "received");
 
-                                    }
-                                });
-                                builder1.setNegativeButton("My PAN", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new MoveAddressDetails().execute(String.valueOf(position), "online");
                                     }
                                 });
                                 AlertDialog alertD1 = builder1.create();

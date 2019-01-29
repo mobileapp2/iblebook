@@ -156,16 +156,16 @@ public class View_Address_Activity extends Activity {
 
         edt_mobile.setText(mobileNoList.get(0));
 
-        if (mobileNoList.size() > 1) {
-            for (int i = 1; i < mobileNoList.size(); i++) {
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View rowView = inflater.inflate(R.layout.view_mobile, null);
-                mobileDetailsLayouts.add((LinearLayout) rowView);
-                ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
-
-                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
-            }
-        }
+//        if (mobileNoList.size() > 1) {
+//            for (int i = 1; i < mobileNoList.size(); i++) {
+//                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                final View rowView = inflater.inflate(R.layout.view_mobile, null);
+//                mobileDetailsLayouts.add((LinearLayout) rowView);
+//                ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
+//
+//                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
+//            }
+//        }
 
         visiting_card = getIntent().getStringExtra("visiting_card");
         map_location_lattitude = getIntent().getStringExtra("map_location_lattitude");

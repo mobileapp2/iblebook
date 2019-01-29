@@ -187,7 +187,7 @@ public class GetOfflineAddressListAdapter extends RecyclerView.Adapter<GetOfflin
                                         dialog.dismiss();
                                     }
                                 });
-                                builder1.setNegativeButton("My Address", new DialogInterface.OnClickListener() {
+                                builder1.setNegativeButton("Personal", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "online");
 

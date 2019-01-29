@@ -142,17 +142,17 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
                                         dialog.dismiss();
                                     }
                                 });
-                                builder1.setPositiveButton("Received", new DialogInterface.OnClickListener() {
+                                builder1.setPositiveButton("Personal", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-//                                        new MoveAddressDetails().execute(String.valueOf(position), "received");
+                                        new MoveAllInOneDetails().execute(String.valueOf(position), "online");
                                         Utilities.showMessageString(context, "Coming Soon");
 
                                     }
                                 });
-                                builder1.setNegativeButton("Offline", new DialogInterface.OnClickListener() {
+                                builder1.setNegativeButton("Others", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-//                                        new MoveAddressDetails().execute(String.valueOf(position), "offline");
+                                        new MoveAllInOneDetails().execute(String.valueOf(position), "offline");
                                         Utilities.showMessageString(context, "Coming Soon");
                                     }
                                 });
@@ -697,65 +697,66 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
         }
     }
 
-//    public class MoveAddressDetails extends AsyncTask<String, Void, String> {
-//        int position;
-//        String status;
-//        ProgressDialog pd;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            pd = new ProgressDialog(context);
-//            pd.setMessage("Please wait ...");
-//            pd.setCancelable(false);
-//            pd.show();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            position = Integer.parseInt(params[0]);
-//            status = params[1];
-//            String res = "[]";
-//            JsonObject obj = new JsonObject();
-//            obj.addProperty("type", "address");
-//            obj.addProperty("record_id", resultArrayList.get(Integer.parseInt(params[0])).getAddress_id());
-//            obj.addProperty("status", status);
-//            res = WebServiceCalls.APICall(ApplicationConstants.MOVEAPI, obj.toString());
-//            return res;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//            String type = "", message = "";
-//            try {
-//                pd.dismiss();
-//                if (!result.equals("")) {
-//                    JSONObject mainObj = new JSONObject(result);
-//                    type = mainObj.getString("type");
-//                    message = mainObj.getString("message");
-//                    if (type.equalsIgnoreCase("success")) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                        builder.setIcon(R.drawable.ic_success_24dp);
-//                        builder.setTitle("Success");
-//                        builder.setMessage("Address moved successfully.");
-//                        builder.setCancelable(false);
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//
-//                            }
-//                        });
-//                        AlertDialog alertD = builder.create();
-//                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-//                        alertD.show();
-//                    } else {
-//
-//                    }
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public class MoveAllInOneDetails extends AsyncTask<String, Void, String> {
+        int position;
+        String status;
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            position = Integer.parseInt(params[0]);
+            status = params[1];
+            String res = "[]";
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", "allinone");
+            obj.addProperty("record_id", resultArrayList.get(Integer.parseInt(params[0])).getAll_in_one_id());
+            obj.addProperty("status", status);
+            res = WebServiceCalls.APICall(ApplicationConstants.MOVEAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
+                        builder.setMessage("Address moved successfully.");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                        AlertDialog alertD = builder.create();
+                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alertD.show();
+                    } else {
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

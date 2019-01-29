@@ -151,13 +151,13 @@ public class GetReceivedPANListAdapter extends RecyclerView.Adapter<GetReceivedP
                                         dialog.dismiss();
                                     }
                                 });
-                                builder1.setPositiveButton("My PAN", new DialogInterface.OnClickListener() {
+                                builder1.setPositiveButton("Personal", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "online");
 
                                     }
                                 });
-                                builder1.setNegativeButton("Offline", new DialogInterface.OnClickListener() {
+                                builder1.setNegativeButton("Others", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         new MoveAddressDetails().execute(String.valueOf(position), "offline");

@@ -810,11 +810,11 @@ public class Add_Address_Activity extends Activity {
             JsonArray array = new JsonArray();
             array.add(new JsonPrimitive(edt_mobile1.getText().toString().trim()));
 
-            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
-                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
-                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
-                }
-            }
+//            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+//                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
+//                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
+//                }
+//            }
 
             obj.addProperty("type", "add");
             obj.addProperty("type_id", type_id);

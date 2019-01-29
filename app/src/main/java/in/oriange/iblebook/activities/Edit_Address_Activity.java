@@ -191,16 +191,16 @@ public class Edit_Address_Activity extends Activity {
 
         edt_mobile1.setText(mobileNoList.get(0));
 
-        if (mobileNoList.size() > 1) {
-            for (int i = 1; i < mobileNoList.size(); i++) {
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View rowView = inflater.inflate(R.layout.add_mobile, null);
-                mobileDetailsLayouts.add((LinearLayout) rowView);
-                ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
-
-                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
-            }
-        }
+//        if (mobileNoList.size() > 1) {
+//            for (int i = 1; i < mobileNoList.size(); i++) {
+//                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                final View rowView = inflater.inflate(R.layout.add_mobile, null);
+//                mobileDetailsLayouts.add((LinearLayout) rowView);
+//                ll_mobilelayout.addView(rowView, ll_mobilelayout.getChildCount());
+//
+//                ((EditText) mobileDetailsLayouts.get(i - 1).findViewById(R.id.edt_mobile)).setText(mobileNoList.get(i));
+//            }
+//        }
 
 
         if (!map_location_lattitude.isEmpty() || !map_location_logitude.isEmpty()) {
@@ -869,11 +869,11 @@ public class Edit_Address_Activity extends Activity {
             JsonArray array = new JsonArray();
             array.add(new JsonPrimitive(edt_mobile1.getText().toString().trim()));
 
-            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
-                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
-                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
-                }
-            }
+//            for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+//                if (!((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim().equals("")) {
+//                    array.add(new JsonPrimitive(((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile)).getText().toString().trim()));
+//                }
+//            }
 
             obj.addProperty("type", "update");
             obj.addProperty("address_id", address_id);
