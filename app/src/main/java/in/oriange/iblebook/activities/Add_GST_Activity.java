@@ -198,17 +198,20 @@ public class Add_GST_Activity extends Activity {
 
     private void submitData() {
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (!Utilities.isGSTValid(edt_gst_no)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
+            edt_gst_no.setError("Please Enter Valid GST Number");
+            edt_name.requestFocus();
             return;
         }
 

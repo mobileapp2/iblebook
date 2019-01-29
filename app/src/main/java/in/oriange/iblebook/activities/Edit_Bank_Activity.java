@@ -143,6 +143,10 @@ public class Edit_Bank_Activity extends Activity {
         edt_bank_name.setText(getIntent().getStringExtra("bank_name"));
         edt_ifsc.setText(getIntent().getStringExtra("ifsc_code"));
         edt_account_no.setText(getIntent().getStringExtra("account_no"));
+
+        if (!document.isEmpty()) {
+            tv_attachfile.setText("Replace Bank Document");
+        }
     }
 
     private void setEventHandler() {
@@ -212,34 +216,42 @@ public class Edit_Bank_Activity extends Activity {
     }
 
     private void submitData() {
-
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
+            edt_alias.requestFocus();
             return;
         }
 
         if (edt_bank_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Bank Name");
+            edt_bank_name.setError("Please Enter Bank Name");
+            edt_bank_name.requestFocus();
             return;
         }
 
         if (!edt_ifsc.getText().toString().trim().equals("")) {
             if (!Utilities.isIfscValid(edt_ifsc)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid IFSC Number");
+                edt_ifsc.setError("Please Enter Valid IFSC Number");
+                edt_ifsc.requestFocus();
                 return;
             }
+        }
+
+        if (edt_account_no.getText().toString().trim().equals("")) {
+            edt_account_no.setError("Please Enter A/C No");
+            edt_account_no.requestFocus();
+            return;
         }
 
         if (edt_account_no.getText().toString().trim().equals("")) {
             Utilities.showSnackBar(ll_parent, "Please Enter A/C No");
             return;
         }
-
 //        if (STATUS.equals("ONLINE")) {
         if (tv_attachfile.getText().toString().trim().equals("")) {
             if (Utilities.isNetworkAvailable(context)) {

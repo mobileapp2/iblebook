@@ -138,6 +138,11 @@ public class Edit_GST_Activity extends Activity {
         edt_name.setText(getIntent().getStringExtra("name"));
         edt_alias.setText(getIntent().getStringExtra("alias"));
         edt_gst_no.setText(getIntent().getStringExtra("gst_number"));
+
+
+        if (!gst_document.isEmpty()) {
+            tv_attachfile.setText("Replace GST Document");
+        }
     }
 
     private void setEventHandler() {
@@ -210,19 +215,23 @@ public class Edit_GST_Activity extends Activity {
 
     private void submitData() {
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (!Utilities.isGSTValid(edt_gst_no)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid GST Number");
+            edt_gst_no.setError("Please Enter Valid GST Number");
+            edt_name.requestFocus();
             return;
         }
+
 
 //        if (STATUS.equals("ONLINE")) {
         if (tv_attachfile.getText().toString().trim().equals("")) {

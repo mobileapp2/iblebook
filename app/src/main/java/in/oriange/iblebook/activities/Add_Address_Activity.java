@@ -319,65 +319,85 @@ public class Add_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Select Address Type");
             return;
         }
+
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
+            edt_alias.requestFocus();
             return;
         }
         if (edt_address.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Address");
+            edt_address.setError("Please Enter Address");
+            edt_address.requestFocus();
             return;
         }
         if (edt_country.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Country");
+            edt_country.setError("Please Enter Country");
+            edt_country.requestFocus();
             return;
         }
         if (edt_state.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter State");
+            edt_state.setError("Please Enter State");
+            edt_state.requestFocus();
             return;
         }
         if (edt_district.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter District");
+            edt_district.setError("Please Enter District");
+            edt_district.requestFocus();
             return;
         }
         if (!Utilities.isPinCode(edt_pincode)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid Pin Code");
+            edt_pincode.setError("Please Enter Valid Pin Code");
+            edt_pincode.requestFocus();
             return;
         }
         if (!edt_mobile1.getText().toString().equals("")) {
             if (!Utilities.isMobileNo(edt_mobile1)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                edt_mobile1.setError("Please Enter Valid Mobile Number");
+                edt_mobile1.requestFocus();
                 return;
             }
         }
 
-        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
-            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
-                return;
-            }
-        }
+//        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+//            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
+//                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+//                return;
+//            }
+//        }
 
         if (!edt_email.getText().toString().equals("")) {
             if (!Utilities.isEmailValid(edt_email)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                edt_email.setError("Please Enter Valid Email Address");
+                edt_email.requestFocus();
                 return;
             }
         }
 
         if (!edt_landline.getText().toString().equals("")) {
             if (!Utilities.isLandlineValid(edt_landline)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Landline Number");
+                edt_landline.setError("Please Enter Valid Landline Number");
+                edt_landline.requestFocus();
                 return;
             }
         }
 
         if (!edt_contactpersonmobile.getText().toString().equals("")) {
             if (!Utilities.isMobileNo(edt_contactpersonmobile)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                edt_contactpersonmobile.setError("Please Enter Valid Mobile Number");
+                edt_contactpersonmobile.requestFocus();
+                return;
+            }
+        }
+
+        if (!edt_website.getText().toString().equals("")) {
+            if (!Utilities.isWebsiteValid(edt_website)) {
+                edt_website.setError("Please Enter Valid Website");
+                edt_website.requestFocus();
                 return;
             }
         }

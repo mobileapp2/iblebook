@@ -74,7 +74,7 @@ public class Edit_Address_Activity extends Activity {
     private EditText edt_name, edt_alias, edt_address, edt_country, edt_state, edt_district, edt_pincode, edt_mobile1,
             edt_landline, edt_contactperson, edt_contactpersonmobile, edt_email, edt_website;
     private Button btn_save;
-    private String user_id, visitCardUrl = "", photoUrl = "", type_id, address_id,
+    private String user_id, visiting_card = "", photo = "", type_id, address_id,
             map_location_lattitude, map_location_logitude, name, STATUS;
     private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
@@ -177,7 +177,8 @@ public class Edit_Address_Activity extends Activity {
         edt_email.setText(getIntent().getStringExtra("email_id"));
         edt_mobile1.setText(getIntent().getStringExtra("mobile_number"));
         edt_website.setText(getIntent().getStringExtra("website"));
-        visitCardUrl = getIntent().getStringExtra("visiting_card");
+        visiting_card = getIntent().getStringExtra("visiting_card");
+        photo = getIntent().getStringExtra("photo");
         map_location_lattitude = getIntent().getStringExtra("map_location_lattitude");
         map_location_logitude = getIntent().getStringExtra("map_location_logitude");
 
@@ -205,10 +206,17 @@ public class Edit_Address_Activity extends Activity {
         if (!map_location_lattitude.isEmpty() || !map_location_logitude.isEmpty()) {
             tv_pickloc.setText(map_location_lattitude + " , " + map_location_logitude);
         }
-        photoUrl = getIntent().getStringExtra("photo");
         user_id = getIntent().getStringExtra("created_by");
-
         STATUS = getIntent().getStringExtra("STATUS");
+
+
+        if (!visiting_card.isEmpty()) {
+            tv_visitcard.setText("Replace Visit Card Attached");
+        }
+
+        if (!photo.isEmpty()) {
+            tv_attachphoto.setText("Replace Photo");
+        }
 
     }
 
@@ -401,65 +409,85 @@ public class Edit_Address_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Select Address Type");
             return;
         }
+
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
+            edt_alias.requestFocus();
             return;
         }
         if (edt_address.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Address");
+            edt_address.setError("Please Enter Address");
+            edt_address.requestFocus();
             return;
         }
         if (edt_country.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Country");
+            edt_country.setError("Please Enter Country");
+            edt_country.requestFocus();
             return;
         }
         if (edt_state.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter State");
+            edt_state.setError("Please Enter State");
+            edt_state.requestFocus();
             return;
         }
         if (edt_district.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter District");
+            edt_district.setError("Please Enter District");
+            edt_district.requestFocus();
             return;
         }
         if (!Utilities.isPinCode(edt_pincode)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid Pin Code");
+            edt_pincode.setError("Please Enter Valid Pin Code");
+            edt_pincode.requestFocus();
             return;
         }
         if (!edt_mobile1.getText().toString().equals("")) {
             if (!Utilities.isMobileNo(edt_mobile1)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                edt_mobile1.setError("Please Enter Valid Mobile Number");
+                edt_mobile1.requestFocus();
                 return;
             }
         }
 
-        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
-            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
-                return;
-            }
-        }
+//        for (int i = 0; i < mobileDetailsLayouts.size(); i++) {
+//            if (!Utilities.isMobileNo((EditText) mobileDetailsLayouts.get(i).findViewById(R.id.edt_mobile))) {
+//                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+//                return;
+//            }
+//        }
 
         if (!edt_email.getText().toString().equals("")) {
             if (!Utilities.isEmailValid(edt_email)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Email Address");
+                edt_email.setError("Please Enter Valid Email Address");
+                edt_email.requestFocus();
                 return;
             }
         }
 
         if (!edt_landline.getText().toString().equals("")) {
             if (!Utilities.isLandlineValid(edt_landline)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Landline Number");
+                edt_landline.setError("Please Enter Valid Landline Number");
+                edt_landline.requestFocus();
                 return;
             }
         }
 
         if (!edt_contactpersonmobile.getText().toString().equals("")) {
             if (!Utilities.isMobileNo(edt_contactpersonmobile)) {
-                Utilities.showSnackBar(ll_parent, "Please Enter Valid Mobile Number");
+                edt_contactpersonmobile.setError("Please Enter Valid Mobile Number");
+                edt_contactpersonmobile.requestFocus();
+                return;
+            }
+        }
+
+        if (!edt_website.getText().toString().equals("")) {
+            if (!Utilities.isWebsiteValid(edt_website)) {
+                edt_website.setError("Please Enter Valid Website");
+                edt_website.requestFocus();
                 return;
             }
         }
@@ -715,7 +743,7 @@ public class Edit_Address_Activity extends Activity {
                     String message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
-                        visitCardUrl = Obj1.getString("document_url");
+                        visiting_card = Obj1.getString("document_url");
 
                         if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
                             if (Utilities.isNetworkAvailable(context)) {
@@ -788,7 +816,7 @@ public class Edit_Address_Activity extends Activity {
                     String message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
-                        photoUrl = Obj1.getString("document_url");
+                        photo = Obj1.getString("document_url");
 
                         if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
                             if (Utilities.isNetworkAvailable(context)) {
@@ -863,10 +891,10 @@ public class Edit_Address_Activity extends Activity {
             obj.addProperty("landline_number", edt_landline.getText().toString().trim());
             obj.addProperty("contact_person_name", edt_contactperson.getText().toString().trim());
             obj.addProperty("contact_person_mobile", edt_contactpersonmobile.getText().toString().trim());
-            obj.addProperty("visiting_card", visitCardUrl);
+            obj.addProperty("visiting_card", visiting_card);
             obj.addProperty("map_location_logitude", map_location_logitude);
             obj.addProperty("map_location_lattitude", map_location_lattitude);
-            obj.addProperty("photo", photoUrl);
+            obj.addProperty("photo", photo);
             obj.addProperty("status", STATUS.toLowerCase());
             obj.add("mobile_number", array);
             obj.addProperty("created_by", user_id);

@@ -138,6 +138,11 @@ public class Edit_PAN_Activity extends Activity {
         edt_name.setText(getIntent().getStringExtra("name"));
         edt_alias.setText(getIntent().getStringExtra("alias"));
         edt_pan_no.setText(getIntent().getStringExtra("pan_number"));
+
+
+        if (!pan_document.isEmpty()) {
+            tv_attachfile.setText("Replace PAN Document");
+        }
     }
 
     private void setEventHandler() {
@@ -210,17 +215,20 @@ public class Edit_PAN_Activity extends Activity {
 
     private void submitData() {
         if (edt_name.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Name");
+            edt_name.setError("Please Enter Name");
+            edt_name.requestFocus();
             return;
         }
 
         if (edt_alias.getText().toString().trim().equals("")) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Alias Name");
+            edt_alias.setError( "Please Enter Alias Name");
+            edt_alias.requestFocus();
             return;
         }
 
         if (!Utilities.isPanNum(edt_pan_no)) {
-            Utilities.showSnackBar(ll_parent, "Please Enter Valid PAN Number");
+            edt_pan_no.setError("Please Enter Valid PAN Number");
+            edt_pan_no.requestFocus();
             return;
         }
 
