@@ -252,54 +252,37 @@ public class Edit_Bank_Activity extends Activity {
             Utilities.showSnackBar(ll_parent, "Please Enter A/C No");
             return;
         }
-//        if (STATUS.equals("ONLINE")) {
-        if (document.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
+
+        if (Utilities.isNetworkAvailable(context)) {
+
+            if (!document.equals("")) {
                 new UpdateBankDetails().execute();
             } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                if (!tv_attachfile.getText().toString().isEmpty()) {
+                    new UploadDocument().execute(fileToBeUploaded);
+                } else {
+                    new UpdateBankDetails().execute();
+                }
             }
+
         } else {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadDocument().execute(fileToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
-//        } else if (STATUS.equals("OFFLINE")) {
-//            String path = "";
-//            if (tv_attachfile.getText().toString().trim().equals("")) {
-//                path = document;
+
+//        if (!document.equals("")) {
+//            if (Utilities.isNetworkAvailable(context)) {
+//                new UpdateBankDetails().execute();
 //            } else {
-//                path = fileToBeUploaded.getPath();
+//                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
 //            }
-//            long result = dbHelper.updateBankDetailsInDb(
-//                    bank_id,
-//                    user_id,
-//                    edt_name.getText().toString().trim(),
-//                    edt_alias.getText().toString().trim(),
-//                    edt_bank_name.getText().toString().trim(),
-//                    edt_ifsc.getText().toString().trim(),
-//                    edt_account_no.getText().toString().trim(),
-//                    path,
-//                    "0");
-//
-//            if (result != -1) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage("Bank Details Updated Successfully");
-//                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        finish();
-//                        Offline_Bank_Fragment.setDefault();
-//                    }
-//                });
-//                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
+//        } else {
+//            if (Utilities.isNetworkAvailable(context)) {
+//                new UploadDocument().execute(fileToBeUploaded);
 //            } else {
-//                Utilities.showSnackBar(ll_parent, "Bank Details Did Not Save Properly");
+//                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
 //            }
 //        }
+
     }
 
     @Override
@@ -307,6 +290,7 @@ public class Edit_Bank_Activity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
+            document = "";
             if (requestCode == GALLERY_REQUEST) {
                 Uri imageUri = data.getData();
                 CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).start(Edit_Bank_Activity.this);

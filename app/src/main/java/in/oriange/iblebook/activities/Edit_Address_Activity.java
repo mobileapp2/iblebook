@@ -74,9 +74,9 @@ public class Edit_Address_Activity extends Activity {
     private EditText edt_name, edt_alias, edt_address, edt_country, edt_state, edt_district, edt_pincode, edt_mobile1,
             edt_landline, edt_contactperson, edt_contactpersonmobile, edt_email, edt_website;
     private Button btn_save;
-    private String user_id, visiting_card = "", photo = "", type_id, address_id,
+    private String user_id, visiting_card = "", photo = "", type_id, address_id, fileUrl = "",
             map_location_lattitude, map_location_logitude, name, STATUS;
-    private File file, addressDocFolder, visitCardToBeUploaded, photoToBeUploaded;
+    private File file, addressDocFolder;
     private String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}; // List of permissions required
     private ProgressDialog pd;
     private UserSessionManager session;
@@ -258,7 +258,7 @@ public class Edit_Address_Activity extends Activity {
         tv_visitcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(1);
+                selectDocument();
                 j = 1;
             }
         });
@@ -266,7 +266,7 @@ public class Edit_Address_Activity extends Activity {
         tv_attachphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDocument(2);
+                selectDocument();
                 j = 2;
             }
         });
@@ -338,70 +338,39 @@ public class Edit_Address_Activity extends Activity {
         mobileDetailsLayouts.remove(view.getParent());
     }
 
-    private void selectDocument(int i) {
+    private void selectDocument() {
+        final CharSequence[] options = {"Take a Photo", "Choose from Gallery", "Choose a Document"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take a Photo")) {
+                    file = new File(addressDocFolder, "doc_image.png");
+                    photoURI = Uri.fromFile(file);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(intent, CAMERA_REQUEST);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, GALLERY_REQUEST);
+                } else if (options[item].equals("Choose a Document")) {
+                    FilePickerBuilder.getInstance().setMaxCount(1)
+                            .pickFile((Activity) context);
+                }
+            }
+        });
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertD = builder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
 
-        if (i == 1) {
-            final CharSequence[] options = {"Take a Photo", "Choose from Gallery", "Choose a Document"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            builder.setItems(options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (options[item].equals("Take a Photo")) {
-                        file = new File(addressDocFolder, "doc_image.png");
-                        photoURI = Uri.fromFile(file);
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(intent, CAMERA_REQUEST);
-                    } else if (options[item].equals("Choose from Gallery")) {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_REQUEST);
-                    } else if (options[item].equals("Choose a Document")) {
-                        FilePickerBuilder.getInstance().setMaxCount(1)
-                                .pickFile((Activity) context);
-                    }
-                }
-            });
-            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertD = builder.create();
-            alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-            alertD.show();
-        } else if (i == 2) {
-            final CharSequence[] options = {"Take a Photo", "Choose from Gallery"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(false);
-            builder.setItems(options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (options[item].equals("Take a Photo")) {
-                        file = new File(addressDocFolder, "doc_image.png");
-                        photoURI = Uri.fromFile(file);
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(intent, CAMERA_REQUEST);
-                    } else if (options[item].equals("Choose from Gallery")) {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_REQUEST);
-                    }
-                }
-            });
-            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertD = builder.create();
-            alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-            alertD.show();
-        }
     }
 
     private void submitData() {
@@ -493,30 +462,10 @@ public class Edit_Address_Activity extends Activity {
         }
 
 
-        if (!visiting_card.equals("") && !photo.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadVisitCard().execute(visitCardToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
-        } else if (!visiting_card.equals("") && photo.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadVisitCard().execute(visitCardToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
-        } else if (visiting_card.equals("") && !photo.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadPhoto().execute(photoToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
-        } else if (visiting_card.equals("") && photo.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadAddressDetails().execute();
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
+        if (Utilities.isNetworkAvailable(context)) {
+            new UploadAddressDetails().execute();
+        } else {
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
     }
 
@@ -535,13 +484,8 @@ public class Edit_Address_Activity extends Activity {
 
             if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
                 ArrayList<String> filePath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
-                if (j == 1) {
-                    visitCardToBeUploaded = new File(filePath.get(0));
-                    tv_visitcard.setText(filePath.get(0));
-                } else if (j == 2) {
-                    photoToBeUploaded = new File(filePath.get(0));
-                    tv_attachphoto.setText(filePath.get(0));
-                }
+                file = new File(filePath.get(0));
+                new UploadFile().execute(file);
             }
 
             if (requestCode == 10001) {
@@ -621,13 +565,10 @@ public class Edit_Address_Activity extends Activity {
                 e.printStackTrace();
             }
         }
-        if (j == 1) {
-            tv_visitcard.setText(destinationFilename);
-            visitCardToBeUploaded = new File(destinationFilename);
-        } else if (j == 2) {
-            tv_attachphoto.setText(destinationFilename);
-            photoToBeUploaded = new File(destinationFilename);
-        }
+
+
+        file = new File(destinationFilename);
+        new UploadFile().execute(file);
     }
 
     protected void setupToolbar() {
@@ -702,7 +643,7 @@ public class Edit_Address_Activity extends Activity {
         }
     }
 
-    private class UploadVisitCard extends AsyncTask<File, Integer, String> {
+    private class UploadFile extends AsyncTask<File, Integer, String> {
 
         @Override
         protected void onPreExecute() {
@@ -743,97 +684,13 @@ public class Edit_Address_Activity extends Activity {
                     String message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("Success")) {
                         JSONObject Obj1 = mainObj.getJSONObject("result");
-                        visiting_card = Obj1.getString("document_url");
-
-                        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
-                            if (Utilities.isNetworkAvailable(context)) {
-                                new UploadPhoto().execute(photoToBeUploaded);
-                            } else {
-                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                            }
-                        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
-                            if (Utilities.isNetworkAvailable(context)) {
-                                new UploadAddressDetails().execute();
-                            } else {
-                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                            }
-                        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
-
-                        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
-
-                        }
-
-                    } else {
-                        Utilities.showSnackBar(ll_parent, message);
-                    }
-                } else {
-//                    Utilities.showSnackBar(ll_parent, message);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class UploadPhoto extends AsyncTask<File, Integer, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pd.setMessage("Please wait ...");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(File... params) {
-            String res = "";
-            try {
-                MultipartUtility multipart = new MultipartUtility(ApplicationConstants.UPLOADFILEAPI, "UTF-8");
-
-                multipart.addFormField("request_type", "uploadFile");
-                multipart.addFormField("user_id", user_id);
-                multipart.addFilePart("document", params[0]);
-
-                List<String> response = multipart.finish();
-                for (String line : response) {
-                    res = res + line;
-                }
-                return res;
-            } catch (IOException ex) {
-                return ex.toString();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-                pd.dismiss();
-                if (result != null && result.length() > 0 && !result.equalsIgnoreCase("[]")) {
-                    JSONObject mainObj = new JSONObject(result);
-                    String type = mainObj.getString("type");
-                    String message = mainObj.getString("message");
-                    if (type.equalsIgnoreCase("Success")) {
-                        JSONObject Obj1 = mainObj.getJSONObject("result");
-                        photo = Obj1.getString("document_url");
-
-                        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
-                            if (Utilities.isNetworkAvailable(context)) {
-                                new UploadAddressDetails().execute();
-                            } else {
-                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                            }
-                        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
-
-                        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
-                            if (Utilities.isNetworkAvailable(context)) {
-                                new UploadAddressDetails().execute();
-                            } else {
-                                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                            }
-                        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
-
+                        fileUrl = Obj1.getString("document_url");
+                        if (j == 1) {
+                            tv_visitcard.setText(fileUrl);
+                            visiting_card = fileUrl;
+                        } else if (j == 2) {
+                            tv_attachphoto.setText(fileUrl);
+                            photo = fileUrl;
                         }
 
                     } else {

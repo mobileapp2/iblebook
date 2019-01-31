@@ -233,54 +233,36 @@ public class Edit_GST_Activity extends Activity {
         }
 
 
-//        if (STATUS.equals("ONLINE")) {
-        if (gst_document.equals("")) {
-            if (Utilities.isNetworkAvailable(context)) {
+        if (Utilities.isNetworkAvailable(context)) {
+
+            if (!gst_document.equals("")) {
                 new UpdateGSTDetails().execute();
             } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                if (!tv_attachfile.getText().toString().isEmpty()) {
+                    new UploadDocument().execute(fileToBeUploaded);
+                } else {
+                    new UpdateGSTDetails().execute();
+                }
             }
+
         } else {
-            if (Utilities.isNetworkAvailable(context)) {
-                new UploadDocument().execute(fileToBeUploaded);
-            } else {
-                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-            }
+            Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
         }
-//        } else if (STATUS.equals("OFFLINE")) {
-//            String path = "";
-//            if (tv_attachfile.getText().toString().trim().equals("")) {
-//                path = gst_document;
+
+//        if (!gst_document.equals("")) {
+//            if (Utilities.isNetworkAvailable(context)) {
+//                new UpdateGSTDetails().execute();
 //            } else {
-//                path = fileToBeUploaded.getPath();
+//                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
 //            }
-//            long result = dbHelper.updateTaxDetailsInDb(
-//                    tax_id,
-//                    user_id,
-//                    edt_name.getText().toString().trim(),
-//                    edt_alias.getText().toString().trim(),
-//                    "",
-//                    edt_gst_no.getText().toString().trim(),
-//                    "",
-//                    path,
-//                    "0");
-//
-//            if (result != -1) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage("GST Details Updated Successfully");
-//                builder.setIcon(R.drawable.ic_success_24dp);                        builder.setTitle("Success");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        finish();
-//                        Offline_GST_Fragment.setDefault();
-//                    }
-//                });
-//                AlertDialog alertD = builder.create();                        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;                        alertD.show();
+//        } else {
+//            if (Utilities.isNetworkAvailable(context)) {
+//                new UploadDocument().execute(fileToBeUploaded);
 //            } else {
-//                Utilities.showSnackBar(ll_parent, "GST Details Did Not Save Properly");
+//                Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
 //            }
 //        }
+
     }
 
     @Override
@@ -288,6 +270,7 @@ public class Edit_GST_Activity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
+            gst_document = "";
             if (requestCode == GALLERY_REQUEST) {
                 Uri imageUri = data.getData();
                 CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).start(Edit_GST_Activity.this);
