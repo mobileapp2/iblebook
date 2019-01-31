@@ -253,7 +253,7 @@ public class Edit_Bank_Activity extends Activity {
             return;
         }
 //        if (STATUS.equals("ONLINE")) {
-        if (tv_attachfile.getText().toString().trim().equals("")) {
+        if (document.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UpdateBankDetails().execute();
             } else {

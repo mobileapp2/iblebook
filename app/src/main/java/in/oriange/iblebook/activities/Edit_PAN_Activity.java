@@ -221,7 +221,7 @@ public class Edit_PAN_Activity extends Activity {
         }
 
         if (edt_alias.getText().toString().trim().equals("")) {
-            edt_alias.setError( "Please Enter Alias Name");
+            edt_alias.setError("Please Enter Alias Name");
             edt_alias.requestFocus();
             return;
         }
@@ -233,7 +233,7 @@ public class Edit_PAN_Activity extends Activity {
         }
 
 //        if (STATUS.equals("ONLINE")) {
-        if (tv_attachfile.getText().toString().trim().equals("")) {
+        if (pan_document.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UpdatePANDetails().execute();
             } else {

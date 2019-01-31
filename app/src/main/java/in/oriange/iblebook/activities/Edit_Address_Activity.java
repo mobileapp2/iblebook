@@ -493,25 +493,25 @@ public class Edit_Address_Activity extends Activity {
         }
 
 
-        if (!tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+        if (!visiting_card.equals("") && !photo.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadVisitCard().execute(visitCardToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (!tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+        } else if (!visiting_card.equals("") && photo.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadVisitCard().execute(visitCardToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (tv_visitcard.getText().toString().equals("") && !tv_attachphoto.getText().toString().equals("")) {
+        } else if (visiting_card.equals("") && !photo.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadPhoto().execute(photoToBeUploaded);
             } else {
                 Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             }
-        } else if (tv_visitcard.getText().toString().equals("") && tv_attachphoto.getText().toString().equals("")) {
+        } else if (visiting_card.equals("") && photo.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UploadAddressDetails().execute();
             } else {

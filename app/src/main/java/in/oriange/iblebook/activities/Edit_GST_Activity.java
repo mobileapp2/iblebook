@@ -234,7 +234,7 @@ public class Edit_GST_Activity extends Activity {
 
 
 //        if (STATUS.equals("ONLINE")) {
-        if (tv_attachfile.getText().toString().trim().equals("")) {
+        if (gst_document.equals("")) {
             if (Utilities.isNetworkAvailable(context)) {
                 new UpdateGSTDetails().execute();
             } else {
