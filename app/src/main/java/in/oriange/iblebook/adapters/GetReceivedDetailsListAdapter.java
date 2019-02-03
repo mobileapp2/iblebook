@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.ReceivedDetails_Fragment;
+import in.oriange.iblebook.fragments.ReceivedNotifications_Fragment;
 import in.oriange.iblebook.fragments.Received_Address_Fragment;
 import in.oriange.iblebook.fragments.Received_AllInOne_Fragment;
 import in.oriange.iblebook.fragments.Received_Bank_Fragment;
@@ -252,7 +252,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-                        new ReceivedDetails_Fragment.GetDetailsList().execute();
+                        new ReceivedNotifications_Fragment.GetDetailsList().execute();
                         removeItem(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Rejected Successfully");
@@ -316,7 +316,7 @@ public class GetReceivedDetailsListAdapter extends RecyclerView.Adapter<GetRecei
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
 
-                        new ReceivedDetails_Fragment.GetDetailsList().execute();
+                        new ReceivedNotifications_Fragment.GetDetailsList().execute();
                         removeItem(position);
 
 

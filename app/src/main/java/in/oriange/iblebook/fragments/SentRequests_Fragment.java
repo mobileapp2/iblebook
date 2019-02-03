@@ -23,47 +23,61 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.oriange.iblebook.R;
-import in.oriange.iblebook.adapters.GetReceivedDetailsListAdapter;
-import in.oriange.iblebook.models.GetReceivedDetailsListPojo;
+import in.oriange.iblebook.adapters.GetSentRequestListAdapter;
+import in.oriange.iblebook.models.GetSentRequestsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
 import in.oriange.iblebook.utilities.Utilities;
 import in.oriange.iblebook.utilities.WebServiceCalls;
 
-public class ReceivedDetails_Fragment extends Fragment {
+public class SentRequests_Fragment extends Fragment {
+
 
     public static FlowingDrawer ll_parent;
     private static Context context;
-    private static RecyclerView rv_detailslist;
+    private static RecyclerView rv_requestlist;
     private static SwipeRefreshLayout swipeRefreshLayout;
     private static String user_id;
     private static LinearLayout ll_nothingtoshow;
     private LinearLayoutManager layoutManager;
     private UserSessionManager session;
-    private static ArrayList<GetReceivedDetailsListPojo> detailsList;
+    private static ArrayList<GetSentRequestsListPojo> requestList;
     private SearchView searchView;
 
     public static void setDefault() {
         if (Utilities.isNetworkAvailable(context)) {
-            new GetDetailsList().execute();
+            new GetRequestList().execute();
             swipeRefreshLayout.setRefreshing(true);
         } else {
             Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
             swipeRefreshLayout.setRefreshing(false);
             ll_nothingtoshow.setVisibility(View.VISIBLE);
-            rv_detailslist.setVisibility(View.GONE);
+            rv_requestlist.setVisibility(View.GONE);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_received_details, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_send_request, container, false);
         context = getActivity();
         init(rootView);
-        setDefault();
         getSessionData();
+        setDefault();
         setEventHandlers();
         return rootView;
+    }
+
+    private void init(View rootView) {
+        session = new UserSessionManager(context);
+        rv_requestlist = rootView.findViewById(R.id.rv_requestlist);
+        ll_parent = getActivity().findViewById(R.id.drawerlayout);
+        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setFocusable(false);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        requestList = new ArrayList<GetSentRequestsListPojo>();
+        layoutManager = new LinearLayoutManager(context);
+        rv_requestlist.setLayoutManager(layoutManager);
     }
 
     private void getSessionData() {
@@ -77,25 +91,12 @@ public class ReceivedDetails_Fragment extends Fragment {
         }
     }
 
-    private void init(View rootView) {
-        session = new UserSessionManager(context);
-        rv_detailslist = rootView.findViewById(R.id.rv_detailslist);
-        ll_parent = getActivity().findViewById(R.id.drawerlayout);
-        searchView = rootView.findViewById(R.id.searchView);
-        searchView.setFocusable(false);
-        ll_nothingtoshow = rootView.findViewById(R.id.ll_nothingtoshow);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
-        detailsList = new ArrayList<GetReceivedDetailsListPojo>();
-        layoutManager = new LinearLayoutManager(context);
-        rv_detailslist.setLayoutManager(layoutManager);
-    }
-
     private void setEventHandlers() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(context)) {
-                    new GetDetailsList().execute();
+                    new GetRequestList().execute();
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
                     Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
@@ -109,17 +110,16 @@ public class ReceivedDetails_Fragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
                 if (!query.equals("")) {
-                    ArrayList<GetReceivedDetailsListPojo> detailSearchedList = new ArrayList<>();
-                    for (GetReceivedDetailsListPojo detail : detailsList) {
-                        String destilsToBeSearched = detail.getSender_name().toLowerCase() +
-                                detail.getSender_mobile().toLowerCase();
-                        if (destilsToBeSearched.contains(query.toLowerCase())) {
-                            detailSearchedList.add(detail);
+                    ArrayList<GetSentRequestsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetSentRequestsListPojo request : requestList) {
+                        String requestsToBeSearched = request.getMobile().toLowerCase();
+                        if (requestsToBeSearched.contains(query.toLowerCase())) {
+                            detailSearchedList.add(request);
                         }
                     }
-                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailSearchedList));
+                    rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, detailSearchedList));
                 } else {
-                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
+                    rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
                 }
                 return true;
             }
@@ -127,17 +127,16 @@ public class ReceivedDetails_Fragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equals("")) {
-                    ArrayList<GetReceivedDetailsListPojo> detailSearchedList = new ArrayList<>();
-                    for (GetReceivedDetailsListPojo detail : detailsList) {
-                        String destilsToBeSearched = detail.getSender_name().toLowerCase() +
-                                detail.getSender_mobile().toLowerCase();
-                        if (destilsToBeSearched.contains(newText.toLowerCase())) {
-                            detailSearchedList.add(detail);
+                    ArrayList<GetSentRequestsListPojo> detailSearchedList = new ArrayList<>();
+                    for (GetSentRequestsListPojo request : requestList) {
+                        String requestsToBeSearched = request.getMobile().toLowerCase();
+                        if (requestsToBeSearched.contains(newText.toLowerCase())) {
+                            detailSearchedList.add(request);
                         }
                     }
-                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailSearchedList));
+                    rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, detailSearchedList));
                 } else if (newText.equals("")) {
-                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
+                    rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
                 }
                 return true;
             }
@@ -145,7 +144,7 @@ public class ReceivedDetails_Fragment extends Fragment {
 
     }
 
-    public static class GetDetailsList extends AsyncTask<String, Void, String> {
+    public static class GetRequestList extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -158,12 +157,12 @@ public class ReceivedDetails_Fragment extends Fragment {
             String res = "[]";
             JSONObject obj = new JSONObject();
             try {
-                obj.put("type", "GetSharedDataForMe");
+                obj.put("type", "GetReqDataForMe");
                 obj.put("user_id", user_id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            res = WebServiceCalls.APICall(ApplicationConstants.GETREQDETAILSSAPI, obj.toString());
+            res = WebServiceCalls.APICall(ApplicationConstants.GETREQUESTSAPI, obj.toString());
             return res;
         }
 
@@ -177,41 +176,35 @@ public class ReceivedDetails_Fragment extends Fragment {
                     JSONObject mainObj = new JSONObject(result);
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
-                    detailsList = new ArrayList<GetReceivedDetailsListPojo>();
-                    rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
-
+                    requestList = new ArrayList<GetSentRequestsListPojo>();
+                    rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
                     if (type.equalsIgnoreCase("success")) {
                         JSONArray jsonarr = mainObj.getJSONArray("result");
                         if (jsonarr.length() > 0) {
                             for (int i = 0; i < jsonarr.length(); i++) {
-                                GetReceivedDetailsListPojo summary = new GetReceivedDetailsListPojo();
+                                GetSentRequestsListPojo summary = new GetSentRequestsListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setShared_details_id(jsonObj.getString("shared_details_id"));
+                                summary.setRequest_id(jsonObj.getString("request_id"));
                                 summary.setMessage(jsonObj.getString("message"));
-                                summary.setRecord_id(jsonObj.getString("record_id"));
                                 summary.setSender_id(jsonObj.getString("sender_id"));
                                 summary.setMobile(jsonObj.getString("mobile"));
                                 summary.setType(jsonObj.getString("type"));
                                 summary.setStatus(jsonObj.getString("status"));
-                                summary.setSender_name(jsonObj.getString("sender_name"));
-                                summary.setSender_mobile(jsonObj.getString("sender_mobile"));
-                                summary.setNew_record_id(jsonObj.getString("new_record_id"));
-
-                                detailsList.add(summary);
+                                requestList.add(summary);
                             }
-                            rv_detailslist.setVisibility(View.VISIBLE);
+                            rv_requestlist.setVisibility(View.VISIBLE);
                             ll_nothingtoshow.setVisibility(View.GONE);
-                            rv_detailslist.setAdapter(new GetReceivedDetailsListAdapter(context, detailsList));
+                            rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {
                         ll_nothingtoshow.setVisibility(View.VISIBLE);
-                        rv_detailslist.setVisibility(View.GONE);
+                        rv_requestlist.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
                 ll_nothingtoshow.setVisibility(View.VISIBLE);
-                rv_detailslist.setVisibility(View.GONE);
+                rv_requestlist.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }

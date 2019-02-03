@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.oriange.iblebook.R;
-import in.oriange.iblebook.fragments.ReceivedDetails_Fragment;
-import in.oriange.iblebook.fragments.ReceivedRequests_Fragment;
+import in.oriange.iblebook.fragments.ReceivedNotifications_Fragment;
+import in.oriange.iblebook.fragments.Requests_Fragment;
 
 public class Requests_Activity extends FragmentActivity {
 
@@ -55,8 +55,8 @@ public class Requests_Activity extends FragmentActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ReceivedRequests_Fragment(), "Requests");
-        adapter.addFragment(new ReceivedDetails_Fragment(), "Notifications");
+        adapter.addFragment(new Requests_Fragment(), "Requests");
+        adapter.addFragment(new ReceivedNotifications_Fragment(), "Notifications");
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

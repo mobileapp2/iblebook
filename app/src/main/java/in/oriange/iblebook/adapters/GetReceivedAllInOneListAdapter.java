@@ -145,7 +145,6 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
                                 builder1.setPositiveButton("Personal", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         new MoveAllInOneDetails().execute(String.valueOf(position), "online");
-                                        Utilities.showMessageString(context, "Coming Soon");
 
                                     }
                                 });
@@ -153,7 +152,6 @@ public class GetReceivedAllInOneListAdapter extends RecyclerView.Adapter<GetRece
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         new MoveAllInOneDetails().execute(String.valueOf(position), "offline");
-                                        Utilities.showMessageString(context, "Coming Soon");
                                     }
                                 });
                                 AlertDialog alertD1 = builder1.create();
