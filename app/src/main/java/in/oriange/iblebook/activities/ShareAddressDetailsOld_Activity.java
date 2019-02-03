@@ -5,8 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,28 +38,27 @@ import in.oriange.iblebook.utilities.WebServiceCalls;
 
 import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
 
-public class ShareAddressDetails_Activity extends Activity {
-
-    private Context context;
-    private RecyclerView rv_addresslist;
-    private String user_id;
-    private ArrayList<GetAddressListPojo> addressList;
-    private ArrayList<GetAddressListPojo> toBeSharedAddressList;
-    private LinearLayout ll_parent;
-    private ImageView img_check;
+public class ShareAddressDetailsOld_Activity extends Activity {
+    private static Context context;
+    private static RecyclerView rv_addresslist;
+    private static String user_id;
+    private static int lastSelectedPosition = -1;
+    private static ArrayList<GetAddressListPojo> addressList;
+    public LinearLayout ll_parent;
+    ImageView img_check;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile, request_id;
     private static String addresstype, u_name, alias, addresss, country,
             state, district, pincode, u_mobile, email, landline, contactPersonName, contactPersonMobile, website, address_line_1, address_line_2;
+    private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
     private static String photo, visiting_card, address_id, map_location_lattitude, map_location_logitude, STATUS, type_id;
-    private GetAddressListPojo sentAddressDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_addressdetails);
+        setContentView(R.layout.activity_share_addressdetails_old);
 
         init();
         setupToolbar();
@@ -72,14 +71,13 @@ public class ShareAddressDetails_Activity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        hideSoftKeyboard(ShareAddressDetails_Activity.this);
+        hideSoftKeyboard(ShareAddressDetailsOld_Activity.this);
     }
 
     private void init() {
-        context = ShareAddressDetails_Activity.this;
+        context = ShareAddressDetailsOld_Activity.this;
         session = new UserSessionManager(context);
         addressList = new ArrayList<>();
-        toBeSharedAddressList = new ArrayList<>();
         ll_parent = findViewById(R.id.ll_parent);
         rv_addresslist = findViewById(R.id.rv_addresslist);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -119,35 +117,86 @@ public class ShareAddressDetails_Activity extends Activity {
         img_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isAtleastOneChecked()) {
+                if (lastSelectedPosition == -1) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    toBeSharedAddressList = new ArrayList<>();
-                    for (int i = 0; i < addressList.size(); i++) {
-                        if (addressList.get(i).isChecked()) {
-                            toBeSharedAddressList.add(addressList.get(i));
-                        }
-                    }
-                    startShareLoop();
+
+                    setSelectionFilter();
+                    //createDialogForShare();
                 }
             }
         });
     }
 
-    private void startShareLoop() {
-        for (int i = 0; i < toBeSharedAddressList.size(); i++) {
-            if (toBeSharedAddressList.get(i).isChecked()) {
-                setSelectionFilter(toBeSharedAddressList.get(i));
-                return;
+    private void createDialogForShare() {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+
+        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
+        TextView tv_name = promptView.findViewById(R.id.tv_name);
+        final EditText edt_message = promptView.findViewById(R.id.edt_message);
+
+        tv_initletter.setText(String.valueOf(name.charAt(0)));
+        tv_name.setText(name + " (" + sender_mobile + ") ");
+
+        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (edt_message.getText().toString().trim().equals("")) {
+                    Utilities.showMessageString(context, "Please Enter Message");
+                    return;
+                }
+
+                if (Utilities.isNetworkAvailable(context)) {
+
+                    new ShareDetails().execute(
+                            edt_message.getText().toString().trim(),
+                            user_id,
+                            sender_mobile,
+                            type,
+                            addressList.get(lastSelectedPosition).getAddress_id()
+                    );
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                }
             }
-        }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
-    public class GetAddressList extends AsyncTask<String, Void, String> {
+    private void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        img_check = findViewById(R.id.img_check);
+        mToolbar.setTitle("Select Address");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    public static class GetAddressList extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+//            pd.setMessage("Please wait...");
+//            pd.setCancelable(false);
+//            pd.show();
         }
 
         @Override
@@ -209,12 +258,13 @@ public class ShareAddressDetails_Activity extends Activity {
                                     summary.setLandline_number(jsonObj.getString("landline_number"));
                                     summary.setContact_person_name(jsonObj.getString("contact_person_name"));
                                     summary.setContact_person_mobile(jsonObj.getString("contact_person_mobile"));
-                                    summary.setChecked(false);
                                     addressList.add(summary);
                                 }
                             }
                             rv_addresslist.setAdapter(new GetAddressForShareAdapter(context, addressList));
                         }
+                    } else if (type.equalsIgnoreCase("failure")) {
+
                     }
                 }
             } catch (Exception e) {
@@ -223,9 +273,9 @@ public class ShareAddressDetails_Activity extends Activity {
         }
     }
 
-    public class GetAddressForShareAdapter extends RecyclerView.Adapter<GetAddressForShareAdapter.MyViewHolder> {
+    public static class GetAddressForShareAdapter extends RecyclerView.Adapter<GetAddressForShareAdapter.MyViewHolder> {
 
-        private List<GetAddressListPojo> resultArrayList;
+        private static List<GetAddressListPojo> resultArrayList;
         private final UserSessionManager session;
         private Context context;
         private String name;
@@ -247,7 +297,7 @@ public class ShareAddressDetails_Activity extends Activity {
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.list_row_addressshare, parent, false);
+            View view = inflater.inflate(R.layout.list_row_addressshare_old, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -259,16 +309,7 @@ public class ShareAddressDetails_Activity extends Activity {
             holder.tv_name.setText(resultArrayList.get(position).getAlias());
             holder.tv_details.setText(resultArrayList.get(position).getName());
 
-
-            holder.cb_select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (holder.cb_select.isChecked())
-                        addressList.get(position).setChecked(true);
-                    else
-                        addressList.get(position).setChecked(false);
-                }
-            });
+            holder.rb_selectone.setChecked(lastSelectedPosition == position);
 
         }
 
@@ -280,7 +321,7 @@ public class ShareAddressDetails_Activity extends Activity {
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             private TextView tv_initletter, tv_alias, tv_name, tv_details;
-            private CheckBox cb_select;
+            private RadioButton rb_selectone;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -288,270 +329,17 @@ public class ShareAddressDetails_Activity extends Activity {
                 tv_alias = view.findViewById(R.id.tv_alias);
                 tv_name = view.findViewById(R.id.tv_name);
                 tv_details = view.findViewById(R.id.tv_details);
-                cb_select = view.findViewById(R.id.cb_select);
+                rb_selectone = view.findViewById(R.id.rb_selectone);
 
+                rb_selectone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lastSelectedPosition = getAdapterPosition();
+                        notifyDataSetChanged();
+                    }
+                });
             }
         }
-
-    }
-
-    private boolean isAtleastOneChecked() {
-        for (int i = 0; i < addressList.size(); i++)
-            if (addressList.get(i).isChecked())
-                return true;
-        return false;
-    }
-
-    private void setSelectionFilter(final GetAddressListPojo addressDetails) {
-        sentAddressDetails = addressDetails;
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_shareaddress, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setTitle(addressDetails.getType() + " - " + addressDetails.getName());
-
-        final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
-        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
-        final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
-        final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
-        final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
-        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
-        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
-        final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
-        final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
-        final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
-        final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
-
-        if (addressDetails.getType_id().equals("")) {
-            cb_addresstype.setVisibility(View.GONE);
-            cb_addresstype.setChecked(false);
-        } else {
-            cb_addresstype.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getName().equals("")) {
-            cb_name.setVisibility(View.GONE);
-            cb_name.setChecked(false);
-        } else {
-            cb_name.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getAddress_id().equals("")) {
-            cb_address.setVisibility(View.GONE);
-            cb_address.setChecked(false);
-        } else {
-            cb_address.setVisibility(View.VISIBLE);
-        }
-        if (addressDetails.getMobile_number().equals("")) {
-            cb_mobile.setVisibility(View.GONE);
-            cb_mobile.setChecked(false);
-        } else {
-            cb_mobile.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getEmail_id().equals("")) {
-            cb_email.setVisibility(View.GONE);
-            cb_email.setChecked(false);
-        } else {
-            cb_email.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getLandline_number().trim().equals("")) {
-            cb_landline.setVisibility(View.GONE);
-            cb_landline.setChecked(false);
-        } else {
-            cb_landline.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getContact_person_name().trim().equals("") &&
-                addressDetails.getContact_person_mobile().trim().equals("")) {
-            cb_contactperson.setVisibility(View.GONE);
-            cb_contactperson.setChecked(false);
-        } else {
-            cb_contactperson.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getWebsite().equals("")) {
-            cb_website.setVisibility(View.GONE);
-            cb_website.setChecked(false);
-        } else {
-            cb_website.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getMap_location_lattitude().equals("") && addressDetails.getMap_location_logitude().equals("")) {
-            cb_maplocation.setVisibility(View.GONE);
-            cb_maplocation.setChecked(false);
-        } else {
-            cb_maplocation.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getVisiting_card().equals("")) {
-            cb_visitcard.setVisibility(View.GONE);
-            cb_visitcard.setChecked(false);
-        } else {
-            cb_visitcard.setVisibility(View.VISIBLE);
-        }
-
-        if (addressDetails.getPhoto().equals("")) {
-            cb_photo.setVisibility(View.GONE);
-            cb_photo.setChecked(false);
-        } else {
-            cb_photo.setVisibility(View.VISIBLE);
-        }
-
-
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialod, int id) {
-                if (cb_addresstype.isChecked()) {
-                    addresstype = addressDetails.getType_id();
-                } else {
-                    addresstype = "";
-                }
-
-                if (cb_name.isChecked()) {
-                    u_name = addressDetails.getName();
-                    alias = addressDetails.getAlias();
-                } else {
-                    u_name = "";
-                    alias = "";
-                }
-
-                if (cb_address.isChecked()) {
-                    address_line_1 = addressDetails.getAddress_line_one();
-                    address_line_2 = addressDetails.getAddress_line_two();
-                    country = addressDetails.getCountry();
-                    state = addressDetails.getState();
-                    district = addressDetails.getDistrict();
-                    pincode = addressDetails.getPincode();
-
-                } else {
-                    address_line_1 = "";
-                    address_line_2 = "";
-                    country = "";
-                    district = "";
-                    pincode = "";
-                    state = "";
-                }
-
-                if (cb_mobile.isChecked()) {
-                    u_mobile = addressDetails.getMobile_number();
-                } else {
-                    u_mobile = "";
-                }
-
-                if (cb_email.isChecked()) {
-                    email = addressDetails.getEmail_id();
-                } else {
-                    email = "";
-                }
-
-                if (cb_landline.isChecked()) {
-                    landline = addressDetails.getLandline_number();
-                } else {
-                    landline = "";
-                }
-
-                if (cb_contactperson.isChecked()) {
-                    contactPersonName = addressDetails.getContact_person_name();
-                    contactPersonMobile = addressDetails.getContact_person_mobile();
-                } else {
-                    contactPersonName = "";
-                    contactPersonMobile = "";
-                }
-
-                if (cb_website.isChecked()) {
-                    website = addressDetails.getWebsite();
-                } else {
-                    website = "";
-                }
-
-                if (cb_maplocation.isChecked()) {
-                    map_location_lattitude = addressDetails.getMap_location_lattitude();
-                    map_location_logitude = addressDetails.getMap_location_logitude();
-                } else {
-                    map_location_lattitude = "";
-                    map_location_logitude = "";
-                }
-
-                if (cb_visitcard.isChecked()) {
-                    visiting_card = addressDetails.getVisiting_card();
-                } else {
-                    visiting_card = "";
-                }
-
-                if (cb_photo.isChecked()) {
-                    photo = addressDetails.getPhoto();
-                } else {
-                    photo = "";
-                }
-
-                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
-                        && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
-                        && !cb_photo.isChecked() && !cb_landline.isChecked() && !cb_contactperson.isChecked()) {
-                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                createDialogForShare(addressDetails);
-
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int view) {
-                dialog.cancel();
-            }
-        });
-        alertDialogBuilder.setCancelable(false);
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.show();
-    }
-
-    private void createDialogForShare(final GetAddressListPojo addressDetails) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setCancelable(false);
-
-        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        final EditText edt_message = promptView.findViewById(R.id.edt_message);
-
-        tv_initletter.setText(String.valueOf(name.charAt(0)));
-        tv_name.setText(name + " (" + sender_mobile + ") ");
-
-        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (edt_message.getText().toString().trim().equals("")) {
-                    Utilities.showMessageString(context, "Please Enter Message");
-                    return;
-                }
-
-                if (Utilities.isNetworkAvailable(context)) {
-
-                    new ShareDetails().execute(
-                            edt_message.getText().toString().trim(),
-                            user_id,
-                            sender_mobile,
-                            type,
-                            addressDetails.getAddress_id()
-                    );
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-        alertD.show();
     }
 
     public class ShareDetails extends AsyncTask<String, Void, String> {
@@ -621,9 +409,6 @@ public class ShareAddressDetails_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
-
-                        toBeSharedAddressList.remove(sentAddressDetails);
-
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Shared Successfully");
                         builder.setIcon(R.drawable.ic_success_24dp);
@@ -631,17 +416,12 @@ public class ShareAddressDetails_Activity extends Activity {
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                if (toBeSharedAddressList.size() != 0) {
-                                    startShareLoop();
-                                } else {
-                                    finish();
-                                }
+                                finish();
                             }
                         });
                         AlertDialog alertD = builder.create();
                         alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
                         alertD.show();
-
                     }
 
                 }
@@ -651,18 +431,205 @@ public class ShareAddressDetails_Activity extends Activity {
         }
     }
 
-    private void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        img_check = findViewById(R.id.img_check);
-        mToolbar.setTitle("Select Address");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+    private void setSelectionFilter() {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_shareaddress, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle("Share Filter");
+
+        final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
+        final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
+        final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
+        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
+        final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
+        final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
+        final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
+        final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
+
+        if (addressList.get(lastSelectedPosition).getType_id().equals("")) {
+            cb_addresstype.setVisibility(View.GONE);
+            cb_addresstype.setChecked(false);
+        } else {
+            cb_addresstype.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getAddress_id().equals("")) {
+            cb_address.setVisibility(View.GONE);
+            cb_address.setChecked(false);
+        } else {
+            cb_address.setVisibility(View.VISIBLE);
+        }
+        if (addressList.get(lastSelectedPosition).getMobile_number().equals("")) {
+            cb_mobile.setVisibility(View.GONE);
+            cb_mobile.setChecked(false);
+        } else {
+            cb_mobile.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getEmail_id().equals("")) {
+            cb_email.setVisibility(View.GONE);
+            cb_email.setChecked(false);
+        } else {
+            cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getLandline_number().trim().equals("")) {
+            cb_landline.setVisibility(View.GONE);
+            cb_landline.setChecked(false);
+        } else {
+            cb_landline.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getContact_person_name().trim().equals("") &&
+                addressList.get(lastSelectedPosition).getContact_person_mobile().trim().equals("")) {
+            cb_contactperson.setVisibility(View.GONE);
+            cb_contactperson.setChecked(false);
+        } else {
+            cb_contactperson.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getWebsite().equals("")) {
+            cb_website.setVisibility(View.GONE);
+            cb_website.setChecked(false);
+        } else {
+            cb_website.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getMap_location_lattitude().equals("") && addressList.get(lastSelectedPosition).getMap_location_logitude().equals("")) {
+            cb_maplocation.setVisibility(View.GONE);
+            cb_maplocation.setChecked(false);
+        } else {
+            cb_maplocation.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getVisiting_card().equals("")) {
+            cb_visitcard.setVisibility(View.GONE);
+            cb_visitcard.setChecked(false);
+        } else {
+            cb_visitcard.setVisibility(View.VISIBLE);
+        }
+
+        if (addressList.get(lastSelectedPosition).getPhoto().equals("")) {
+            cb_photo.setVisibility(View.GONE);
+            cb_photo.setChecked(false);
+        } else {
+            cb_photo.setVisibility(View.VISIBLE);
+        }
+
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                if (cb_addresstype.isChecked()) {
+                    addresstype = addressList.get(lastSelectedPosition).getType_id();
+                } else {
+                    addresstype = "";
+                }
+
+                if (cb_name.isChecked()) {
+                    u_name = addressList.get(lastSelectedPosition).getName();
+                    alias = addressList.get(lastSelectedPosition).getAlias();
+                } else {
+                    u_name = "";
+                    alias = "";
+                }
+
+                if (cb_address.isChecked()) {
+                    address_line_1 = addressList.get(lastSelectedPosition).getAddress_line_one();
+                    address_line_2 = addressList.get(lastSelectedPosition).getAddress_line_two();
+                    country = addressList.get(lastSelectedPosition).getCountry();
+                    state = addressList.get(lastSelectedPosition).getState();
+                    district = addressList.get(lastSelectedPosition).getDistrict();
+                    pincode = addressList.get(lastSelectedPosition).getPincode();
+
+                } else {
+                    address_line_1 = "";
+                    address_line_2 = "";
+                    country = "";
+                    district = "";
+                    pincode = "";
+                    state = "";
+                }
+
+                if (cb_mobile.isChecked()) {
+                    u_mobile = addressList.get(lastSelectedPosition).getMobile_number();
+                } else {
+                    u_mobile = "";
+                }
+
+                if (cb_email.isChecked()) {
+                    email = addressList.get(lastSelectedPosition).getEmail_id();
+                } else {
+                    email = "";
+                }
+
+                if (cb_landline.isChecked()) {
+                    landline = addressList.get(lastSelectedPosition).getLandline_number();
+                } else {
+                    landline = "";
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    contactPersonName = addressList.get(lastSelectedPosition).getContact_person_name();
+                    contactPersonMobile = addressList.get(lastSelectedPosition).getContact_person_mobile();
+                } else {
+                    contactPersonName = "";
+                    contactPersonMobile = "";
+                }
+
+                if (cb_website.isChecked()) {
+                    website = addressList.get(lastSelectedPosition).getWebsite();
+                } else {
+                    website = "";
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    map_location_lattitude = addressList.get(lastSelectedPosition).getMap_location_lattitude();
+                    map_location_logitude = addressList.get(lastSelectedPosition).getMap_location_logitude();
+                } else {
+                    map_location_lattitude = "";
+                    map_location_logitude = "";
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    visiting_card = addressList.get(lastSelectedPosition).getVisiting_card();
+                } else {
+                    visiting_card = "";
+                }
+
+                if (cb_photo.isChecked()) {
+                    photo = addressList.get(lastSelectedPosition).getPhoto();
+                } else {
+                    photo = "";
+                }
+
+                if (!cb_addresstype.isChecked() && !cb_name.isChecked() && !cb_address.isChecked() && !cb_mobile.isChecked()
+                        && !cb_email.isChecked() && !cb_website.isChecked() && !cb_maplocation.isChecked() && !cb_visitcard.isChecked()
+                        && !cb_photo.isChecked() && !cb_landline.isChecked() && !cb_contactperson.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                createDialogForShare();
+
             }
         });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
-
-
 }

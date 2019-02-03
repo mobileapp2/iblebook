@@ -75,6 +75,8 @@ public class AllInOneModel implements Serializable {
 
     private String pan_document;
 
+    private boolean isChecked;
+
     public String getBank_name() {
         return bank_name;
     }
@@ -363,4 +365,11 @@ public class AllInOneModel implements Serializable {
         this.pan_document = pan_document;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 }

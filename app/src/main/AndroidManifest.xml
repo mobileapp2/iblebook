@@ -144,7 +144,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.ShareAddressDetails_Activity"
+            android:name=".activities.ShareAddressDetailsOld_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
@@ -205,6 +205,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.ShareAllInOneDetails_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.ShareAddressDetails_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />

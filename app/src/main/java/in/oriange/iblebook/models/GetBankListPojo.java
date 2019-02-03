@@ -26,6 +26,8 @@ public class GetBankListPojo {
 
     private String status;
 
+    public boolean isChecked;
+
     public String getCreated_by() {
         return created_by;
     }
@@ -120,5 +122,13 @@ public class GetBankListPojo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

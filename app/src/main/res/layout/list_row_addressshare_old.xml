@@ -82,8 +82,8 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <CheckBox
-                android:id="@+id/cb_select"
+            <RadioButton
+                android:id="@+id/rb_selectone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end" />

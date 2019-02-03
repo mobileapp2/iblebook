@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -44,23 +43,21 @@ import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
 
 public class ShareAllInOneDetails_Activity extends Activity {
 
-    private static Context context;
-    private static RecyclerView rv_allinonelist;
-    private static String user_id;
-    private static int lastSelectedPosition = -1;
-    private static ArrayList<AllInOneModel> allInOneList;
+    private Context context;
+    private RecyclerView rv_allinonelist;
+    private String user_id;
+    private ArrayList<AllInOneModel> allInOneList;
+    private ArrayList<AllInOneModel> toBeSharedAllInOneList;
     public LinearLayout ll_parent;
     private ImageView img_check;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
-    private TextView edt_viewloc, edt_visitcard, edt_attachphoto;
-
     private String mobile, type, name, sender_id, sender_mobile, request_id;
-
     private static String addresstype, u_name, alias, addresss, country, state, district, pincode, u_mobile, email, landline, contactPersonName,
             contactPersonMobile, website, address_line_1, address_line_2, photo, visiting_card, map_location_lattitude, map_location_logitude,
             holder_name, holder_alias, bank_name, ifsc_code, acc_no, bank_doc, pan_no, pan_doc, gst_no, gst_doc;
+    private AllInOneModel sentAllInOneDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +82,7 @@ public class ShareAllInOneDetails_Activity extends Activity {
         context = ShareAllInOneDetails_Activity.this;
         session = new UserSessionManager(context);
         allInOneList = new ArrayList<>();
+        toBeSharedAllInOneList = new ArrayList<>();
         ll_parent = findViewById(R.id.ll_parent);
         rv_allinonelist = findViewById(R.id.rv_allinonelist);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -124,375 +122,28 @@ public class ShareAllInOneDetails_Activity extends Activity {
         img_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lastSelectedPosition == -1) {
+                if (!isAtleastOneChecked()) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    setSelectionFilter();
+                    toBeSharedAllInOneList = new ArrayList<>();
+                    for (int i = 0; i < allInOneList.size(); i++) {
+                        if (allInOneList.get(i).isChecked()) {
+                            toBeSharedAllInOneList.add(allInOneList.get(i));
+                        }
+                    }
+                    startShareLoop();
                 }
             }
         });
     }
 
-    private void setSelectionFilter() {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_shareallinone, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setTitle("Share Filter");
-
-        final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
-        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
-        final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
-        final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
-        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
-        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
-        final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
-        final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
-        final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
-        final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
-        final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
-
-        final CheckBox cb_accountholdername = promptView.findViewById(R.id.cb_accountholdername);
-        final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
-        final CheckBox cb_ifsccode = promptView.findViewById(R.id.cb_ifsccode);
-        final CheckBox cb_accno = promptView.findViewById(R.id.cb_accno);
-        final CheckBox cb_bankfile = promptView.findViewById(R.id.cb_bankfile);
-
-        final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
-        final CheckBox cb_panfile = promptView.findViewById(R.id.cb_panfile);
-        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
-        final CheckBox cb_gstfile = promptView.findViewById(R.id.cb_gstfile);
-
-        if (allInOneList.get(lastSelectedPosition).getAddress_type_id().equals("")) {
-            cb_addresstype.setVisibility(View.GONE);
-            cb_addresstype.setChecked(false);
-        } else {
-            cb_addresstype.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getName().equals("")) {
-            cb_name.setVisibility(View.GONE);
-            cb_name.setChecked(false);
-        } else {
-            cb_name.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getMobile_number().equals("")) {
-            cb_mobile.setVisibility(View.GONE);
-            cb_mobile.setChecked(false);
-        } else {
-            cb_mobile.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getEmail_id().equals("")) {
-            cb_email.setVisibility(View.GONE);
-            cb_email.setChecked(false);
-        } else {
-            cb_email.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getLandline_number().trim().equals("")) {
-            cb_landline.setVisibility(View.GONE);
-            cb_landline.setChecked(false);
-        } else {
-            cb_landline.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getContact_person_name().trim().equals("") &&
-                allInOneList.get(lastSelectedPosition).getContact_person_mobile().trim().equals("")) {
-            cb_contactperson.setVisibility(View.GONE);
-            cb_contactperson.setChecked(false);
-        } else {
-            cb_contactperson.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getWebsite().equals("")) {
-            cb_website.setVisibility(View.GONE);
-            cb_website.setChecked(false);
-        } else {
-            cb_website.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getMap_location_latitude().equals("") && allInOneList.get(lastSelectedPosition).getMap_location_longitude().equals("")) {
-            cb_maplocation.setVisibility(View.GONE);
-            cb_maplocation.setChecked(false);
-        } else {
-            cb_maplocation.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getVisiting_card().equals("")) {
-            cb_visitcard.setVisibility(View.GONE);
-            cb_visitcard.setChecked(false);
-        } else {
-            cb_visitcard.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getPhoto().equals("")) {
-            cb_photo.setVisibility(View.GONE);
-            cb_photo.setChecked(false);
-        } else {
-            cb_photo.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getAccount_holder_name().equals("")) {
-            cb_accountholdername.setVisibility(View.GONE);
-            cb_accountholdername.setChecked(false);
-        } else {
-            cb_accountholdername.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getBank_name().equals("")) {
-            cb_bankname.setVisibility(View.GONE);
-            cb_bankname.setChecked(false);
-        } else {
-            cb_bankname.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getIfsc_code().equals("")) {
-            cb_ifsccode.setVisibility(View.GONE);
-            cb_ifsccode.setChecked(false);
-        } else {
-            cb_ifsccode.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getAccount_number().equals("")) {
-            cb_accno.setVisibility(View.GONE);
-            cb_accno.setChecked(false);
-        } else {
-            cb_accno.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getBank_document().equals("")) {
-            cb_bankfile.setVisibility(View.GONE);
-            cb_bankfile.setChecked(false);
-        } else {
-            cb_bankfile.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getPan_number().equals("")) {
-            cb_panno.setVisibility(View.GONE);
-        } else {
-            cb_panno.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getPan_document().equals("")) {
-            cb_panfile.setVisibility(View.GONE);
-        } else {
-            cb_panfile.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getGst_number().equals("")) {
-            cb_gstno.setVisibility(View.GONE);
-            cb_gstno.setChecked(false);
-        } else {
-            cb_gstno.setVisibility(View.VISIBLE);
-        }
-
-        if (allInOneList.get(lastSelectedPosition).getGst_document().equals("")) {
-            cb_gstfile.setVisibility(View.GONE);
-            cb_gstfile.setChecked(false);
-        } else {
-            cb_gstfile.setVisibility(View.VISIBLE);
-        }
-
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialod, int id) {
-                if (cb_addresstype.isChecked()) {
-                    addresstype = allInOneList.get(lastSelectedPosition).getAddress_type_id();
-                } else {
-                    addresstype = "";
-                }
-
-                if (cb_name.isChecked()) {
-                    u_name = allInOneList.get(lastSelectedPosition).getName();
-                    alias = allInOneList.get(lastSelectedPosition).getAlias();
-                } else {
-                    u_name = "";
-                    alias = "";
-                }
-
-                if (cb_address.isChecked()) {
-                    address_line_1 = allInOneList.get(lastSelectedPosition).getAddress_line_one();
-                    address_line_2 = allInOneList.get(lastSelectedPosition).getAddress_line_two();
-                    country = allInOneList.get(lastSelectedPosition).getCountry();
-                    state = allInOneList.get(lastSelectedPosition).getState();
-                    district = allInOneList.get(lastSelectedPosition).getDistrict();
-                    pincode = allInOneList.get(lastSelectedPosition).getPincode();
-
-                } else {
-                    address_line_1 = "";
-                    address_line_2 = "";
-                    country = "";
-                    district = "";
-                    pincode = "";
-                    state = "";
-                }
-
-                if (cb_mobile.isChecked()) {
-                    u_mobile = allInOneList.get(lastSelectedPosition).getMobile_number();
-                } else {
-                    u_mobile = "";
-                }
-
-                if (cb_email.isChecked()) {
-                    email = allInOneList.get(lastSelectedPosition).getEmail_id();
-                } else {
-                    email = "";
-                }
-
-                if (cb_landline.isChecked()) {
-                    landline = allInOneList.get(lastSelectedPosition).getLandline_number();
-                } else {
-                    landline = "";
-                }
-
-                if (cb_contactperson.isChecked()) {
-                    contactPersonName = allInOneList.get(lastSelectedPosition).getContact_person_name();
-                    contactPersonMobile = allInOneList.get(lastSelectedPosition).getContact_person_mobile();
-                } else {
-                    contactPersonName = "";
-                    contactPersonMobile = "";
-                }
-
-                if (cb_website.isChecked()) {
-                    website = allInOneList.get(lastSelectedPosition).getWebsite();
-                } else {
-                    website = "";
-                }
-
-                if (cb_maplocation.isChecked()) {
-                    map_location_lattitude = allInOneList.get(lastSelectedPosition).getMap_location_latitude();
-                    map_location_logitude = allInOneList.get(lastSelectedPosition).getMap_location_longitude();
-                } else {
-                    map_location_lattitude = "";
-                    map_location_logitude = "";
-                }
-
-                if (cb_visitcard.isChecked()) {
-                    visiting_card = allInOneList.get(lastSelectedPosition).getVisiting_card();
-                } else {
-                    visiting_card = "";
-                }
-
-                if (cb_photo.isChecked()) {
-                    photo = allInOneList.get(lastSelectedPosition).getPhoto();
-                } else {
-                    photo = "";
-                }
-
-
-                if (cb_accountholdername.isChecked()) {
-                    holder_name = allInOneList.get(lastSelectedPosition).getAccount_holder_name();
-                    alias = allInOneList.get(lastSelectedPosition).getAccount_holder_alias();
-                } else {
-                    holder_name = "";
-                    alias = "";
-                }
-                if (cb_bankname.isChecked()) {
-                    bank_name = allInOneList.get(lastSelectedPosition).getBank_name();
-                } else {
-                    bank_name = "";
-                }
-                if (cb_ifsccode.isChecked()) {
-                    ifsc_code = allInOneList.get(lastSelectedPosition).getIfsc_code();
-                } else {
-                    ifsc_code = "";
-                }
-                if (cb_accno.isChecked()) {
-                    acc_no = allInOneList.get(lastSelectedPosition).getAccount_number();
-                } else {
-                    acc_no = "";
-                }
-                if (cb_bankfile.isChecked()) {
-                    bank_doc = allInOneList.get(lastSelectedPosition).getBank_document();
-                } else {
-                    bank_doc = "";
-                }
-
-                if (cb_panno.isChecked()) {
-                    pan_no = allInOneList.get(lastSelectedPosition).getPan_number();
-                } else {
-                    pan_no = "";
-                }
-
-                if (cb_panfile.isChecked()) {
-                    pan_doc = allInOneList.get(lastSelectedPosition).getPan_document();
-                } else {
-                    pan_doc = "";
-                }
-
-                if (cb_gstno.isChecked()) {
-                    gst_no = allInOneList.get(lastSelectedPosition).getGst_number();
-                } else {
-                    gst_no = "";
-                }
-
-                if (cb_gstfile.isChecked()) {
-                    gst_doc = allInOneList.get(lastSelectedPosition).getGst_document();
-                } else {
-                    gst_doc = "";
-                }
-
-                createDialogForShare();
-
+    private void startShareLoop() {
+        for (int i = 0; i < toBeSharedAllInOneList.size(); i++) {
+            if (toBeSharedAllInOneList.get(i).isChecked()) {
+                setSelectionFilter(toBeSharedAllInOneList.get(i));
+                return;
             }
-        });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int view) {
-                dialog.cancel();
-            }
-        });
-        alertDialogBuilder.setCancelable(false);
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.show();
-    }
-
-    private void createDialogForShare() {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-
-        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        final EditText edt_message = promptView.findViewById(R.id.edt_message);
-
-        tv_initletter.setText(String.valueOf(name.charAt(0)));
-        tv_name.setText(name + " (" + sender_mobile + ") ");
-
-        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (edt_message.getText().toString().trim().equals("")) {
-                    Utilities.showMessageString(context, "Please Enter Message");
-                    return;
-                }
-
-                if (Utilities.isNetworkAvailable(context)) {
-
-                    new ShareDetails().execute(
-                            edt_message.getText().toString().trim(),
-                            user_id,
-                            sender_mobile,
-                            type,
-                            allInOneList.get(lastSelectedPosition).getAll_in_one_id()
-                    );
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-        alertD.show();
+        }
     }
 
     public class GetAllInOneList extends AsyncTask<String, Void, String> {
@@ -500,7 +151,6 @@ public class ShareAllInOneDetails_Activity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            allInOneList = new ArrayList<AllInOneModel>();
         }
 
         @Override
@@ -546,9 +196,9 @@ public class ShareAllInOneDetails_Activity extends Activity {
         }
     }
 
-    public static class GetAllInOneForShareAdapter extends RecyclerView.Adapter<GetAllInOneForShareAdapter.MyViewHolder> {
+    public class GetAllInOneForShareAdapter extends RecyclerView.Adapter<GetAllInOneForShareAdapter.MyViewHolder> {
 
-        private static List<AllInOneModel> resultArrayList;
+        private List<AllInOneModel> resultArrayList;
         private final UserSessionManager session;
         private Context context;
         private String name;
@@ -582,7 +232,16 @@ public class ShareAllInOneDetails_Activity extends Activity {
             holder.tv_name.setText(resultArrayList.get(position).getAlias());
             holder.tv_details.setText(resultArrayList.get(position).getName());
 
-            holder.rb_selectone.setChecked(lastSelectedPosition == position);
+
+            holder.cb_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (holder.cb_select.isChecked())
+                        allInOneList.get(position).setChecked(true);
+                    else
+                        allInOneList.get(position).setChecked(false);
+                }
+            });
 
         }
 
@@ -594,7 +253,7 @@ public class ShareAllInOneDetails_Activity extends Activity {
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             private TextView tv_initletter, tv_alias, tv_name, tv_details;
-            private RadioButton rb_selectone;
+            private CheckBox cb_select;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -602,17 +261,382 @@ public class ShareAllInOneDetails_Activity extends Activity {
                 tv_alias = view.findViewById(R.id.tv_alias);
                 tv_name = view.findViewById(R.id.tv_name);
                 tv_details = view.findViewById(R.id.tv_details);
-                rb_selectone = view.findViewById(R.id.rb_selectone);
+                cb_select = view.findViewById(R.id.cb_select);
 
-                rb_selectone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lastSelectedPosition = getAdapterPosition();
-                        notifyDataSetChanged();
-                    }
-                });
             }
         }
+
+    }
+
+    private boolean isAtleastOneChecked() {
+        for (int i = 0; i < allInOneList.size(); i++)
+            if (allInOneList.get(i).isChecked())
+                return true;
+        return false;
+    }
+
+    private void setSelectionFilter(final AllInOneModel allInOneDetails) {
+        sentAllInOneDetails = allInOneDetails;
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_shareallinone, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle(allInOneDetails.getAddress_type() + " - " + allInOneDetails.getName());
+
+        final CheckBox cb_addresstype = promptView.findViewById(R.id.cb_addresstype);
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_address = promptView.findViewById(R.id.cb_address);
+        final CheckBox cb_mobile = promptView.findViewById(R.id.cb_mobile);
+        final CheckBox cb_landline = promptView.findViewById(R.id.cb_landline);
+        final CheckBox cb_contactperson = promptView.findViewById(R.id.cb_contactperson);
+        final CheckBox cb_email = promptView.findViewById(R.id.cb_email);
+        final CheckBox cb_website = promptView.findViewById(R.id.cb_website);
+        final CheckBox cb_maplocation = promptView.findViewById(R.id.cb_maplocation);
+        final CheckBox cb_visitcard = promptView.findViewById(R.id.cb_visitcard);
+        final CheckBox cb_photo = promptView.findViewById(R.id.cb_photo);
+
+        final CheckBox cb_accountholdername = promptView.findViewById(R.id.cb_accountholdername);
+        final CheckBox cb_bankname = promptView.findViewById(R.id.cb_bankname);
+        final CheckBox cb_ifsccode = promptView.findViewById(R.id.cb_ifsccode);
+        final CheckBox cb_accno = promptView.findViewById(R.id.cb_accno);
+        final CheckBox cb_bankfile = promptView.findViewById(R.id.cb_bankfile);
+
+        final CheckBox cb_panno = promptView.findViewById(R.id.cb_panno);
+        final CheckBox cb_panfile = promptView.findViewById(R.id.cb_panfile);
+        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
+        final CheckBox cb_gstfile = promptView.findViewById(R.id.cb_gstfile);
+
+        if (allInOneDetails.getAddress_type_id().equals("")) {
+            cb_addresstype.setVisibility(View.GONE);
+            cb_addresstype.setChecked(false);
+        } else {
+            cb_addresstype.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getMobile_number().equals("")) {
+            cb_mobile.setVisibility(View.GONE);
+            cb_mobile.setChecked(false);
+        } else {
+            cb_mobile.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getEmail_id().equals("")) {
+            cb_email.setVisibility(View.GONE);
+            cb_email.setChecked(false);
+        } else {
+            cb_email.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getLandline_number().trim().equals("")) {
+            cb_landline.setVisibility(View.GONE);
+            cb_landline.setChecked(false);
+        } else {
+            cb_landline.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getContact_person_name().trim().equals("") &&
+                allInOneDetails.getContact_person_mobile().trim().equals("")) {
+            cb_contactperson.setVisibility(View.GONE);
+            cb_contactperson.setChecked(false);
+        } else {
+            cb_contactperson.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getWebsite().equals("")) {
+            cb_website.setVisibility(View.GONE);
+            cb_website.setChecked(false);
+        } else {
+            cb_website.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getMap_location_latitude().equals("") && allInOneDetails.getMap_location_longitude().equals("")) {
+            cb_maplocation.setVisibility(View.GONE);
+            cb_maplocation.setChecked(false);
+        } else {
+            cb_maplocation.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getVisiting_card().equals("")) {
+            cb_visitcard.setVisibility(View.GONE);
+            cb_visitcard.setChecked(false);
+        } else {
+            cb_visitcard.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getPhoto().equals("")) {
+            cb_photo.setVisibility(View.GONE);
+            cb_photo.setChecked(false);
+        } else {
+            cb_photo.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getAccount_holder_name().equals("")) {
+            cb_accountholdername.setVisibility(View.GONE);
+            cb_accountholdername.setChecked(false);
+        } else {
+            cb_accountholdername.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getBank_name().equals("")) {
+            cb_bankname.setVisibility(View.GONE);
+            cb_bankname.setChecked(false);
+        } else {
+            cb_bankname.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getIfsc_code().equals("")) {
+            cb_ifsccode.setVisibility(View.GONE);
+            cb_ifsccode.setChecked(false);
+        } else {
+            cb_ifsccode.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getAccount_number().equals("")) {
+            cb_accno.setVisibility(View.GONE);
+            cb_accno.setChecked(false);
+        } else {
+            cb_accno.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getBank_document().equals("")) {
+            cb_bankfile.setVisibility(View.GONE);
+            cb_bankfile.setChecked(false);
+        } else {
+            cb_bankfile.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getPan_number().equals("")) {
+            cb_panno.setVisibility(View.GONE);
+        } else {
+            cb_panno.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getPan_document().equals("")) {
+            cb_panfile.setVisibility(View.GONE);
+        } else {
+            cb_panfile.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getGst_number().equals("")) {
+            cb_gstno.setVisibility(View.GONE);
+            cb_gstno.setChecked(false);
+        } else {
+            cb_gstno.setVisibility(View.VISIBLE);
+        }
+
+        if (allInOneDetails.getGst_document().equals("")) {
+            cb_gstfile.setVisibility(View.GONE);
+            cb_gstfile.setChecked(false);
+        } else {
+            cb_gstfile.setVisibility(View.VISIBLE);
+        }
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                if (cb_addresstype.isChecked()) {
+                    addresstype = allInOneDetails.getAddress_type_id();
+                } else {
+                    addresstype = "";
+                }
+
+                if (cb_name.isChecked()) {
+                    u_name = allInOneDetails.getName();
+                    alias = allInOneDetails.getAlias();
+                } else {
+                    u_name = "";
+                    alias = "";
+                }
+
+                if (cb_address.isChecked()) {
+                    address_line_1 = allInOneDetails.getAddress_line_one();
+                    address_line_2 = allInOneDetails.getAddress_line_two();
+                    country = allInOneDetails.getCountry();
+                    state = allInOneDetails.getState();
+                    district = allInOneDetails.getDistrict();
+                    pincode = allInOneDetails.getPincode();
+
+                } else {
+                    address_line_1 = "";
+                    address_line_2 = "";
+                    country = "";
+                    district = "";
+                    pincode = "";
+                    state = "";
+                }
+
+                if (cb_mobile.isChecked()) {
+                    u_mobile = allInOneDetails.getMobile_number();
+                } else {
+                    u_mobile = "";
+                }
+
+                if (cb_email.isChecked()) {
+                    email = allInOneDetails.getEmail_id();
+                } else {
+                    email = "";
+                }
+
+                if (cb_landline.isChecked()) {
+                    landline = allInOneDetails.getLandline_number();
+                } else {
+                    landline = "";
+                }
+
+                if (cb_contactperson.isChecked()) {
+                    contactPersonName = allInOneDetails.getContact_person_name();
+                    contactPersonMobile = allInOneDetails.getContact_person_mobile();
+                } else {
+                    contactPersonName = "";
+                    contactPersonMobile = "";
+                }
+
+                if (cb_website.isChecked()) {
+                    website = allInOneDetails.getWebsite();
+                } else {
+                    website = "";
+                }
+
+                if (cb_maplocation.isChecked()) {
+                    map_location_lattitude = allInOneDetails.getMap_location_latitude();
+                    map_location_logitude = allInOneDetails.getMap_location_longitude();
+                } else {
+                    map_location_lattitude = "";
+                    map_location_logitude = "";
+                }
+
+                if (cb_visitcard.isChecked()) {
+                    visiting_card = allInOneDetails.getVisiting_card();
+                } else {
+                    visiting_card = "";
+                }
+
+                if (cb_photo.isChecked()) {
+                    photo = allInOneDetails.getPhoto();
+                } else {
+                    photo = "";
+                }
+
+
+                if (cb_accountholdername.isChecked()) {
+                    holder_name = allInOneDetails.getAccount_holder_name();
+                    alias = allInOneDetails.getAccount_holder_alias();
+                } else {
+                    holder_name = "";
+                    alias = "";
+                }
+                if (cb_bankname.isChecked()) {
+                    bank_name = allInOneDetails.getBank_name();
+                } else {
+                    bank_name = "";
+                }
+                if (cb_ifsccode.isChecked()) {
+                    ifsc_code = allInOneDetails.getIfsc_code();
+                } else {
+                    ifsc_code = "";
+                }
+                if (cb_accno.isChecked()) {
+                    acc_no = allInOneDetails.getAccount_number();
+                } else {
+                    acc_no = "";
+                }
+                if (cb_bankfile.isChecked()) {
+                    bank_doc = allInOneDetails.getBank_document();
+                } else {
+                    bank_doc = "";
+                }
+
+                if (cb_panno.isChecked()) {
+                    pan_no = allInOneDetails.getPan_number();
+                } else {
+                    pan_no = "";
+                }
+
+                if (cb_panfile.isChecked()) {
+                    pan_doc = allInOneDetails.getPan_document();
+                } else {
+                    pan_doc = "";
+                }
+
+                if (cb_gstno.isChecked()) {
+                    gst_no = allInOneDetails.getGst_number();
+                } else {
+                    gst_no = "";
+                }
+
+                if (cb_gstfile.isChecked()) {
+                    gst_doc = allInOneDetails.getGst_document();
+                } else {
+                    gst_doc = "";
+                }
+
+                createDialogForShare(allInOneDetails);
+
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
+    }
+
+    private void createDialogForShare(final AllInOneModel allInOneDetails) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+
+        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
+        TextView tv_name = promptView.findViewById(R.id.tv_name);
+        final EditText edt_message = promptView.findViewById(R.id.edt_message);
+
+        tv_initletter.setText(String.valueOf(name.charAt(0)));
+        tv_name.setText(name + " (" + sender_mobile + ") ");
+
+        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (edt_message.getText().toString().trim().equals("")) {
+                    Utilities.showMessageString(context, "Please Enter Message");
+                    return;
+                }
+
+                if (Utilities.isNetworkAvailable(context)) {
+
+                    new ShareDetails().execute(
+                            edt_message.getText().toString().trim(),
+                            user_id,
+                            sender_mobile,
+                            type,
+                            allInOneDetails.getAll_in_one_id()
+                    );
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     public class ShareDetails extends AsyncTask<String, Void, String> {
@@ -692,6 +716,9 @@ public class ShareAllInOneDetails_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        toBeSharedAllInOneList.remove(sentAllInOneDetails);
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Shared Successfully");
                         builder.setIcon(R.drawable.ic_success_24dp);
@@ -699,7 +726,11 @@ public class ShareAllInOneDetails_Activity extends Activity {
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                finish();
+                                if (toBeSharedAllInOneList.size() != 0) {
+                                    startShareLoop();
+                                } else {
+                                    finish();
+                                }
                             }
                         });
                         AlertDialog alertD = builder.create();

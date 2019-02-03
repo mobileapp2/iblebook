@@ -56,6 +56,8 @@ public class GetAddressListPojo implements Serializable {
 
     private String contact_person_mobile;
 
+    public boolean isChecked;
+
     public String getCreated_by() {
         return created_by;
     }
@@ -262,5 +264,13 @@ public class GetAddressListPojo implements Serializable {
 
     public void setContact_person_mobile(String contact_person_mobile) {
         this.contact_person_mobile = contact_person_mobile;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

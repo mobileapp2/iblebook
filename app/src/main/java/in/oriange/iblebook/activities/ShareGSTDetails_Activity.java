@@ -5,8 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,18 +40,19 @@ import static in.oriange.iblebook.utilities.Utilities.hideSoftKeyboard;
 
 public class ShareGSTDetails_Activity extends Activity {
 
-    private static Context context;
-    private static RecyclerView rv_gstlist;
-    private static String user_id;
-    private static int lastSelectedPosition = -1;
-    private static ArrayList<GetTaxListPojo> gstList;
+    private Context context;
+    private RecyclerView rv_gstlist;
+    private String user_id;
+    private ArrayList<GetTaxListPojo> gstList;
+    private ArrayList<GetTaxListPojo> toBeSharedgstList;
     public LinearLayout ll_parent;
+    private ImageView img_check;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private UserSessionManager session;
     private String mobile, type, name, sender_id, sender_mobile, request_id;
-    private ImageView img_check;
     private String p_name, alias, pan_no, pan_doc, gst_no, gst_doc;
+    private GetTaxListPojo sentTaxDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class ShareGSTDetails_Activity extends Activity {
         context = ShareGSTDetails_Activity.this;
         session = new UserSessionManager(context);
         gstList = new ArrayList<>();
+        toBeSharedgstList = new ArrayList<>();
         ll_parent = findViewById(R.id.ll_parent);
         rv_gstlist = findViewById(R.id.rv_gstlist);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -115,77 +117,31 @@ public class ShareGSTDetails_Activity extends Activity {
         img_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lastSelectedPosition == -1) {
+                if (!isAtleastOneChecked()) {
                     Utilities.showAlertDialog(context, "Alert", "Please Select Any One Details", false);
                 } else {
-                    setSelectionFilter();
-                    //createDialogForShare();
+                    toBeSharedgstList = new ArrayList<>();
+                    for (int i = 0; i < gstList.size(); i++) {
+                        if (gstList.get(i).isChecked()) {
+                            toBeSharedgstList.add(gstList.get(i));
+                        }
+                    }
+                    startShareLoop();
                 }
             }
         });
     }
 
-    private void createDialogForShare() {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-
-        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
-        TextView tv_name = promptView.findViewById(R.id.tv_name);
-        final EditText edt_message = promptView.findViewById(R.id.edt_message);
-
-        tv_initletter.setText(String.valueOf(name.charAt(0)));
-        tv_name.setText(name + " (" + sender_mobile + ") ");
-
-        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (edt_message.getText().toString().trim().equals("")) {
-                    Utilities.showMessageString(context, "Please Enter Message");
-                    return;
-                }
-
-                if (Utilities.isNetworkAvailable(context)) {
-                    new ShareDetails().execute(
-                            edt_message.getText().toString().trim(),
-                            user_id,
-                            sender_mobile,
-                            type,
-                            gstList.get(lastSelectedPosition).getTax_id()
-                    );
-                } else {
-                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
-                }
+    private void startShareLoop() {
+        for (int i = 0; i < toBeSharedgstList.size(); i++) {
+            if (toBeSharedgstList.get(i).isChecked()) {
+                setSelectionFilter(toBeSharedgstList.get(i));
+                return;
             }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
-        alertD.show();
+        }
     }
 
-    private void setupToolbar() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        img_check = findViewById(R.id.img_check);
-        mToolbar.setTitle("Select GST Detail");
-        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
-
-    public static class GetGSTList extends AsyncTask<String, Void, String> {
+    public class GetGSTList extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -242,8 +198,6 @@ public class ShareGSTDetails_Activity extends Activity {
                             }
                             rv_gstlist.setAdapter(new GetGSTForShareAdapter(context, gstList));
                         }
-                    } else if (type.equalsIgnoreCase("failed")) {
-
                     }
                 }
             } catch (Exception e) {
@@ -252,9 +206,9 @@ public class ShareGSTDetails_Activity extends Activity {
         }
     }
 
-    public static class GetGSTForShareAdapter extends RecyclerView.Adapter<GetGSTForShareAdapter.MyViewHolder> {
+    public class GetGSTForShareAdapter extends RecyclerView.Adapter<GetGSTForShareAdapter.MyViewHolder> {
 
-        private static List<GetTaxListPojo> resultArrayList;
+        private List<GetTaxListPojo> resultArrayList;
         private final UserSessionManager session;
         private Context context;
         private String name;
@@ -288,7 +242,15 @@ public class ShareGSTDetails_Activity extends Activity {
             holder.tv_name.setText(resultArrayList.get(position).getName());
             holder.tv_details.setText(resultArrayList.get(position).getGst_number());
 
-            holder.rb_selectone.setChecked(lastSelectedPosition == position);
+            holder.cb_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (holder.cb_select.isChecked())
+                        gstList.get(position).setChecked(true);
+                    else
+                        gstList.get(position).setChecked(false);
+                }
+            });
 
         }
 
@@ -300,7 +262,7 @@ public class ShareGSTDetails_Activity extends Activity {
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             private TextView tv_initletter, tv_alias, tv_name, tv_details;
-            private RadioButton rb_selectone;
+            private CheckBox cb_select;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -308,17 +270,139 @@ public class ShareGSTDetails_Activity extends Activity {
                 tv_alias = view.findViewById(R.id.tv_alias);
                 tv_name = view.findViewById(R.id.tv_name);
                 tv_details = view.findViewById(R.id.tv_details);
-                rb_selectone = view.findViewById(R.id.rb_selectone);
+                cb_select = view.findViewById(R.id.cb_select);
 
-                rb_selectone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lastSelectedPosition = getAdapterPosition();
-                        notifyDataSetChanged();
-                    }
-                });
             }
         }
+    }
+
+    private boolean isAtleastOneChecked() {
+        for (int i = 0; i < gstList.size(); i++)
+            if (gstList.get(i).isChecked())
+                return true;
+        return false;
+    }
+
+    private void setSelectionFilter(final GetTaxListPojo gstDetails) {
+        sentTaxDetails = gstDetails;
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharepgst, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setTitle(gstDetails.getName());
+
+        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
+        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
+        final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
+
+        if (gstDetails.getName().equals("")) {
+            cb_name.setVisibility(View.GONE);
+            cb_name.setChecked(false);
+        } else {
+            cb_name.setVisibility(View.VISIBLE);
+        }
+
+        if (gstDetails.getGst_number().equals("")) {
+            cb_gstno.setVisibility(View.GONE);
+            cb_gstno.setChecked(false);
+        } else {
+            cb_gstno.setVisibility(View.VISIBLE);
+        }
+
+        if (gstDetails.getGst_document().equals("")) {
+            cb_file.setVisibility(View.GONE);
+            cb_file.setChecked(false);
+        } else {
+            cb_file.setVisibility(View.VISIBLE);
+        }
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialod, int id) {
+                StringBuilder sb = new StringBuilder();
+                if (cb_name.isChecked()) {
+                    p_name = gstDetails.getName();
+                    alias = gstDetails.getAlias();
+                } else {
+                    p_name = "";
+                    alias = "";
+                }
+                if (cb_gstno.isChecked()) {
+                    gst_no = gstDetails.getGst_number();
+                } else {
+                    gst_no = "";
+                }
+
+                if (cb_file.isChecked()) {
+                    gst_doc = gstDetails.getGst_document();
+                } else {
+                    gst_doc = "";
+                }
+                pan_doc = "";
+                pan_no = "";
+
+                if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {
+                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                createDialogForShare(gstDetails);
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int view) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
+    }
+
+    private void createDialogForShare(final GetTaxListPojo gstDetails) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.prompt_sharedetails, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
+
+        TextView tv_initletter = promptView.findViewById(R.id.tv_initletter);
+        TextView tv_name = promptView.findViewById(R.id.tv_name);
+        final EditText edt_message = promptView.findViewById(R.id.edt_message);
+
+        tv_initletter.setText(String.valueOf(name.charAt(0)));
+        tv_name.setText(name + " (" + sender_mobile + ") ");
+
+        alertDialogBuilder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (edt_message.getText().toString().trim().equals("")) {
+                    Utilities.showMessageString(context, "Please Enter Message");
+                    return;
+                }
+
+                if (Utilities.isNetworkAvailable(context)) {
+                    new ShareDetails().execute(
+                            edt_message.getText().toString().trim(),
+                            user_id,
+                            sender_mobile,
+                            type,
+                            gstDetails.getTax_id()
+                    );
+                } else {
+                    Utilities.showSnackBar(ll_parent, "Please Check Internet Connection");
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialogBuilder.setCancelable(false);
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+        alertD.show();
     }
 
     public class ShareDetails extends AsyncTask<String, Void, String> {
@@ -375,6 +459,9 @@ public class ShareGSTDetails_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        toBeSharedgstList.remove(sentTaxDetails);
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Details Shared Successfully");
                         builder.setIcon(R.drawable.ic_success_24dp);
@@ -382,7 +469,11 @@ public class ShareGSTDetails_Activity extends Activity {
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                finish();
+                                if (toBeSharedgstList.size() != 0) {
+                                    startShareLoop();
+                                } else {
+                                    finish();
+                                }
                             }
                         });
                         AlertDialog alertD = builder.create();
@@ -397,78 +488,17 @@ public class ShareGSTDetails_Activity extends Activity {
         }
     }
 
-    private void setSelectionFilter() {
-
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptView = layoutInflater.inflate(R.layout.prompt_sharepgst, null);
-        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setTitle("Share Filter");
-
-        final CheckBox cb_name = promptView.findViewById(R.id.cb_name);
-        final CheckBox cb_gstno = promptView.findViewById(R.id.cb_gstno);
-        final CheckBox cb_file = promptView.findViewById(R.id.cb_file);
-
-        if (gstList.get(lastSelectedPosition).getName().equals("")) {
-            cb_name.setVisibility(View.GONE);
-            cb_name.setChecked(false);
-        } else {
-            cb_name.setVisibility(View.VISIBLE);
-        }
-
-        if (gstList.get(lastSelectedPosition).getGst_number().equals("")) {
-            cb_gstno.setVisibility(View.GONE);
-            cb_gstno.setChecked(false);
-        } else {
-            cb_gstno.setVisibility(View.VISIBLE);
-        }
-
-        if (gstList.get(lastSelectedPosition).getGst_document().equals("")) {
-            cb_file.setVisibility(View.GONE);
-            cb_file.setChecked(false);
-        } else {
-            cb_file.setVisibility(View.VISIBLE);
-        }
-
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialod, int id) {
-                StringBuilder sb = new StringBuilder();
-                if (cb_name.isChecked()) {
-                    p_name = gstList.get(lastSelectedPosition).getName();
-                    alias = gstList.get(lastSelectedPosition).getAlias();
-                } else {
-                    p_name = "";
-                    alias = "";
-                }
-                if (cb_gstno.isChecked()) {
-                    gst_no = gstList.get(lastSelectedPosition).getGst_number();
-                } else {
-                    gst_no = "";
-                }
-
-                if (cb_file.isChecked()) {
-                    gst_doc = gstList.get(lastSelectedPosition).getGst_document();
-                } else {
-                    gst_doc = "";
-                }
-
-                if (!cb_name.isChecked() && !cb_gstno.isChecked() && !cb_file.isChecked()) {
-                    Toast.makeText(context, "None of the above was selected", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                pan_doc = "";
-                pan_no = "";
-                createDialogForShare();
+    private void setupToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        img_check = findViewById(R.id.img_check);
+        mToolbar.setTitle("Select GST Detail");
+        mToolbar.setNavigationIcon(R.drawable.icon_backarrow_16p);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int view) {
-                dialog.cancel();
-            }
-        });
-        alertDialogBuilder.setCancelable(false);
-        android.support.v7.app.AlertDialog alertD = alertDialogBuilder.create();
-        alertD.show();
     }
 
 
