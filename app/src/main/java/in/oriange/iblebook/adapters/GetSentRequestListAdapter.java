@@ -78,10 +78,17 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
             holder.tv_type.setText("Requested For All in One Details");
         }
 
+        if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Accepted")) {
+            holder.tv_requeststatus.setText("Status - Responded");
+        } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Dismiss")) {
+            holder.tv_requeststatus.setText("Status - Rejected");
+        } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Active")) {
+            holder.tv_requeststatus.setText("Status - Pending");
+        }
+
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getMessage().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getMobile());
         holder.tv_message.setText(resultArrayList.get(position).getMessage());
-        holder.tv_requeststatus.setText("Status - " + resultArrayList.get(position).getStatus());
 
         holder.imv_call.setOnClickListener(new View.OnClickListener() {
             @Override

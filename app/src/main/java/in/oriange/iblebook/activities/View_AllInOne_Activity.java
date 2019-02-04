@@ -928,7 +928,6 @@ public class View_AllInOne_Activity extends Activity {
     }
 
     public class DeleteAllInOneDetails extends AsyncTask<String, Void, String> {
-        int position;
         ProgressDialog pd;
 
         @Override
@@ -942,7 +941,6 @@ public class View_AllInOne_Activity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            position = Integer.parseInt(params[0]);
             String res = "[]";
             JsonObject obj = new JsonObject();
             obj.addProperty("type", "delete");

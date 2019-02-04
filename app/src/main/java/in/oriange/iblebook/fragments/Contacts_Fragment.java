@@ -183,21 +183,18 @@ public class Contacts_Fragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
-                for (ContactListPojo contacts : contactList) {
-                    String contactToBeSearched = contacts.getName().toLowerCase() + contacts.getPhoneNo().toLowerCase();
-                    if (contactToBeSearched.contains(query.toLowerCase())) {
-                        contactsSearchedList.add(contacts);
-                    }
-                }
 
-                if (contactsSearchedList.size() == 0) {
-                    Utilities.showAlertDialog(context, "Fail", "No Such Contact Found", false);
-                    searchView.setQuery("", false);
+                if (!query.equals("")) {
+                    searchView.clearFocus();
+                    ArrayList<ContactListPojo> contactsSearchedList = new ArrayList<>();
+                    for (ContactListPojo contacts : contactList) {
+                        String contactToBeSearched = contacts.getName().toLowerCase() + contacts.getPhoneNo().toLowerCase();
+                        if (contactToBeSearched.contains(query.toLowerCase())) {
+                            contactsSearchedList.add(contacts);
+                        }
+                    }
+                } else if (query.equals("")) {
                     bindRecyclerview(contactList);
-                } else {
-                    bindRecyclerview(contactsSearchedList);
                 }
                 return true;
             }
@@ -212,20 +209,53 @@ public class Contacts_Fragment extends Fragment {
                             contactsSearchedList.add(contacts);
                         }
                     }
-                    if (contactsSearchedList.size() == 0) {
-                        Utilities.showMessageString(context, "No Such Contact Found");
-                        searchView.setQuery("", false);
-                        bindRecyclerview(contactList);
-                    } else {
-                        bindRecyclerview(contactsSearchedList);
-                    }
-                    return true;
                 } else if (newText.equals("")) {
                     bindRecyclerview(contactList);
                 }
                 return true;
             }
         });
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if (!query.equals("")) {
+                    ArrayList<ContactListPojo> addressSearchedList = new ArrayList<>();
+                    for (ContactListPojo contacts : contactList) {
+                        String contactToBeSearched = contacts.getName().toLowerCase() +
+                                contacts.getPhoneNo().toLowerCase();
+                        if (contactToBeSearched.contains(query.toLowerCase())) {
+                            addressSearchedList.add(contacts);
+                        }
+                    }
+                    bindRecyclerview(addressSearchedList);
+                } else {
+                    bindRecyclerview(contactList);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    ArrayList<ContactListPojo> addressSearchedList = new ArrayList<>();
+                    for (ContactListPojo contacts : contactList) {
+                        String contactToBeSearched = contacts.getName().toLowerCase() +
+                                contacts.getPhoneNo().toLowerCase();
+                        if (contactToBeSearched.contains(newText.toLowerCase())) {
+                            addressSearchedList.add(contacts);
+                        }
+                    }
+                    bindRecyclerview(addressSearchedList);
+                } else if (newText.equals("")) {
+                    bindRecyclerview(contactList);
+                }
+                return true;
+            }
+        });
+
 
         fab_request.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,7 +331,7 @@ public class Contacts_Fragment extends Fragment {
                 String type = "";
 
                 if (tv_requesttype.getText().toString().trim().equals("Address Detail"))
-                    type = "address";
+                    type = "contacts";
                 else if (tv_requesttype.getText().toString().trim().equals("PAN Detail"))
                     type = "pan";
                 else if (tv_requesttype.getText().toString().trim().equals("GST Detail"))
