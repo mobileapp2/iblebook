@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.oriange.iblebook.R;
+import in.oriange.iblebook.fragments.SentRequests_Fragment;
 import in.oriange.iblebook.models.GetSentRequestsListPojo;
 import in.oriange.iblebook.utilities.ApplicationConstants;
 import in.oriange.iblebook.utilities.UserSessionManager;
@@ -79,11 +80,14 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
         }
 
         if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Accepted")) {
-            holder.tv_requeststatus.setText("Status - Responded");
+            holder.tv_requeststatus.setText("Responded");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.green));
         } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Dismiss")) {
-            holder.tv_requeststatus.setText("Status - Rejected");
+            holder.tv_requeststatus.setText("Rejected");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.red));
         } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Active")) {
-            holder.tv_requeststatus.setText("Status - Pending");
+            holder.tv_requeststatus.setText("Pending");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.yellow));
         }
 
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getMessage().charAt(0)));
@@ -125,6 +129,17 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
                 }
             }
         });
+
+        holder.imv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Utilities.isNetworkAvailable(context)) {
+                    new DismissRequest().execute(String.valueOf(position));
+                } else {
+                    Utilities.showMessageString(context, "Please Check Internet Connection");
+                }
+            }
+        });
     }
 
     @Override
@@ -135,7 +150,7 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_initletter, tv_name, tv_message, tv_type, tv_requeststatus;
-        private ImageView imv_call;
+        private ImageView imv_call, imv_delete;
         private FrameLayout fl_mainframe;
 
         public MyViewHolder(View view) {
@@ -146,7 +161,74 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
             tv_type = (TextView) view.findViewById(R.id.tv_type);
             tv_requeststatus = (TextView) view.findViewById(R.id.tv_requeststatus);
             imv_call = view.findViewById(R.id.imv_call);
+            imv_delete = view.findViewById(R.id.imv_delete);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
+        }
+    }
+
+    public void removeItem(int position) {
+        resultArrayList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class DismissRequest extends AsyncTask<String, Void, String> {
+        int position;
+        ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait ...");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            position = Integer.parseInt(params[0]);
+            String res = "[]";
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", "dismissSentRequest");
+            obj.addProperty("request_id", resultArrayList.get(Integer.parseInt(params[0])).getRequest_id());
+            res = WebServiceCalls.APICall(ApplicationConstants.DISMISSREQUESTSAPI, obj.toString());
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String type = "", message = "";
+            try {
+                pd.dismiss();
+                if (!result.equals("")) {
+                    JSONObject mainObj = new JSONObject(result);
+                    type = mainObj.getString("type");
+                    message = mainObj.getString("message");
+                    if (type.equalsIgnoreCase("success")) {
+                        new SentRequests_Fragment.GetRequestList().execute();
+                        removeItem(position);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Request Deleted Successfully");
+                        builder.setIcon(R.drawable.ic_success_24dp);
+                        builder.setTitle("Success");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alert11 = builder.create();
+                        alert11.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
+                        alert11.show();
+                    } else {
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

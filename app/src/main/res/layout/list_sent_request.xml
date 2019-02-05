@@ -67,8 +67,8 @@
 
                         <ImageView
                             android:id="@+id/imv_call"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center"
                             android:layout_weight="0.1"
                             android:src="@drawable/icon_call" />
@@ -109,15 +109,16 @@
                             android:layout_weight="0.9"
                             android:text="Accepted"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
                         <ImageView
                             android:id="@+id/imv_delete"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center"
                             android:layout_weight="0.1"
-                            android:src="@drawable/ic_delete_black_24dp" />
+                            android:src="@drawable/icon_delete" />
 
 
                     </LinearLayout>

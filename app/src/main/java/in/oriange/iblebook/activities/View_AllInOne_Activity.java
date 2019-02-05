@@ -960,6 +960,11 @@ public class View_AllInOne_Activity extends Activity {
                     type = mainObj.getString("type");
                     message = mainObj.getString("message");
                     if (type.equalsIgnoreCase("success")) {
+
+                        new My_AllInOne_Fragment.GetAllInOneList().execute();
+                        new Offline_AllInOne_Fragment.GetAllInOneList().execute();
+                        new Received_AllInOne_Fragment.GetAllInOneList().execute();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setIcon(R.drawable.ic_success_24dp);
                         builder.setTitle("Success");
@@ -967,18 +972,13 @@ public class View_AllInOne_Activity extends Activity {
                         builder.setCancelable(false);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new My_AllInOne_Fragment.GetAllInOneList().execute();
-                                new Offline_AllInOne_Fragment.GetAllInOneList().execute();
-                                new Received_AllInOne_Fragment.GetAllInOneList().execute();
+                                finish();
                             }
                         });
                         AlertDialog alertD = builder.create();
                         alertD.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationTheme;
                         alertD.show();
-                    } else {
-
                     }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();

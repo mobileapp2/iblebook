@@ -382,7 +382,7 @@ public class View_Address_Activity extends Activity {
             cb_landline.setVisibility(View.VISIBLE);
         }
 
-        if (edt_contactperson.getText().toString().trim().equals("")&&
+        if (edt_contactperson.getText().toString().trim().equals("") &&
                 edt_contactpersonmobile.getText().toString().trim().equals("")) {
             cb_contactperson.setVisibility(View.GONE);
             cb_contactperson.setChecked(false);
@@ -451,8 +451,8 @@ public class View_Address_Activity extends Activity {
                 }
 
                 if (cb_contactperson.isChecked()) {
-                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim()+ ", " +
-                            edt_contactpersonmobile.getText().toString().trim()+ "\n");
+                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim() + ", " +
+                            edt_contactpersonmobile.getText().toString().trim() + "\n");
                 }
                 if (cb_website.isChecked()) {
                     sb.append("Website - " + edt_website.getText().toString().trim() + "\n");
@@ -530,8 +530,8 @@ public class View_Address_Activity extends Activity {
                 }
 
                 if (cb_contactperson.isChecked()) {
-                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim()+ ", " +
-                            edt_contactpersonmobile.getText().toString().trim()+ "\n");
+                    sb.append("Contact Person Details- " + edt_contactperson.getText().toString().trim() + ", " +
+                            edt_contactpersonmobile.getText().toString().trim() + "\n");
                 }
 
                 if (cb_website.isChecked()) {
