@@ -185,15 +185,18 @@ public class ReceivedRequests_Fragment extends Fragment {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetRequestsListPojo summary = new GetRequestsListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setRequest_id(jsonObj.getString("request_id"));
-                                summary.setMessage(jsonObj.getString("message"));
-                                summary.setSender_id(jsonObj.getString("sender_id"));
-                                summary.setMobile(jsonObj.getString("mobile"));
-                                summary.setType(jsonObj.getString("type"));
-                                summary.setStatus(jsonObj.getString("status"));
-                                summary.setSender_name(jsonObj.getString("sender_name"));
-                                summary.setSender_mobile(jsonObj.getString("sender_mobile"));
-                                requestList.add(summary);
+
+                                if (!jsonObj.getString("status").equalsIgnoreCase("Dismiss")) {
+                                    summary.setRequest_id(jsonObj.getString("request_id"));
+                                    summary.setMessage(jsonObj.getString("message"));
+                                    summary.setSender_id(jsonObj.getString("sender_id"));
+                                    summary.setMobile(jsonObj.getString("mobile"));
+                                    summary.setType(jsonObj.getString("type"));
+                                    summary.setStatus(jsonObj.getString("status"));
+                                    summary.setSender_name(jsonObj.getString("sender_name"));
+                                    summary.setSender_mobile(jsonObj.getString("sender_mobile"));
+                                    requestList.add(summary);
+                                }
                             }
                             rv_requestlist.setVisibility(View.VISIBLE);
                             ll_nothingtoshow.setVisibility(View.GONE);

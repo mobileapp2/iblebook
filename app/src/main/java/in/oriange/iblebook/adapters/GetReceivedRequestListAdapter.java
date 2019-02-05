@@ -85,6 +85,19 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             holder.tv_type.setText("Requested For All in One Details");
         }
 
+
+        if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Accepted")) {
+            holder.tv_requeststatus.setText("Responded");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.green));
+        } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Dismiss")) {
+            holder.tv_requeststatus.setText("Rejected");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.red));
+        } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Active")) {
+            holder.tv_requeststatus.setText("Pending");
+            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.yellow));
+        }
+
+
         holder.tv_initletter.setText(String.valueOf(resultArrayList.get(position).getSender_name().charAt(0)));
         holder.tv_name.setText(resultArrayList.get(position).getSender_name());
         holder.tv_message.setText(resultArrayList.get(position).getMessage());
@@ -218,7 +231,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             }
         });
 
-        alertDialogBuilder.setNegativeButton("Dismiss Request", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -258,7 +271,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_initletter, tv_name, tv_message, tv_type;
+        TextView tv_initletter, tv_name, tv_message, tv_type, tv_requeststatus;
         private FrameLayout fl_mainframe;
 
         public MyViewHolder(View view) {
@@ -267,6 +280,7 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_message = (TextView) view.findViewById(R.id.tv_message);
             tv_type = (TextView) view.findViewById(R.id.tv_type);
+            tv_requeststatus = (TextView) view.findViewById(R.id.tv_requeststatus);
             fl_mainframe = view.findViewById(R.id.fl_mainframe);
         }
     }
