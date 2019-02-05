@@ -157,7 +157,7 @@ public class SentRequests_Fragment extends Fragment {
             String res = "[]";
             JSONObject obj = new JSONObject();
             try {
-                obj.put("type", "GetReqDataForMe");
+                obj.put("type", "GetReqDataByMe");
                 obj.put("user_id", user_id);
             } catch (JSONException e) {
                 e.printStackTrace();
