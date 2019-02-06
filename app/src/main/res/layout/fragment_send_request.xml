@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:inputType="textMultiLine"
-                android:text="You haven't received any requests"
+                android:text="You haven't sent any requests"
                 android:textSize="16sp" />
         </LinearLayout>
     </FrameLayout>

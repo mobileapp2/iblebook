@@ -71,8 +71,8 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
+    public void onBindViewHolder(final MyViewHolder holder, int pos) {
+        final int position = holder.getAdapterPosition();
         if (resultArrayList.get(position).getType().equals("address")) {
             holder.tv_type.setText("Requested For Address Details");
         } else if (resultArrayList.get(position).getType().equals("pan")) {
@@ -89,9 +89,6 @@ public class GetReceivedRequestListAdapter extends RecyclerView.Adapter<GetRecei
         if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Accepted")) {
             holder.tv_requeststatus.setText("Responded");
             holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.green));
-        } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Dismiss")) {
-            holder.tv_requeststatus.setText("Rejected");
-            holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.red));
         } else if (resultArrayList.get(position).getStatus().equalsIgnoreCase("Active")) {
             holder.tv_requeststatus.setText("Pending");
             holder.tv_requeststatus.setTextColor(context.getResources().getColor(R.color.yellow));

@@ -184,17 +184,25 @@ public class SentRequests_Fragment extends Fragment {
                             for (int i = 0; i < jsonarr.length(); i++) {
                                 GetSentRequestsListPojo summary = new GetSentRequestsListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
-                                summary.setRequest_id(jsonObj.getString("request_id"));
-                                summary.setMessage(jsonObj.getString("message"));
-                                summary.setSender_id(jsonObj.getString("sender_id"));
-                                summary.setMobile(jsonObj.getString("mobile"));
-                                summary.setType(jsonObj.getString("type"));
-                                summary.setStatus(jsonObj.getString("status"));
-                                requestList.add(summary);
+                                if (!jsonObj.getString("status").equalsIgnoreCase("removed")) {
+
+                                    summary.setRequest_id(jsonObj.getString("request_id"));
+                                    summary.setMessage(jsonObj.getString("message"));
+                                    summary.setSender_id(jsonObj.getString("sender_id"));
+                                    summary.setMobile(jsonObj.getString("mobile"));
+                                    summary.setType(jsonObj.getString("type"));
+                                    summary.setStatus(jsonObj.getString("status"));
+                                    requestList.add(summary);
+                                }
                             }
-                            rv_requestlist.setVisibility(View.VISIBLE);
-                            ll_nothingtoshow.setVisibility(View.GONE);
-                            rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
+
+
+                            if (requestList.size() > 0) {
+                                rv_requestlist.setAdapter(new GetSentRequestListAdapter(context, requestList));
+                            } else {
+                                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                                rv_requestlist.setVisibility(View.GONE);
+                            }
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {

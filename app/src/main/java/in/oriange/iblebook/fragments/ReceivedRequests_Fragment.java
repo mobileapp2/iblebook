@@ -186,7 +186,7 @@ public class ReceivedRequests_Fragment extends Fragment {
                                 GetRequestsListPojo summary = new GetRequestsListPojo();
                                 JSONObject jsonObj = jsonarr.getJSONObject(i);
 
-                                if (!jsonObj.getString("status").equalsIgnoreCase("Dismiss")) {
+                                if (!(jsonObj.getString("status").equalsIgnoreCase("Dismiss") || jsonObj.getString("status").equalsIgnoreCase("removed"))) {
                                     summary.setRequest_id(jsonObj.getString("request_id"));
                                     summary.setMessage(jsonObj.getString("message"));
                                     summary.setSender_id(jsonObj.getString("sender_id"));
@@ -198,9 +198,13 @@ public class ReceivedRequests_Fragment extends Fragment {
                                     requestList.add(summary);
                                 }
                             }
-                            rv_requestlist.setVisibility(View.VISIBLE);
-                            ll_nothingtoshow.setVisibility(View.GONE);
-                            rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
+
+                            if (requestList.size() > 0) {
+                                rv_requestlist.setAdapter(new GetReceivedRequestListAdapter(context, requestList));
+                            } else {
+                                ll_nothingtoshow.setVisibility(View.VISIBLE);
+                                rv_requestlist.setVisibility(View.GONE);
+                            }
                         }
 
                     } else if (type.equalsIgnoreCase("failure")) {

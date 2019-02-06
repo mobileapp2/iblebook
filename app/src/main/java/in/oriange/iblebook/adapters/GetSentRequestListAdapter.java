@@ -65,7 +65,8 @@ public class GetSentRequestListAdapter extends RecyclerView.Adapter<GetSentReque
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int pos) {
+        final int position = holder.getAdapterPosition();
 
         if (resultArrayList.get(position).getType().equals("address")) {
             holder.tv_type.setText("Requested For Address Details");
