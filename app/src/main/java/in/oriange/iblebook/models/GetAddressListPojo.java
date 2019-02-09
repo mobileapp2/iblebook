@@ -243,7 +243,11 @@ public class GetAddressListPojo implements Serializable {
     }
 
     public String getLandline_number() {
-        return landline_number;
+        if (landline_number.equals("null")) {
+            return "";
+        } else {
+            return landline_number;
+        }
     }
 
     public void setLandline_number(String landline_number) {
@@ -251,7 +255,11 @@ public class GetAddressListPojo implements Serializable {
     }
 
     public String getContact_person_name() {
-        return contact_person_name;
+        if (contact_person_name.equals("null")) {
+            return "";
+        } else {
+            return contact_person_name;
+        }
     }
 
     public void setContact_person_name(String contact_person_name) {
@@ -259,7 +267,11 @@ public class GetAddressListPojo implements Serializable {
     }
 
     public String getContact_person_mobile() {
-        return contact_person_mobile;
+        if (contact_person_mobile.equals("null")) {
+            return "";
+        } else {
+            return contact_person_mobile;
+        }
     }
 
     public void setContact_person_mobile(String contact_person_mobile) {

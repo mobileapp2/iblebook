@@ -193,6 +193,7 @@
                         android:gravity="center_vertical"
                         android:hint="A/C No."
                         android:inputType="number"
+                        android:maxLength="16"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/black"

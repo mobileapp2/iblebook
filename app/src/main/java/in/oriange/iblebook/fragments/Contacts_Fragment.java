@@ -331,7 +331,7 @@ public class Contacts_Fragment extends Fragment {
                 String type = "";
 
                 if (tv_requesttype.getText().toString().trim().equals("Address Detail"))
-                    type = "contacts";
+                    type = "address";
                 else if (tv_requesttype.getText().toString().trim().equals("PAN Detail"))
                     type = "pan";
                 else if (tv_requesttype.getText().toString().trim().equals("GST Detail"))
